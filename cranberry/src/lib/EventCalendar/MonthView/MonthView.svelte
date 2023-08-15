@@ -76,44 +76,33 @@
             <!-- Actual days -->
             <div class="flex flex-wrap border-t border-l">
                 {#each days as day}
-                    <!-- <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">	 -->
                     <div
                         style="width: 14.28%; height: 160px"
-                        class="px-4 pt-2 border-r border-b relative"
+                        class="pt-2 border-r border-b relative"
                         class:sept3shuf={month == 9 && day.date.getDate() == 3}
                     >
                         <!-- add on click and show current day bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false-->
                         <div
-                            class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
+                            class="w-6 h-6 mx-4 float-r items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
                             class:bg-red-400={day.today}
                             class:text-zinc-400={day.date < firstDayOfMonth ||
                                 day.date > lastDayOfMonth}
                         >
-                            {day.date.getDate()}
+                            <span>{day.date.getDate()}</span>
                         </div>
-                        <!-- <div style="height: 80px;" class="overflow-y-auto mt-1"> -->
-                        <!-- <div 
-                            class="absolute top-0 right-0 mt-2 mr-2 inline-flex items-center justify-center rounded-full text-sm w-6 h-6 bg-gray-700 text-white leading-none"
-                            x-show="events.filter(e => e.event_date === new Date(year, month, date).toDateString()).length"
-                            x-text="events.filter(e => e.event_date === new Date(year, month, date).toDateString()).length"></div> -->
-
-                        <!-- <template x-for="event in events.filter(e => new Date(e.event_date).toDateString() ===  new Date(year, month, date).toDateString() )">	
-                            <div
-                                class="px-2 py-1 rounded-lg mt-1 overflow-hidden border"
-                                :class="{
-                                    'border-blue-200 text-blue-800 bg-blue-100': event.event_theme === 'blue',
-                                    'border-red-200 text-red-800 bg-red-100': event.event_theme === 'red',
-                                    'border-yellow-200 text-yellow-800 bg-yellow-100': event.event_theme === 'yellow',
-                                    'border-green-200 text-green-800 bg-green-100': event.event_theme === 'green',
-                                    'border-purple-200 text-purple-800 bg-purple-100': event.event_theme === 'purple'
-                                }"
+                        <ul class="block mt-2 -ml-2">
+                            <li
+                                class="bg-indigo-500 text-white block overflow-hidden text-center"
                             >
-                                <p x-text="event.event_title" class="text-sm truncate leading-tight"></p>
-                            </div>
-                        </template> -->
-                        <!-- </div> -->
+                                a
+                            </li>
+                            <li
+                                class="bg-indigo-400 text-white block overflow-hidden text-center"
+                            >
+                                b
+                            </li>
+                        </ul>
                     </div>
-                    <!-- </template> -->
                 {/each}
             </div>
         </div>
