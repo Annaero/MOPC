@@ -10,28 +10,28 @@
     let events: CalendarEvent[] = [
         {
             id: 1,
-            name: "event1",
+            name: "My fancy event",
             startDate: new Date(2023, 7, 5),
-            endDate: new Date(2023, 7, 10),
+            endDate: new Date(2023, 7, 6),
             active: false,
         },
         {
             id: 2,
-            name: "event_2",
+            name: "Another event",
             startDate: new Date(2023, 7, 6),
             endDate: new Date(2023, 8, 10),
             active: false,
         },
         {
             id: 3,
-            name: "event__3",
+            name: "mega cool XXXL",
             startDate: new Date(2023, 7, 23),
             endDate: new Date(2023, 8, 1),
             active: false,
         },
         {
             id: 4,
-            name: "event___4",
+            name: "small event",
             startDate: new Date(2023, 6, 10),
             endDate: new Date(2023, 7, 3),
             active: false,
@@ -77,7 +77,7 @@
         lastWeekDay = lastWeekDay;
 
         days = [];
-        // why `let` instead of `var`: https://github.com/sveltejs/svelte/issues/6706
+        // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
         let d = new Date(firstWeekDay);
         events.forEach((e) => (e.active = e.id == selected_event));
         for (; d <= lastWeekDay; d.setDate(d.getDate() + 1)) {
@@ -88,8 +88,10 @@
                     (v) => v.startDate <= d && v.endDate >= d
                 ),
             };
+            console.log(day);
             days.push(day);
         }
+
         // return days;
     }
 </script>
@@ -131,11 +133,29 @@
                         </div>
                         <ul class="block mt-2 -ml-0.5">
                             {#each day.events as event}
+                                {@const firstEventDay =
+                                    event.startDate.getTime() ==
+                                    day.date.getTime()}
+                                {@const lastEventDay =
+                                    event.endDate.getTime() ==
+                                    day.date.getTime()}
+
                                 <li
-                                    class="bg-indigo-500 text-white block overflow-hidden text-center rounded-l-lg"
-                                    class:border-red-900={event.active}
+                                    class="border-y-2 text-black block overflow-hidden text-left text-xl font-sans my-0.5"
+                                    class:bg-indigo-100={!(
+                                        firstEventDay || lastEventDay
+                                    )}
+                                    class:bg-indigo-300={firstEventDay ||
+                                        lastEventDay}
+                                    class:border-double={event.active}
+                                    class:border-indigo-500={event.active}
+                                    class:rounded-l-lg={firstEventDay}
+                                    class:rounded-r-lg={lastEventDay}
                                     on:mouseenter={() => {
                                         selected_event = event.id;
+                                    }}
+                                    on:mouseleave={() => {
+                                        selected_event = -1;
                                     }}
                                 >
                                     {#if event.startDate.getTime() == day.date.getTime() || day.date.getDay() == 1}
