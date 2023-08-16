@@ -3,7 +3,42 @@
     import { locale, json } from "svelte-i18n";
     import { selected_year, selected_month } from "../stores";
     import type { Day } from "../day";
+    import type { CalendarEvent } from "../calendarEvent";
     import { isToday } from "../../dateUtils";
+
+    let selected_event = 0;
+    let events: CalendarEvent[] = [
+        {
+            id: 1,
+            name: "event1",
+            startDate: new Date(2023, 7, 5),
+            endDate: new Date(2023, 7, 10),
+            active: false,
+        },
+        {
+            id: 2,
+            name: "event_2",
+            startDate: new Date(2023, 7, 6),
+            endDate: new Date(2023, 8, 10),
+            active: false,
+        },
+        {
+            id: 3,
+            name: "event__3",
+            startDate: new Date(2023, 7, 23),
+            endDate: new Date(2023, 8, 1),
+            active: false,
+        },
+        {
+            id: 4,
+            name: "event___4",
+            startDate: new Date(2023, 6, 10),
+            endDate: new Date(2023, 7, 3),
+            active: false,
+        },
+    ];
+
+    events.sort((e1, e2) => e1.startDate.getTime() - e2.startDate.getTime());
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
@@ -11,22 +46,22 @@
     // let today: Date = new Date();
     let year: number;
     let month: number;
-    let days: Day[];
+    let days: Day[] = [];
 
     selected_year.subscribe((value) => {
         year = value;
-        days = updateCalendar();
+        // days = updateCalendar();
     });
 
     selected_month.subscribe((value) => {
         month = value;
-        days = updateCalendar();
+        // days = updateCalendar();
     });
 
     var firstDayOfMonth: Date;
     var lastDayOfMonth: Date;
 
-    function updateCalendar() {
+    $: {
         firstDayOfMonth = new Date(year, month, 1);
         let firstWeekDay: Date = new Date(year, month, 1);
         firstWeekDay.setDate(2 - firstWeekDay.getDay()); //find Monday date
@@ -41,19 +76,21 @@
         );
         lastWeekDay = lastWeekDay;
 
-        let days: Day[] = [];
+        days = [];
         // why `let` instead of `var`: https://github.com/sveltejs/svelte/issues/6706
         let d = new Date(firstWeekDay);
+        events.forEach((e) => (e.active = e.id == selected_event));
         for (; d <= lastWeekDay; d.setDate(d.getDate() + 1)) {
             let day: Day = {
                 date: new Date(d),
                 today: isToday(d),
-                events: [{ name: "some" }],
+                events: events.filter(
+                    (v) => v.startDate <= d && v.endDate >= d
+                ),
             };
             days.push(day);
         }
-
-        return days;
+        // return days;
     }
 </script>
 
@@ -74,14 +111,16 @@
             </div>
 
             <!-- Actual days -->
-            <div class="flex flex-wrap border-t border-l">
+            <div class="flex flex-wrap border-t border-l bg-white">
                 {#each days as day}
                     <div
                         style="width: 14.28%; height: 160px"
                         class="pt-2 border-r border-b relative"
-                        class:sept3shuf={month == 9 && day.date.getDate() == 3}
+                        class:sept3shuf={day.date.getMonth() == 8 &&
+                            day.date.getDate() == 3}
+                        class:bg-gray-200={day.date.getDay() == 6 ||
+                            day.date.getDay() == 0}
                     >
-                        <!-- add on click and show current day bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false-->
                         <div
                             class="w-6 h-6 mx-4 float-r items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
                             class:bg-red-400={day.today}
@@ -90,17 +129,22 @@
                         >
                             <span>{day.date.getDate()}</span>
                         </div>
-                        <ul class="block mt-2 -ml-2">
-                            <li
-                                class="bg-indigo-500 text-white block overflow-hidden text-center"
-                            >
-                                a
-                            </li>
-                            <li
-                                class="bg-indigo-400 text-white block overflow-hidden text-center"
-                            >
-                                b
-                            </li>
+                        <ul class="block mt-2 -ml-0.5">
+                            {#each day.events as event}
+                                <li
+                                    class="bg-indigo-500 text-white block overflow-hidden text-center rounded-l-lg"
+                                    class:border-red-900={event.active}
+                                    on:mouseenter={() => {
+                                        selected_event = event.id;
+                                    }}
+                                >
+                                    {#if event.startDate.getTime() == day.date.getTime() || day.date.getDay() == 1}
+                                        {event.name}
+                                    {:else}
+                                        &nbsp;
+                                    {/if}
+                                </li>
+                            {/each}
                         </ul>
                     </div>
                 {/each}
@@ -112,5 +156,6 @@
 <style>
     .sept3shuf {
         background-image: url("shuf-3-sep.jpg");
+        background-position: center;
     }
 </style>

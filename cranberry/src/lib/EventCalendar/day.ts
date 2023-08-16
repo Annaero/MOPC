@@ -1,4 +1,4 @@
-import type { CalendarEvent } from "./event";
+import type { CalendarEvent } from "./calendarEvent";
 
 export type Day = {
     date: Date,
