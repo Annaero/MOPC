@@ -1,25 +1,19 @@
 <script lang="ts">
     import { locale, json } from "svelte-i18n";
-    import { selected_year, selected_month } from "../stores";
+    import { getContext } from "svelte";
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
 
-    let year: number;
-    let month: number;
-
-    selected_year.subscribe((value) => {
-        year = value;
-    });
-
-    selected_month.subscribe((value) => {
-        month = value;
-    });
+    let year = getContext("selected_year");
+    let month = getContext("selected_month");
 
     function moveMonth(n: number) {
-        let nextMonthDate: Date = new Date(year, month + n, 1);
-        selected_month.update((_) => nextMonthDate.getMonth());
-        selected_year.update((_) => nextMonthDate.getFullYear());
+        let nextMonthDate: Date = new Date($year, $month + n, 1);
+        // setContext("selected_month", nextMonthDate.getMonth());
+        // setContext("selected_month", nextMonthDate.getMonth());
+        $year = nextMonthDate.getFullYear(); //.update((_) => nextMonthDate.getMonth());
+        $month = nextMonthDate.getMonth(); //.update((_) => nextMonthDate.getFullYear());
     }
 </script>
 
@@ -28,10 +22,10 @@
         <div class="flex items-center justify-between py-2 px-6">
             <div>
                 <span class="text-lg font-bold text-gray-800">
-                    {$json("date.month_names")[month]}
+                    {$json("date.month_names")[$month]}
                 </span>
                 <span class="ml-1 text-lg text-gray-600 font-normal">
-                    {year}</span
+                    {$year}</span
                 >
             </div>
             <div class="border rounded-lg px-1" style="padding-top: 2px;">

@@ -1,77 +1,37 @@
 <script lang="ts">
     import MonthViewHeader from "./MonthViewHeader.svelte";
     import { locale, json } from "svelte-i18n";
-    import { selected_year, selected_month } from "../stores";
+    // import { selected_year, selected_month } from "../stores";
     import type { Day } from "../day";
     import type { CalendarEvent } from "../calendarEvent";
     import { isToday } from "../../dateUtils";
+    import { getContext } from "svelte";
 
-    let selected_event = 0;
-    let events: CalendarEvent[] = [
-        {
-            id: 1,
-            name: "My fancy event",
-            startDate: new Date(2023, 7, 5),
-            endDate: new Date(2023, 7, 6),
-            active: false,
-        },
-        {
-            id: 2,
-            name: "Another event",
-            startDate: new Date(2023, 7, 6),
-            endDate: new Date(2023, 8, 10),
-            active: false,
-        },
-        {
-            id: 3,
-            name: "mega cool XXXL",
-            startDate: new Date(2023, 7, 23),
-            endDate: new Date(2023, 8, 1),
-            active: false,
-        },
-        {
-            id: 4,
-            name: "small event",
-            startDate: new Date(2023, 6, 10),
-            endDate: new Date(2023, 7, 3),
-            active: false,
-        },
-    ];
-
-    events.sort((e1, e2) => e1.startDate.getTime() - e2.startDate.getTime());
+    let selected_event = getContext("selected_event");
+    let events: CalendarEvent[] = getContext("events");
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
 
     // let today: Date = new Date();
-    let year: number;
-    let month: number;
+    let year = getContext("selected_year");
+    let month = getContext("selected_month");
     let days: Day[] = [];
-
-    selected_year.subscribe((value) => {
-        year = value;
-        // days = updateCalendar();
-    });
-
-    selected_month.subscribe((value) => {
-        month = value;
-        // days = updateCalendar();
-    });
 
     var firstDayOfMonth: Date;
     var lastDayOfMonth: Date;
 
     $: {
-        firstDayOfMonth = new Date(year, month, 1);
-        let firstWeekDay: Date = new Date(year, month, 1);
+        firstDayOfMonth = new Date($year, $month, 1);
+        let firstWeekDay: Date = new Date($year, $month, 1);
         firstWeekDay.setDate(2 - firstWeekDay.getDay()); //find Monday date
 
-        lastDayOfMonth = new Date(year, month + 1, 0); // i hate js, why not just Date(..., -1)?
+        lastDayOfMonth = new Date($year, $month + 1, 0); // i hate js, why not just Date(..., -1)?
         let weekDay_lastDayOfMonth: number = lastDayOfMonth.getDay();
 
         let lastWeekDay: Date = new Date(
-            year,
-            month + 1,
+            $year,
+            $month + 1,
             7 - weekDay_lastDayOfMonth
         );
         lastWeekDay = lastWeekDay;
@@ -141,7 +101,7 @@
                                     day.date.getTime()}
 
                                 <li
-                                    class="border-y-2 text-black block overflow-hidden text-left text-xl font-sans my-0.5"
+                                    class="border-y-2 text-black block overflow-hidden text-left text-xl font-sans my-0.5 text-ellipsis overflow-hidden"
                                     class:bg-indigo-100={!(
                                         firstEventDay || lastEventDay
                                     )}
@@ -159,7 +119,11 @@
                                     }}
                                 >
                                     {#if event.startDate.getTime() == day.date.getTime() || day.date.getDay() == 1}
-                                        {event.name}
+                                        <p
+                                            class="pl-2 text-ellipsis overflow-hidden"
+                                        >
+                                            {event.name}
+                                        </p>
                                     {:else}
                                         &nbsp;
                                     {/if}

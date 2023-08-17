@@ -29,7 +29,7 @@
   {#if $isLoading}
     Please wait...
   {:else}
-    <EventCalendar />
+    <EventCalendar initial_year={2023} initial_month={7} />
   {/if}
 </main>
 
