@@ -61,7 +61,7 @@
     <div class="container mx-auto px-4 py-2 md:px-24">
         <div class="-mx-1 -mb-1">
             <!-- Day names header -->
-            <div class="flex flex-wrap" style="margin-bottom: -40px;">
+            <div class="flex flex-wrap">
                 {#each $json("date.weekdays_names") as weekday}
                     <div style="width: 14.26%" class="px-2 py-2">
                         <div
@@ -99,7 +99,6 @@
                                 {@const lastEventDay =
                                     event.endDate.getTime() ==
                                     day.date.getTime()}
-
                                 <li
                                     class="border-y-2 text-black block overflow-hidden text-left text-xl font-sans my-0.5 text-ellipsis overflow-hidden"
                                     class:bg-indigo-100={!(
