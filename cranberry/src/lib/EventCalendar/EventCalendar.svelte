@@ -14,15 +14,15 @@
 
     const unsubscribeSelectedYear = selected_month.subscribe((value) => {
         dispatch("selectedDateChanged", {
-            year: selected_year,
-            selected_month: value,
+            year: $selected_year,
+            month: value,
         });
     });
 
-    const unsubscribeSelectedMonth = selected_month.subscribe((value) => {
+    const unsubscribeSelectedMonth = selected_year.subscribe((value) => {
         dispatch("selectedDateChanged", {
-            year: selected_year,
-            selected_month: value,
+            year: value,
+            month: $selected_month,
         });
     });
 
@@ -37,7 +37,6 @@
 
     export let events: CalendarEvent[] = [];
     events.sort((e1, e2) => e1.startDate.getTime() - e2.startDate.getTime());
-    setContext("events", events);
 </script>
 
-<MonthView />
+<MonthView {events} />

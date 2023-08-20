@@ -1,9 +1,8 @@
-export function isToday(date: Date) {
-    const today = new Date();
+export function isSameDate(date1: Date, date2: Date) {
     if (
-        today.getFullYear() === date.getFullYear() &&
-        today.getMonth() === date.getMonth() &&
-        today.getDate() === date.getDate()
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
     ) {
         return true;
     }

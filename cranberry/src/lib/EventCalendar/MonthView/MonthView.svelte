@@ -1,19 +1,15 @@
 <script lang="ts">
     import MonthViewHeader from "./MonthViewHeader.svelte";
     import { locale, json } from "svelte-i18n";
-    // import { selected_year, selected_month } from "../stores";
     import type { Day } from "../day";
     import type { CalendarEvent } from "../calendarEvent";
-    import { isToday } from "../../dateUtils";
+    import { isSameDate } from "../../dateUtils";
     import { getContext } from "svelte";
 
     let selected_event = getContext("selected_event");
-    let events: CalendarEvent[] = getContext("events");
+    export let events: CalendarEvent[];
 
-    locale.set("en");
-    locale.subscribe(() => console.log("locale change"));
-
-    // let today: Date = new Date();
+    let today: Date = new Date();
     let year = getContext("selected_year");
     let month = getContext("selected_month");
     let days: Day[] = [];
@@ -22,6 +18,7 @@
     var lastDayOfMonth: Date;
 
     $: {
+        console.log("Update state");
         firstDayOfMonth = new Date($year, $month, 1);
         let firstWeekDay: Date = new Date($year, $month, 1);
         firstWeekDay.setDate(2 - firstWeekDay.getDay()); //find Monday date
@@ -40,19 +37,17 @@
         // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
         let d = new Date(firstWeekDay);
         events.forEach((e) => (e.active = e.id == selected_event));
+        console.log(events);
         for (; d <= lastWeekDay; d.setDate(d.getDate() + 1)) {
             let day: Day = {
                 date: new Date(d),
-                today: isToday(d),
+                today: isSameDate(d, today),
                 events: events.filter(
                     (v) => v.startDate <= d && v.endDate >= d
                 ),
             };
-            console.log(day);
             days.push(day);
         }
-
-        // return days;
     }
 </script>
 
@@ -117,7 +112,7 @@
                                         selected_event = -1;
                                     }}
                                 >
-                                    {#if event.startDate.getTime() == day.date.getTime() || day.date.getDay() == 1}
+                                    {#if isSameDate(event.startDate, day.date) || day.date.getDay() == 1}
                                         <p
                                             class="pl-2 text-ellipsis overflow-hidden"
                                         >
