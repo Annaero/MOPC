@@ -1,4 +1,6 @@
 pymongo[srv]==4.4.1
 fastapi==0.101.1
 pydantic==2.2.1
-uvcorn==0.23.2
+uvicorn==0.23.2
+motor==3.2.0
+beanie==1.21.0
