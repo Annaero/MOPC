@@ -6,6 +6,7 @@ from fastapi import FastAPI
 # from routes.admin import router as AdminRouter
 from routes.event import router as EventRouter
 from utils.database import initiate_database
+from utils.dev_utils import populate_test_events
 
 app = FastAPI(title="MOPC project events API")
 
@@ -16,6 +17,7 @@ app = FastAPI(title="MOPC project events API")
 async def start_database():
     """Starts databases"""
     await initiate_database()
+    await populate_test_events()
 
 
 # app.include_router(AdminRouter, tags=["Administrator"], prefix="/admin")

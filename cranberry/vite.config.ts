@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/events": {
-        target: "http://0.0.0.0:5001",
+        target: "http://0.0.0.0:8080",
         changeOrigin: true,
         secure: false,
       },

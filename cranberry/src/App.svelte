@@ -25,9 +25,18 @@
 
   let events: CalendarEvent[] = [];
 
-  async function updateEvents(event) {
-    const response = await fetch("/events");
+  async function updateEvents(year, month) {
+    var lastMonthDay = new Date(year, month + 1, 0).getDate();
+    const response = await fetch(
+      "/events/events?" +
+        new URLSearchParams({
+          start_date: year + "-" + ("0" + (month + 1)).slice(-2) + "-01",
+          end_date:
+            year + "-" + ("0" + (month + 1)).slice(-2) + "-" + lastMonthDay,
+        })
+    );
     const events_json = await response.json();
+    console.log(events_json);
     events = events_json.map((x) => {
       const e: CalendarEvent = {
         id: x.id,
@@ -56,7 +65,8 @@
       showMonth={monthToShow}
       {events}
       on:selectedDateChanged={async (e) => {
-        await updateEvents(e);
+        console.log(e);
+        await updateEvents(e.detail.year, e.detail.month);
       }}
     />
   {/if}
