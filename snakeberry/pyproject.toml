@@ -24,7 +24,19 @@ exclude = '''
 [tool.isort]
 profile = "black"
 skip = [
-    '.eggs', '.git', '.hg', '.mypy_cache', '.nox', '.pants.d', '.tox',
-    '.venv', '_build', 'buck-out', 'build', 'dist', 'node_modules', 'venv',
+  '.eggs',
+  '.git',
+  '.hg',
+  '.mypy_cache',
+  '.nox',
+  '.pants.d',
+  '.tox',
+  '.venv',
+  '_build',
+  'buck-out',
+  'build',
+  'dist',
+  'node_modules',
+  'venv',
 ]
 skip_gitignore = true
