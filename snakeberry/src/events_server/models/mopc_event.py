@@ -55,7 +55,7 @@ class MOPCEvent(Document):
     class Config:
         """Config"""
 
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "My crazy event",
                 "type": "online",
