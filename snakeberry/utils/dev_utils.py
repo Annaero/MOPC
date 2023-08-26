@@ -1,12 +1,28 @@
 from datetime import date, datetime
 import logging
+import os
 import random
+from fastapi import HTTPException, status
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from models.mopc_event import MOPCEvent, EventType
 
 logger = logging.getLogger(__name__)
+
+
+def debug_only(rout):
+    """Allows rout only for debug env"""
+    if os.environ["MOPC_ENV"] == "debug":
+        return rout
+
+    async def __not_available_in_none_debug__(*args, **kwargs):
+        raise HTTPException(
+            status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
+            detail="Don't call me, don't come by my house",
+        )
+
+    return __not_available_in_none_debug__
 
 
 async def populate_test_events(n_events: int = 3):
@@ -36,7 +52,7 @@ async def populate_test_events(n_events: int = 3):
             )
         )
 
-    logger.debug(f"Populate db with events: {events}")
+    logger.info(f"Populate db with events: {events}")
     await MOPCEvent.insert_many(events)
 
 

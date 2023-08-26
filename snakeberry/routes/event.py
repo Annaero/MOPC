@@ -7,6 +7,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Query, status
 from models.error import Error
 from models.mopc_event import MOPCEvent
+from utils.dev_utils import debug_only
 
 router = APIRouter()
 
@@ -41,6 +42,18 @@ async def events_get(
     events = await MOPCEvent.find(
         MOPCEvent.start_date < right_date, MOPCEvent.end_date > left_date
     ).to_list()
+    return events
+
+
+@router.get(
+    "/events2",
+    tags=["default"],
+    response_model_by_alias=True,
+)
+@debug_only
+async def events_get2() -> List[MOPCEvent]:
+    """Return events list for given dates span"""
+    events = await MOPCEvent.find({}).to_list()
     return events
 
 
