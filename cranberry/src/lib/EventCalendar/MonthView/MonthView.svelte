@@ -73,8 +73,6 @@
                     <div
                         style="width: 14.28%; height: 160px"
                         class="pt-2 border-r border-b relative"
-                        class:sept3shuf={day.date.getMonth() == 8 &&
-                            day.date.getDate() == 3}
                         class:bg-gray-200={day.date.getDay() == 6 ||
                             day.date.getDay() == 0}
                     >
@@ -130,10 +128,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .sept3shuf {
-        background-image: url("shuf-3-sep.jpg");
-        background-position: center;
-    }
-</style>
