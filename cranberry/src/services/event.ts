@@ -22,7 +22,7 @@ export async function getEvents(startDay: Date, endDay: Date): Promise<CalendarE
     const events_json = await response.json();
     const events = events_json.map((x) => {
         const e: CalendarEvent = {
-            id: x.id,
+            id: x._id,
             name: x.name,
             startDate: new Date(Date.parse(x.startDate)),
             endDate: new Date(Date.parse(x.endDate)),

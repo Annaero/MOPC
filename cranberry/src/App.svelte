@@ -31,6 +31,7 @@
     const firstayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
     events = await getEvents(firstayOfMonth, lastDayOfMonth);
+    console.log(events);
   }
 </script>
 
