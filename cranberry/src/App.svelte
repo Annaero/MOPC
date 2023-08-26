@@ -27,7 +27,7 @@
 
   let events: CalendarEvent[] = [];
 
-  async function updateEvents(year, month) {
+  async function updateEvents(year: number, month: number) {
     const firstayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
     events = await getEvents(firstayOfMonth, lastDayOfMonth);
@@ -42,17 +42,18 @@
     {/each}
   </select>
 
-  {#if $isLoading}{:else}
+  {#await updateEvents(yearToShow, monthToShow)}
+    Loading...
+  {:then value}
     <EventCalendar
       showYear={yearToShow}
       showMonth={monthToShow}
       {events}
       on:selectedDateChanged={async (e) => {
-        console.log(e);
         await updateEvents(e.detail.year, e.detail.month);
       }}
     />
-  {/if}
+  {/await}
 </main>
 
 <style lang="postcss">
