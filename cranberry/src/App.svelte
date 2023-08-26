@@ -8,8 +8,10 @@
     locales,
     isLoading,
   } from "svelte-i18n";
+  import { dateToISODateStr } from "./lib/dateUtils";
   import type { CalendarEvent } from "./lib/EventCalendar/calendarEvent";
   import { onMount } from "svelte";
+  import { getEvents } from "./services/event";
 
   register("en", () => import("./locales/en.json"));
   register("ru", () => import("./locales/ru.json"));
@@ -26,29 +28,9 @@
   let events: CalendarEvent[] = [];
 
   async function updateEvents(year, month) {
-    var lastMonthDay = new Date(year, month + 1, 0).getDate();
-    const response = await fetch(
-      "/events/events?" +
-        new URLSearchParams({
-          start_date: year + "-" + ("0" + (month + 1)).slice(-2) + "-01",
-          end_date:
-            year + "-" + ("0" + (month + 1)).slice(-2) + "-" + lastMonthDay,
-        })
-    );
-    const events_json = await response.json();
-    console.log(events_json);
-    events = events_json.map((x) => {
-      const e: CalendarEvent = {
-        id: x.id,
-        name: x.name,
-        startDate: new Date(Date.parse(x.startDate)),
-        endDate: new Date(Date.parse(x.endDate)),
-        active: false,
-      };
-      e.startDate.setHours(0, 0, 0, 0);
-      e.endDate.setHours(0, 0, 0, 0);
-      return e;
-    });
+    const firstayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    events = await getEvents(firstayOfMonth, lastDayOfMonth);
   }
 </script>
 
