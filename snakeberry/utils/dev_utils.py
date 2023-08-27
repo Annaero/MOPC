@@ -25,34 +25,50 @@ def debug_only(rout):
     return __not_available_in_none_debug__
 
 
+def _generate_random_event(name, one_day=False):
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+
+    month1 = random.randint(current_month - 1, current_month + 2)
+    day1 = random.randint(1, 28)
+
+    if one_day:
+        return MOPCEvent(
+            name=name,
+            type=EventType.ONLINE,
+            description="Some new event",
+            startDate=date(current_year, month1, day1),
+            endDate=date(current_year, month1, day1),
+        )
+
+    month2 = random.randint(month1, month1 + 2)
+    day2 = random.randint(1, 28)
+    if month1 == month2:
+        while day2 < day1:
+            day2 = random.randint(1, 28)
+
+    return MOPCEvent(
+        name=name,
+        type=EventType.ONLINE,
+        description="Some new event",
+        startDate=date(current_year, month1, day1),
+        endDate=date(current_year, month2, day2),
+    )
+
+
 async def populate_test_events(n_events: int = 3):
     """Saves some tests events for testing purposes"""
 
     events = []
     for i in range(n_events):
-        current_month = datetime.now().month
-        current_year = datetime.now().year
+        name = f"Event {i} with verty long name I want to show you"
+        events.append(_generate_random_event(name))
 
-        month1 = random.randint(current_month - 1, current_month + 2)
-        month2 = random.randint(month1, month1 + 2)
+    events.append(_generate_random_event("One day event", one_day=True))
+    events.append(
+        _generate_random_event("One day event with very long name", one_day=True)
+    )
 
-        day1 = random.randint(1, 28)
-        day2 = random.randint(1, 28)
-        if month1 == month2:
-            while day2 < day1:
-                day2 = random.randint(1, 28)
-
-        events.append(
-            MOPCEvent(
-                name=f"Event {i}",
-                type=EventType.ONLINE,
-                description="Some new event",
-                startDate=date(current_year, month1, day1),
-                endDate=date(current_year, month2, day2),
-            )
-        )
-
-    logger.info(f"Populate db with events: {events}")
     await MOPCEvent.insert_many(events)
 
 
