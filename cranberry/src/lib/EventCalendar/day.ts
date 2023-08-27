@@ -5,3 +5,8 @@ export type Day = {
     today: boolean,
     events: CalendarEvent[]
 };
+
+export type Week = {
+    startDate: Date,
+    events: CalendarEvent[]
+};

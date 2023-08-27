@@ -29,7 +29,9 @@ export async function getEvents(startDay: Date, endDay: Date): Promise<CalendarE
             active: false,
         };
         e.startDate.setHours(0, 0, 0, 0);
+        e.startDate.setMonth(e.startDate.getMonth() - 1);
         e.endDate.setHours(0, 0, 0, 0);
+        e.endDate.setMonth(e.endDate.getMonth() - 1);
         return e;
     });
 

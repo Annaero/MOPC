@@ -1,7 +1,7 @@
 <script lang="ts">
     import MonthViewHeader from "./MonthViewHeader.svelte";
     import { locale, json } from "svelte-i18n";
-    import type { Day } from "../day";
+    import type { Day, Week } from "../day";
     import type { CalendarEvent } from "../calendarEvent";
     import { isSameDate } from "../../dateUtils";
     import { getContext } from "svelte";
@@ -12,7 +12,7 @@
     let today: Date = new Date();
     let year = getContext("selected_year");
     let month = getContext("selected_month");
-    let days: Day[] = [];
+    let weeks: Week[] = [];
 
     var firstDayOfMonth: Date;
     var lastDayOfMonth: Date;
@@ -33,21 +33,41 @@
         );
         lastWeekDay = lastWeekDay;
 
-        days = [];
+        weeks = [];
         // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
         let d = new Date(firstWeekDay);
         events.forEach((e) => (e.active = e.id == selected_event));
         console.log(events);
-        for (; d <= lastWeekDay; d.setDate(d.getDate() + 1)) {
-            let day: Day = {
-                date: new Date(d),
-                today: isSameDate(d, today),
+        for (; d <= lastWeekDay; d.setDate(d.getDate() + 7)) {
+            const weekStartDate = new Date(d);
+            const weekEndDate = new Date(d);
+            weekEndDate.setDate(weekEndDate.getDate() + 7);
+            let week: Week = {
+                startDate: weekStartDate,
                 events: events.filter(
-                    (v) => v.startDate <= d && v.endDate >= d
+                    (event) =>
+                        event.startDate <= weekEndDate &&
+                        event.endDate >= weekStartDate
                 ),
             };
-            days.push(day);
+            weeks.push(week);
         }
+
+        // days = [];
+        // // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
+        // let d = new Date(firstWeekDay);
+        // events.forEach((e) => (e.active = e.id == selected_event));
+        // console.log(events);
+        // for (; d <= lastWeekDay; d.setDate(d.getDate() + 1)) {
+        //     let day: Day = {
+        //         date: new Date(d),
+        //         today: isSameDate(d, today),
+        //         events: events.filter(
+        //             (v) => v.startDate <= d && v.endDate >= d
+        //         ),
+        //     };
+        //     days.push(day);
+        // }
     }
 </script>
 
@@ -69,22 +89,39 @@
 
             <!-- Actual days -->
             <div class="flex flex-wrap border-t border-l bg-white">
-                {#each days as day}
-                    <div
-                        style="width: 14.28%; height: 160px"
-                        class="pt-2 border-r border-b relative"
-                        class:bg-gray-200={day.date.getDay() == 6 ||
-                            day.date.getDay() == 0}
-                    >
+                {#each weeks as week}
+                    <!-- {@const days = Array(7).map((d) => {
+                        const ds = new Date(
+                            week.startDate.getFullYear(),
+                            week.startDate.getMonth(),
+                            1
+                        );
+                        return ds;
+                    })}
+                    {console.log(days)} -->
+                    {#each [0, 1, 2, 3, 4, 5, 6] as dayOfWeek}
+                        {@const day = new Date(
+                            week.startDate.getFullYear(),
+                            week.startDate.getMonth(),
+                            week.startDate.getDate() + dayOfWeek
+                        )}
                         <div
-                            class="w-6 h-6 mx-4 float-r items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
-                            class:bg-red-400={day.today}
-                            class:text-zinc-400={day.date < firstDayOfMonth ||
-                                day.date > lastDayOfMonth}
+                            style="width: 14.28%; height: 160px"
+                            class="pt-2 border-r border-b relative"
+                            class:bg-gray-200={day.getDay() == 6 ||
+                                day.getDay() == 0s}
                         >
-                            <span>{day.date.getDate()}</span>
+                            <div
+                                class="w-6 h-6 mx-4 float-r items-center justify-center text-center leading-none rounded-full"
+                                class:bg-red-400={isSameDate(day, today)}
+                                class:text-zinc-400={day < firstDayOfMonth ||
+                                    day > lastDayOfMonth}
+                            >
+                                <span>{day.getDate()}</span>
+                            </div>
                         </div>
-                        <ul class="block mt-2 -ml-0.5">
+                    {/each}
+                    <!-- <ul class="block mt-2 -ml-0.5">
                             {#each day.events as event}
                                 {@const firstEventDay =
                                     event.startDate.getTime() ==
@@ -93,7 +130,7 @@
                                     event.endDate.getTime() ==
                                     day.date.getTime()}
                                 <li
-                                    class="border-y-2 text-black block overflow-hidden text-left text-xl font-sans my-0.5 text-ellipsis overflow-hidden"
+                                    class="border-y-2 relative text-black block text-left text-xl font-sans my-0.5 text-ellipsis"
                                     class:bg-indigo-100={!(
                                         firstEventDay || lastEventDay
                                     )}
@@ -112,19 +149,28 @@
                                 >
                                     {#if isSameDate(event.startDate, day.date) || day.date.getDay() == 1}
                                         <p
-                                            class="pl-2 text-ellipsis overflow-hidden"
+                                            class="pl-2 line-clamp-1 sticky"
+                                            class:longname={!lastEventDay &&
+                                                day.date.getDay() < 7}
                                         >
                                             {event.name}
                                         </p>
                                     {:else}
                                         &nbsp;
                                     {/if}
-                                </li>
-                            {/each}
+                                </li> -->
+                    <!-- {/each}
                         </ul>
-                    </div>
+                    </div> -->
                 {/each}
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .longname {
+        width: 200%;
+        z-index: 100;
+    }
+</style>
