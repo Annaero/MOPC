@@ -8,5 +8,7 @@ export type Day = {
 
 export type Week = {
     startDate: Date,
+    endDate: Date,
     events: CalendarEvent[]
+
 };

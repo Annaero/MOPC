@@ -20,30 +20,29 @@
     $: {
         console.log("Update state");
         firstDayOfMonth = new Date($year, $month, 1);
-        let firstWeekDay: Date = new Date($year, $month, 1);
-        firstWeekDay.setDate(2 - firstWeekDay.getDay()); //find Monday date
+        let firstDayToShow: Date = new Date($year, $month, 1);
+        firstDayToShow.setDate(2 - firstDayToShow.getDay()); //find Monday date
 
-        lastDayOfMonth = new Date($year, $month + 1, 0); // i hate js, why not just Date(..., -1)?
-        let weekDay_lastDayOfMonth: number = lastDayOfMonth.getDay();
+        lastDayOfMonth = new Date($year, $month + 1, 0); // I hate js dates, why not just Date(..., -1)?
 
-        let lastWeekDay: Date = new Date(
+        let lastDayToShow: Date = new Date(
             $year,
             $month + 1,
-            7 - weekDay_lastDayOfMonth
+            7 - lastDayOfMonth.getDay()
         );
-        lastWeekDay = lastWeekDay;
 
         weeks = [];
         // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
-        let d = new Date(firstWeekDay);
+        let d = new Date(firstDayToShow);
         events.forEach((e) => (e.active = e.id == selected_event));
         console.log(events);
-        for (; d <= lastWeekDay; d.setDate(d.getDate() + 7)) {
+        for (; d <= lastDayToShow; d.setDate(d.getDate() + 7)) {
             const weekStartDate = new Date(d);
             const weekEndDate = new Date(d);
             weekEndDate.setDate(weekEndDate.getDate() + 7);
             let week: Week = {
                 startDate: weekStartDate,
+                endDate: weekEndDate,
                 events: events.filter(
                     (event) =>
                         event.startDate <= weekEndDate &&
@@ -52,33 +51,17 @@
             };
             weeks.push(week);
         }
-
-        // days = [];
-        // // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
-        // let d = new Date(firstWeekDay);
-        // events.forEach((e) => (e.active = e.id == selected_event));
-        // console.log(events);
-        // for (; d <= lastWeekDay; d.setDate(d.getDate() + 1)) {
-        //     let day: Day = {
-        //         date: new Date(d),
-        //         today: isSameDate(d, today),
-        //         events: events.filter(
-        //             (v) => v.startDate <= d && v.endDate >= d
-        //         ),
-        //     };
-        //     days.push(day);
-        // }
     }
 </script>
 
-<div class="antialiased sans-serif bg-gray-100 h-screen">
+<div class="antialiased sans-serif bg-gray-100 h-screen font-mono mx-48">
     <MonthViewHeader />
-    <div class="container mx-auto px-4 py-2 md:px-24">
-        <div class="-mx-1 -mb-1">
+    <div class="container mx-auto py-2">
+        <div class="-mx-1 -mb-1 width-max">
             <!-- Day names header -->
-            <div class="flex flex-wrap">
+            <div class="flex flex-row">
                 {#each $json("date.weekdays_names") as weekday}
-                    <div style="width: 14.26%" class="px-2 py-2">
+                    <div style="width: 14.28%" class="px-2 py-2">
                         <div
                             class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center"
                         >
@@ -121,22 +104,26 @@
                             {/each}
                         </div>
                         <!-- Events list -->
-                        <ul class="absolute mt-10 z-10 top-0">
+                        <ul class="absolute mt-10 z-10 top-0 w-full">
                             {#each week.events as event}
-                                {@const firstEventDay = false}
-                                {@const lastEventDay =
-                                    event.endDate.getTime() == false}
+                                {@const eventStartDayOfWeek =
+                                    event.startDate >= week.startDate &&
+                                    event.startDate <= week.endDate
+                                        ? event.startDate.getDay()
+                                        : 0}
+                                {@const eventLenthDays =
+                                    event.endDate <= week.endDate
+                                        ? event.endDate.getDay() -
+                                          eventStartDayOfWeek +
+                                          1
+                                        : -1}
                                 <li
-                                    class="px-4 py-2 bg-blue-500 rounded-lg shadow-lg w-96 hidden sm:block"
-                                    class:bg-indigo-100={!(
-                                        firstEventDay || lastEventDay
-                                    )}
-                                    class:bg-indigo-300={firstEventDay ||
-                                        lastEventDay}
+                                    class="px-4 py-0.5 mt-0.5 bg-red-300 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
+                                    style="margin-left: {14.26 *
+                                        eventStartDayOfWeek}%; width: {14.28 *
+                                        eventLenthDays}%"
                                     class:border-double={event.active}
-                                    class:border-indigo-500={event.active}
-                                    class:rounded-l-lg={firstEventDay}
-                                    class:rounded-r-lg={lastEventDay}
+                                    class:border-white={event.active}
                                     on:mouseenter={() => {
                                         selected_event = event.id;
                                     }}
@@ -144,13 +131,11 @@
                                         selected_event = -1;
                                     }}
                                 >
-                                    <!-- {#if isSameDate(event.startDate, day.date) || day.date.getDay() == 1} -->
-                                    <p class="pl-2 line-clamp-1 sticky">
+                                    <p
+                                        class="pl-2 line-clamp-1 sticky cursor-pointer"
+                                    >
                                         {event.name}
                                     </p>
-                                    <!-- {:else} -->
-                                    <!-- &nbsp; -->
-                                    <!-- {/if} -->
                                 </li>
                             {/each}
                         </ul>
