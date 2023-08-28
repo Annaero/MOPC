@@ -88,49 +88,46 @@
             </div>
 
             <!-- Actual days -->
-            <div class="flex flex-wrap border-t border-l bg-white">
+            <div class="flex flex-col border-t border-l bg-white">
                 {#each weeks as week}
-                    <!-- {@const days = Array(7).map((d) => {
-                        const ds = new Date(
-                            week.startDate.getFullYear(),
-                            week.startDate.getMonth(),
-                            1
-                        );
-                        return ds;
-                    })}
-                    {console.log(days)} -->
-                    {#each [0, 1, 2, 3, 4, 5, 6] as dayOfWeek}
-                        {@const day = new Date(
-                            week.startDate.getFullYear(),
-                            week.startDate.getMonth(),
-                            week.startDate.getDate() + dayOfWeek
-                        )}
-                        <div
-                            style="width: 14.28%; height: 160px"
-                            class="pt-2 border-r border-b relative"
-                            class:bg-gray-200={day.getDay() == 6 ||
-                                day.getDay() == 0s}
-                        >
-                            <div
-                                class="w-6 h-6 mx-4 float-r items-center justify-center text-center leading-none rounded-full"
-                                class:bg-red-400={isSameDate(day, today)}
-                                class:text-zinc-400={day < firstDayOfMonth ||
-                                    day > lastDayOfMonth}
-                            >
-                                <span>{day.getDate()}</span>
-                            </div>
+                    <div class="relative">
+                        <!-- Day cells -->
+                        <div class="flex flex-row">
+                            {#each Array(7).keys() as dayOfWeek}
+                                {@const day = new Date(
+                                    week.startDate.getFullYear(),
+                                    week.startDate.getMonth(),
+                                    week.startDate.getDate() + dayOfWeek
+                                )}
+                                <div
+                                    style="width: 14.28%; height: 160px"
+                                    class="pt-2 border-r border-b"
+                                    class:bg-gray-100={day.getDay() == 6 ||
+                                        day.getDay() == 0}
+                                >
+                                    <div
+                                        class="w-6 h-6 mx-4 -mt-1 text-center rounded-full"
+                                        class:bg-red-400={isSameDate(
+                                            day,
+                                            today
+                                        )}
+                                        class:text-zinc-400={day <
+                                            firstDayOfMonth ||
+                                            day > lastDayOfMonth}
+                                    >
+                                        {day.getDate()}
+                                    </div>
+                                </div>
+                            {/each}
                         </div>
-                    {/each}
-                    <!-- <ul class="block mt-2 -ml-0.5">
-                            {#each day.events as event}
-                                {@const firstEventDay =
-                                    event.startDate.getTime() ==
-                                    day.date.getTime()}
+                        <!-- Events list -->
+                        <ul class="absolute mt-10 z-10 top-0">
+                            {#each week.events as event}
+                                {@const firstEventDay = false}
                                 {@const lastEventDay =
-                                    event.endDate.getTime() ==
-                                    day.date.getTime()}
+                                    event.endDate.getTime() == false}
                                 <li
-                                    class="border-y-2 relative text-black block text-left text-xl font-sans my-0.5 text-ellipsis"
+                                    class="px-4 py-2 bg-blue-500 rounded-lg shadow-lg w-96 hidden sm:block"
                                     class:bg-indigo-100={!(
                                         firstEventDay || lastEventDay
                                     )}
@@ -147,21 +144,17 @@
                                         selected_event = -1;
                                     }}
                                 >
-                                    {#if isSameDate(event.startDate, day.date) || day.date.getDay() == 1}
-                                        <p
-                                            class="pl-2 line-clamp-1 sticky"
-                                            class:longname={!lastEventDay &&
-                                                day.date.getDay() < 7}
-                                        >
-                                            {event.name}
-                                        </p>
-                                    {:else}
-                                        &nbsp;
-                                    {/if}
-                                </li> -->
-                    <!-- {/each}
+                                    <!-- {#if isSameDate(event.startDate, day.date) || day.date.getDay() == 1} -->
+                                    <p class="pl-2 line-clamp-1 sticky">
+                                        {event.name}
+                                    </p>
+                                    <!-- {:else} -->
+                                    <!-- &nbsp; -->
+                                    <!-- {/if} -->
+                                </li>
+                            {/each}
                         </ul>
-                    </div> -->
+                    </div>
                 {/each}
             </div>
         </div>
