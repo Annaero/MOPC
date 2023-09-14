@@ -37,6 +37,23 @@
 
     export let events: CalendarEvent[] = [];
     events.sort((e1, e2) => e1.startDate.getTime() - e2.startDate.getTime());
+
+    let eventsCache: Map<number, CalendarEvent[]> = new Map<
+        number,
+        CalendarEvent[]
+    >();
+
+    function eventCacheLookup(
+        year: number,
+        month: number,
+        missCallback: CallableFunction
+    ) {
+        const key = year * 100 + month;
+        if (eventsCache.has(key)) {
+            return eventsCache[key];
+        }
+        missCallback(year, month);
+    }
 </script>
 
 <MonthView {events} />

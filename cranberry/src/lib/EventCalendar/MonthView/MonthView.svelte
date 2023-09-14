@@ -1,10 +1,13 @@
 <script lang="ts">
     import MonthViewHeader from "./MonthViewHeader.svelte";
+    import ListView from "./ListView.svelte";
     import { locale, json } from "svelte-i18n";
     import type { Day, Week } from "../day";
     import type { CalendarEvent } from "../calendarEvent";
     import { isSameDate } from "../../dateUtils";
     import { getContext } from "svelte";
+
+    const DAY_RELATIVE_WIDTH = 14.28;
 
     let selected_event = getContext("selected_event");
     export let events: CalendarEvent[];
@@ -56,12 +59,20 @@
 
 <div class="antialiased sans-serif bg-gray-100 h-screen font-mono mx-48">
     <MonthViewHeader />
-    <div class="container mx-auto py-2">
-        <div class="-mx-1 -mb-1 width-max">
+    <div class="container mx-auto py-2 flex flex row">
+        <div class="w-3/12">
+            <div
+                class="px-2 py-2 text-gray-600 text-sm uppercase tracking-wide font-bold text-left"
+            >
+                {$json("headers.events")}
+            </div>
+            <ListView {events} />
+        </div>
+        <div class="-mx-1 -mb-1 w-9/12">
             <!-- Day names header -->
             <div class="flex flex-row">
                 {#each $json("date.weekdays_names") as weekday}
-                    <div style="width: 14.28%" class="px-2 py-2">
+                    <div style="width: {DAY_RELATIVE_WIDTH}%" class="px-2 py-2">
                         <div
                             class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center"
                         >
@@ -83,7 +94,7 @@
                                     week.startDate.getDate() + dayOfWeek
                                 )}
                                 <div
-                                    style="width: 14.28%; height: 160px"
+                                    style="width: {DAY_RELATIVE_WIDTH}%; height: 160px"
                                     class="pt-2 border-r border-b"
                                     class:bg-gray-100={day.getDay() == 6 ||
                                         day.getDay() == 0}
@@ -118,9 +129,9 @@
                                           1
                                         : -1}
                                 <li
-                                    class="px-4 py-0.5 mt-0.5 bg-red-300 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
-                                    style="margin-left: {14.26 *
-                                        eventStartDayOfWeek}%; width: {14.28 *
+                                    class="px-4 py-0.5 mt-0.5 bg-red-100 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
+                                    style="margin-left: {DAY_RELATIVE_WIDTH *
+                                        eventStartDayOfWeek}%; width: {DAY_RELATIVE_WIDTH *
                                         eventLenthDays}%"
                                     class:border-double={event.active}
                                     class:border-white={event.active}

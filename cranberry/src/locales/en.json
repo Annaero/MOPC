@@ -23,5 +23,8 @@
             "Saturday",
             "Sunday"
         ]
+    },
+    "headers": {
+        "events": "Events"
     }
 }
