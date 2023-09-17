@@ -1,4 +1,4 @@
-export type CalendarEvent = {
+export type MOPCEvent = {
     id: number,
     name: string
     startDate: Date,

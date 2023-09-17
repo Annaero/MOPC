@@ -6,11 +6,8 @@
     getLocaleFromNavigator,
     locale,
     locales,
-    isLoading,
   } from "svelte-i18n";
-  import { dateToISODateStr } from "./lib/dateUtils";
-  import type { CalendarEvent } from "./lib/EventCalendar/calendarEvent";
-  import { onMount } from "svelte";
+  import type { MOPCEvent } from "./models/mopcEvent";
   import { getEvents } from "./services/event";
 
   register("en", () => import("./locales/en.json"));
@@ -25,7 +22,7 @@
   let yearToShow: number = today.getFullYear();
   let monthToShow: number = today.getMonth();
 
-  let events: CalendarEvent[] = [];
+  let events: MOPCEvent[] = [];
 
   async function updateEvents(year: number, month: number) {
     const firstayOfMonth = new Date(year, month, 1);
@@ -44,7 +41,7 @@
 
   {#await updateEvents(yearToShow, monthToShow)}
     Loading...
-  {:then value}
+  {:then _value}
     <EventCalendar
       showYear={yearToShow}
       showMonth={monthToShow}

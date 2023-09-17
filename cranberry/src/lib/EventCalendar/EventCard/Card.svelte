@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { CalendarEvent } from "../calendarEvent";
+    import type { MOPCEvent } from "../../../models/mopcEvent";
 
-    export let event: CalendarEvent;
+    export let event: MOPCEvent;
 </script>
 
 <div>

@@ -1,16 +1,15 @@
-import type { CalendarEvent } from "../lib/EventCalendar/calendarEvent";
+import type { MOPCEvent } from "../models/mopcEvent";
 import { dateToISODateStr } from "../lib/dateUtils";
 
 const EVENTS_ENDPOINT = "/events/events"
 
-export async function getEvents(startDay: Date, endDay: Date): Promise<CalendarEvent[]> {
+export async function getEvents(startDay: Date, endDay: Date): Promise<MOPCEvent[]> {
     /**
      * Get all events happened between two dates
      * 
      * @param startDay {Date} 
      * @param endDay {Date}
      */
-
 
     const response = await fetch(
         EVENTS_ENDPOINT + "?" +
@@ -21,7 +20,7 @@ export async function getEvents(startDay: Date, endDay: Date): Promise<CalendarE
     );
     const events_json = await response.json();
     const events = events_json.map((x) => {
-        const e: CalendarEvent = {
+        const e: MOPCEvent = {
             id: x._id,
             name: x.name,
             startDate: new Date(Date.parse(x.startDate)),

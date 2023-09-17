@@ -3,7 +3,7 @@
     import ListView from "./ListView.svelte";
     import { locale, json } from "svelte-i18n";
     import type { Day, Week } from "../day";
-    import type { CalendarEvent } from "../calendarEvent";
+    import type { CalendarEvent } from "../../../models/mopcEvent";
     import { isSameDate } from "../../dateUtils";
     import { getContext } from "svelte";
 
