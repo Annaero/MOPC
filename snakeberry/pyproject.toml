@@ -40,3 +40,7 @@ skip = [
   'venv',
 ]
 skip_gitignore = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+filterwarnings = ["ignore::DeprecationWarning"]

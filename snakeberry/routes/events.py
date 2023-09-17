@@ -4,9 +4,9 @@
 from datetime import date
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Query, status
-from models.error import Error
+from fastapi import APIRouter, Body, HTTPException, Query, status
 from models.mopc_event import MOPCEvent
+from models.http_error import HTTPError
 from utils.dev_utils import debug_only
 
 router = APIRouter()
@@ -17,7 +17,7 @@ router = APIRouter()
     responses={
         200: {"model": List[MOPCEvent], "description": "OK"},
         400: {"description": "Incorrect timespan passed"},
-        500: {"model": Error, "description": "Unexpected error"},
+        500: {"model": HTTPError, "description": "Unexpected error"},
     },
     tags=["default"],
     response_model_by_alias=True,
@@ -34,7 +34,7 @@ async def events_get(
 
     left_date = date.fromisoformat(start_date)
     right_date = date.fromisoformat(end_date)
-    if left_date >= right_date:
+    if left_date > right_date:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect timespan passed",
@@ -43,6 +43,31 @@ async def events_get(
         MOPCEvent.start_date < right_date, MOPCEvent.end_date > left_date
     ).to_list()
     return events
+
+
+@router.post(
+    "/events",
+    responses={
+        201: {"model": MOPCEvent, "description": "Event created"},
+        400: {"model": HTTPError, "description": "Incorrect value"},
+        409: {"model": HTTPError, "description": "Name already exists"},
+        500: {"model": HTTPError, "description": "Unexpected error"},
+    },
+    tags=["default"],
+    response_model_by_alias=True,
+)
+async def events_post(
+    new_event: MOPCEvent = Body(None, description="Event to add"),
+) -> MOPCEvent:
+    """Creates a new event. Duplicate names are not allowed"""
+    name_exists = await MOPCEvent.find(MOPCEvent.name == new_event.name).count() > 0
+    if name_exists:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Event with this name already exists",
+        )
+    created_event = await new_event.create()
+    return created_event
 
 
 @router.get(
@@ -88,22 +113,4 @@ async def events_get2() -> List[MOPCEvent]:
 #     id: int = Path(description="ID of event to fetch"),
 # ) -> Event:
 #     """Returns an event by its ID"""
-#     ...
-
-
-# @router.post(
-#     "/events",
-#     responses={
-#         201: {"model": Event, "description": "Event created"},
-#         400: {"model": Error, "description": "Incorrect value"},
-#         409: {"model": Error, "description": "Name already exists"},
-#         500: {"model": Error, "description": "Unexpected error"},
-#     },
-#     tags=["default"],
-#     response_model_by_alias=True,
-# )
-# async def events_post(
-#     new_event: NewEvent = Body(None, description="Event to add"),
-# ) -> Event:
-#     """Creates a new event. Duplicate names are not allowed"""
 #     ...

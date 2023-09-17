@@ -3,12 +3,15 @@ import logging
 import os
 import random
 from fastapi import HTTPException, status
+from dotenv import load_dotenv
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from models.mopc_event import MOPCEvent, EventType
 
 logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 
 def debug_only(rout):
@@ -61,7 +64,7 @@ async def populate_test_events(n_events: int = 3):
 
     events = []
     for i in range(n_events):
-        name = f"Event {i} with verty long name I want to show you"
+        name = f"Event {i} with very long name I want to show you"
         events.append(_generate_random_event(name))
 
     events.append(_generate_random_event("One day event", one_day=True))
