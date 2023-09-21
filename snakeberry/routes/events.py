@@ -3,8 +3,9 @@
 """
 from datetime import date
 from typing import List
+from beanie import PydanticObjectId
 
-from fastapi import APIRouter, Body, HTTPException, Query, status
+from fastapi import APIRouter, Body, HTTPException, Path, Query, status
 from models.mopc_event import MOPCEvent
 from models.http_error import HTTPError
 from utils.dev_utils import debug_only
@@ -19,8 +20,6 @@ router = APIRouter()
         400: {"description": "Incorrect timespan passed"},
         500: {"model": HTTPError, "description": "Unexpected error"},
     },
-    tags=["default"],
-    response_model_by_alias=True,
 )
 async def events_get(
     start_date: str = Query(
@@ -53,8 +52,6 @@ async def events_get(
         409: {"model": HTTPError, "description": "Name already exists"},
         500: {"model": HTTPError, "description": "Unexpected error"},
     },
-    tags=["default"],
-    response_model_by_alias=True,
 )
 async def events_post(
     new_event: MOPCEvent = Body(None, description="Event to add"),
@@ -99,18 +96,25 @@ async def events_get2() -> List[MOPCEvent]:
 #     ...
 
 
-# @router.get(
-#     "/events/{id}",
-#     responses={
-#         200: {"model": Event, "description": "Fetched event"},
-#         404: {"model": Error, "description": "The specified resource was not found"},
-#         500: {"model": Error, "description": "Unexpected error"},
-#     },
-#     tags=["default"],
-#     response_model_by_alias=True,
-# )
-# async def events_id_get(
-#     id: int = Path(description="ID of event to fetch"),
-# ) -> Event:
-#     """Returns an event by its ID"""
-#     ...
+@router.get(
+    "/events/{event_id}",
+    responses={
+        200: {"model": MOPCEvent, "description": "Fetched event"},
+        404: {
+            "model": HTTPError,
+            "description": "The specified resource was not found",
+        },
+        500: {"model": HTTPError, "description": "Unexpected error"},
+    },
+)
+async def events_id_get(
+    event_id: PydanticObjectId = Path(description="ID of event to fetch"),
+) -> MOPCEvent:
+    """Returns an event by its ID"""
+    event = await MOPCEvent.get(event_id)
+    if not event:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Event with this id does not exists",
+        )
+    return event

@@ -18,5 +18,5 @@ async def start_database():
 app.include_router(
     EventRouter,
     tags=["Events"],
-    prefix="/events",
+    prefix="/api",
 )

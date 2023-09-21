@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [sveltekit()],
   server: {
     proxy: {
-      "/events": {
+      "/api": {
         target: "http://0.0.0.0:8000",
         changeOrigin: true,
         secure: false,

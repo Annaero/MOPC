@@ -145,7 +145,9 @@
                                     <p
                                         class="pl-2 line-clamp-1 sticky cursor-pointer"
                                     >
-                                        {event.name}
+                                        <a href="/events/{event.id}">
+                                            {event.name}
+                                        </a>
                                     </p>
                                 </li>
                             {/each}
