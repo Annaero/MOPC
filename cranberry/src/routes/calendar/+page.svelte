@@ -1,22 +1,7 @@
 <script lang="ts">
-    import EventCalendar from "$lib/components/EventCalendar/EventCalendar.svelte";
-    import {
-        register,
-        init,
-        getLocaleFromNavigator,
-        locale,
-        locales,
-    } from "svelte-i18n";
-    import type { MOPCEvent } from "../../models/mopcEvent";
+    import EventCalendar from "$lib/components/eventcalendar/EventCalendar.svelte";
+    import type { MOPCEvent } from "../../lib/models/mopcEvent";
     import { getEvents } from "../../services/event";
-
-    register("en", () => import("../../locales/en.json"));
-    register("ru", () => import("../../locales/ru.json"));
-
-    init({
-        fallbackLocale: "en",
-        initialLocale: getLocaleFromNavigator(),
-    });
 
     let today: Date = new Date();
     let yearToShow: number = today.getFullYear();
@@ -28,17 +13,10 @@
         const firstayOfMonth = new Date(year, month, 1);
         const lastDayOfMonth = new Date(year, month + 1, 0);
         events = await getEvents(firstayOfMonth, lastDayOfMonth);
-        console.log(events);
     }
 </script>
 
 <main class="py-24 relative overflow-scroll">
-    <select bind:value={$locale}>
-        {#each $locales as locale}
-            <option value={locale}>{locale}</option>
-        {/each}
-    </select>
-
     {#await updateEvents(yearToShow, monthToShow)}
         Loading...
     {:then _value}
