@@ -3,13 +3,16 @@
     import type { MOPCEvent } from "$lib/models/mopcEvent";
 
     export let morcEvent: MOPCEvent;
+    export let showInline: boolean = false;
 </script>
 
 <div class="flex flex-col w-full bg-white rounded shadow-lg">
-    <div
-        class="w-full h-64 bg-top bg-cover rounded-t"
-        style="background-position: center; background-image: url(https://sun9-19.userapi.com/impf/tmr-b5CVibMPy3RiAm_biqiYSJiZEK2TthGeCg/rV0SjdKtsis.jpg?size=1920x768&quality=95&crop=0,639,2396,957&sign=3d064ce9265c2649cd8934b7e40edf99&type=cover_group)"
-    />
+    {#if !showInline}
+        <div
+            class="w-full h-64 bg-top bg-cover rounded-t"
+            style="background-position: center; background-image: url(https://sun9-19.userapi.com/impf/tmr-b5CVibMPy3RiAm_biqiYSJiZEK2TthGeCg/rV0SjdKtsis.jpg?size=1920x768&quality=95&crop=0,639,2396,957&sign=3d064ce9265c2649cd8934b7e40edf99&type=cover_group)"
+        />
+    {/if}
     <div class="flex flex-col w-full md:flex-row">
         <div
             class="flex flex-row justify-around p-4 font-bold leading-none text-gray-800 uppercase bg-red-100 rounded md:flex-col md:items-center md:justify-center md:w-1/4"
