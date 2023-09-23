@@ -57,104 +57,98 @@
     }
 </script>
 
-<div class="antialiased sans-serif bg-gray-100 h-screen font-mono mx-48">
-    <MonthViewHeader />
-    <div class="container mx-auto py-2 flex flex row">
-        <div class="w-3/12">
-            <div
-                class="px-2 py-2 text-gray-600 text-sm uppercase tracking-wide font-bold text-left"
-            >
-                {$json("headers.events")}
-            </div>
-            <ListView {events} />
+<MonthViewHeader />
+<div class="container mx-auto py-2 flex flex row">
+    <div class="w-3/12">
+        <div
+            class="px-2 py-2 text-gray-600 text-sm uppercase tracking-wide font-bold text-left"
+        >
+            {$json("headers.events")}
         </div>
-        <div class="-mx-1 -mb-1 w-9/12">
-            <!-- Day names header -->
-            <div class="flex flex-row">
-                {#each $json("date.weekdays_names") as weekday}
-                    <div style="width: {DAY_RELATIVE_WIDTH}%" class="px-2 py-2">
-                        <div
-                            class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center"
-                        >
-                            {weekday}
-                        </div>
-                    </div>{/each}
-            </div>
-
-            <!-- Actual days -->
-            <div class="flex flex-col border-t border-l bg-white">
-                {#each weeks as week}
-                    <div class="relative">
-                        <!-- Day cells -->
-                        <div class="flex flex-row">
-                            {#each Array(7).keys() as dayOfWeek}
-                                {@const day = new Date(
-                                    week.startDate.getFullYear(),
-                                    week.startDate.getMonth(),
-                                    week.startDate.getDate() + dayOfWeek
-                                )}
-                                <div
-                                    style="width: {DAY_RELATIVE_WIDTH}%; height: 160px"
-                                    class="pt-2 border-r border-b"
-                                    class:bg-gray-100={day.getDay() == 6 ||
-                                        day.getDay() == 0}
-                                >
-                                    <div
-                                        class="w-6 h-6 mx-4 -mt-1 text-center rounded-full"
-                                        class:bg-red-400={isSameDate(
-                                            day,
-                                            today
-                                        )}
-                                        class:text-zinc-400={day <
-                                            firstDayOfMonth ||
-                                            day > lastDayOfMonth}
-                                    >
-                                        {day.getDate()}
-                                    </div>
-                                </div>
-                            {/each}
-                        </div>
-                        <!-- Events list -->
-                        <ul class="absolute mt-10 z-10 top-0 w-full">
-                            {#each week.events as event}
-                                {@const eventStartDayOfWeek =
-                                    event.startDate >= week.startDate &&
-                                    event.startDate <= week.endDate
-                                        ? event.startDate.getDay()
-                                        : 0}
-                                {@const eventLenthDays =
-                                    event.endDate <= week.endDate
-                                        ? event.endDate.getDay() -
-                                          eventStartDayOfWeek +
-                                          1
-                                        : -1}
-                                <li
-                                    class="px-4 py-0.5 mt-0.5 bg-red-100 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
-                                    style="margin-left: {DAY_RELATIVE_WIDTH *
-                                        eventStartDayOfWeek}%; width: {DAY_RELATIVE_WIDTH *
-                                        eventLenthDays}%"
-                                    class:border-double={event.active}
-                                    class:border-white={event.active}
-                                    on:mouseenter={() => {
-                                        selected_event = event.id;
-                                    }}
-                                    on:mouseleave={() => {
-                                        selected_event = -1;
-                                    }}
-                                >
-                                    <p
-                                        class="pl-2 line-clamp-1 sticky cursor-pointer"
-                                    >
-                                        <a href="/events/{event.id}">
-                                            {event.name}
-                                        </a>
-                                    </p>
-                                </li>
-                            {/each}
-                        </ul>
+        <ListView {events} />
+    </div>
+    <div class="-mx-1 -mb-1 w-9/12">
+        <!-- Day names header -->
+        <div class="flex flex-row">
+            {#each $json("date.weekdays_names") as weekday}
+                <div style="width: {DAY_RELATIVE_WIDTH}%" class="px-2 py-2">
+                    <div
+                        class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center"
+                    >
+                        {weekday}
                     </div>
-                {/each}
-            </div>
+                </div>{/each}
+        </div>
+
+        <!-- Actual days -->
+        <div class="flex flex-col border-t border-l bg-white">
+            {#each weeks as week}
+                <div class="relative">
+                    <!-- Day cells -->
+                    <div class="flex flex-row">
+                        {#each Array(7).keys() as dayOfWeek}
+                            {@const day = new Date(
+                                week.startDate.getFullYear(),
+                                week.startDate.getMonth(),
+                                week.startDate.getDate() + dayOfWeek
+                            )}
+                            <div
+                                style="width: {DAY_RELATIVE_WIDTH}%; height: 160px"
+                                class="pt-2 border-r border-b"
+                                class:bg-gray-100={day.getDay() == 6 ||
+                                    day.getDay() == 0}
+                            >
+                                <div
+                                    class="w-6 h-6 mx-4 -mt-1 text-center rounded-full"
+                                    class:bg-red-400={isSameDate(day, today)}
+                                    class:text-zinc-400={day <
+                                        firstDayOfMonth || day > lastDayOfMonth}
+                                >
+                                    {day.getDate()}
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
+                    <!-- Events list -->
+                    <ul class="absolute mt-10 z-10 top-0 w-full">
+                        {#each week.events as event}
+                            {@const eventStartDayOfWeek =
+                                event.startDate >= week.startDate &&
+                                event.startDate <= week.endDate
+                                    ? event.startDate.getDay()
+                                    : 0}
+                            {@const eventLenthDays =
+                                event.endDate <= week.endDate
+                                    ? event.endDate.getDay() -
+                                      eventStartDayOfWeek +
+                                      1
+                                    : -1}
+                            <li
+                                class="px-4 py-0.5 mt-0.5 bg-red-100 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
+                                style="margin-left: {DAY_RELATIVE_WIDTH *
+                                    eventStartDayOfWeek}%; width: {DAY_RELATIVE_WIDTH *
+                                    eventLenthDays}%"
+                                class:border-double={event.active}
+                                class:border-white={event.active}
+                                on:mouseenter={() => {
+                                    selected_event = event.id;
+                                }}
+                                on:mouseleave={() => {
+                                    selected_event = -1;
+                                }}
+                            >
+                                <p
+                                    class="pl-2 line-clamp-1 sticky cursor-pointer"
+                                >
+                                    <a href="/events/{event.id}">
+                                        {event.name}
+                                    </a>
+                                </p>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            {/each}
         </div>
     </div>
 </div>
