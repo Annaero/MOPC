@@ -1,6 +1,5 @@
 <script lang="ts">
     import { json } from "svelte-i18n";
-
     import type { MOPCEvent } from "$lib/models/mopcEvent";
 
     export let morcEvent: MOPCEvent;
