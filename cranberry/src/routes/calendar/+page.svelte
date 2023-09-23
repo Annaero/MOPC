@@ -1,5 +1,5 @@
 <script lang="ts">
-    import EventCalendar from "../../lib/EventCalendar/EventCalendar.svelte";
+    import EventCalendar from "$lib/components/EventCalendar/EventCalendar.svelte";
     import {
         register,
         init,
@@ -52,9 +52,3 @@
         />
     {/await}
 </main>
-
-<style lang="postcss">
-    :global(html) {
-        background-color: theme(colors.gray.100);
-    }
-</style>

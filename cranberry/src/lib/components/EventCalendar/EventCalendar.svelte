@@ -2,7 +2,7 @@
     import MonthView from "./MonthView/MonthView.svelte";
     import { setContext, createEventDispatcher, onDestroy } from "svelte";
     import { writable } from "svelte/store";
-    import type { MOPCEvent } from "../../models/mopcEvent";
+    import type { MOPCEvent } from "$lib/models/mopcEvent";
     const dispatch = createEventDispatcher();
 
     export let showYear: number;

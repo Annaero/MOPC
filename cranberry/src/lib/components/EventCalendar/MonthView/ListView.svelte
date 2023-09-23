@@ -1,13 +1,12 @@
 <script lang="ts">
     import { locale, json } from "svelte-i18n";
     import type { Day, Week } from "../day";
-    import type { CalendarEvent } from "../../../models/mopcEvent";
-    import { isSameDate } from "../../dateUtils";
+    import type { MOPCEvent } from "$lib/models/mopcEvent";
+    import { isSameDate } from "$lib/dateUtils";
     import { getContext } from "svelte";
-    import EventCard from "../EventCard/Card.svelte";
 
     let selected_event = getContext("selected_event");
-    export let events: CalendarEvent[];
+    export let events: MOPCEvent[];
 
     let today: Date = new Date();
     let year = getContext("selected_year");
@@ -49,7 +48,7 @@
     <div>
         <div class="sticky top-0 ...">A</div>
         {#each events as event}
-            <EventCard {event} />
+            <div><p>{event.name}</p></div>
         {/each}
     </div>
     <div>

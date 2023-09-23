@@ -1,4 +1,4 @@
-import type { MOPCEvent } from "../models/mopcEvent";
+import type { MOPCEvent } from "../lib/models/mopcEvent";
 import { dateToISODateStr } from "../lib/dateUtils";
 
 const EVENTS_ENDPOINT = "/api/events"
@@ -12,9 +12,7 @@ function parse_event(event_json) {
         active: false,
     };
     e.startDate.setHours(0, 0, 0, 0);
-    // e.startDate.setMonth(e.startDate.getMonth() - 1);
     e.endDate.setHours(0, 0, 0, 0);
-    // e.endDate.setMonth(e.endDate.getMonth() - 1);
     return e;
 };
 

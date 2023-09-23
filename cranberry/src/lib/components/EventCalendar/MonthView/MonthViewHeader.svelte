@@ -10,10 +10,8 @@
 
     function moveMonth(n: number) {
         let nextMonthDate: Date = new Date($year, $month + n, 1);
-        // setContext("selected_month", nextMonthDate.getMonth());
-        // setContext("selected_month", nextMonthDate.getMonth());
-        $year = nextMonthDate.getFullYear(); //.update((_) => nextMonthDate.getMonth());
-        $month = nextMonthDate.getMonth(); //.update((_) => nextMonthDate.getFullYear());
+        $year = nextMonthDate.getFullYear();
+        $month = nextMonthDate.getMonth();
     }
 </script>
 

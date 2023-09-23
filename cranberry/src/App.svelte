@@ -7,7 +7,7 @@
     locale,
     locales,
   } from "svelte-i18n";
-  import type { MOPCEvent } from "./models/mopcEvent";
+  import type { MOPCEvent } from "./lib/models/mopcEvent";
   import { getEvents } from "./services/event";
 
   register("en", () => import("./locales/en.json"));
