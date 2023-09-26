@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -8,6 +9,10 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"github.com/google/uuid"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type EventType string
@@ -55,18 +60,38 @@ type IError struct {
 // }
 
 func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, _ := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	collection := client.Database("events").Collection("mopc_event")
+	filter := bson.D{{}}
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Get("/api/events", func(w http.ResponseWriter, r *http.Request) {
-		var events = []Event{
-			{Name: "Some Name",
-				Type:        Online,
-				ID:          uuid.New(),
-				Description: "",
-				StartDate:   time.Now(),
-				EndDate:     time.Now()}}
 
-		render.JSON(w, r, events)
+		var results []Event
+		cursor, err := collection.Find(context.TODO(), filter)
+		if err != nil {
+			panic(err)
+		}
+		if err = cursor.All(context.TODO(), &results); err != nil {
+			panic(err)
+		}
+		// for _, result := range results {
+		// 	res, _ := json.Marshal(result)
+		// 	fmt.Println(string(res))
+		// }
+
+		// var events = []Event{
+		// 	{Name: "Some Name",
+		// 		Type:        Online,
+		// 		ID:          uuid.New(),
+		// 		Description: "",
+		// 		StartDate:   time.Now(),
+		// 		EndDate:     time.Now()}}
+
+		render.JSON(w, r, results)
 	})
 	http.ListenAndServe(":3000", r)
 }
