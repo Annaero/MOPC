@@ -1,9 +1,12 @@
 package main
 
 import (
+	"net/http"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/render"
 	"github.com/google/uuid"
 )
 
@@ -52,47 +55,18 @@ type IError struct {
 // }
 
 func main() {
-	app := fiber.New()
-
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Thank god it works 🙏")
-	})
-
-	app.Get("/api/events", func(c *fiber.Ctx) error {
-
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/api/events", func(w http.ResponseWriter, r *http.Request) {
 		var events = []Event{
-			Event{Name: "Some Name",
+			{Name: "Some Name",
 				Type:        Online,
 				ID:          uuid.New(),
 				Description: "",
 				StartDate:   time.Now(),
 				EndDate:     time.Now()}}
 
-		return c.JSON(fiber.Map{
-			"error":  false,
-			"msg":    nil,
-			"count":  len(events),
-			"events": events,
-		})
+		render.JSON(w, r, events)
 	})
-
-	app.Get("/api/events/{event_id}", func(c *fiber.Ctx) error {
-
-		var events = []Event{
-			Event{Name: "Some Name",
-				Type:        Online,
-				ID:          uuid.New(),
-				Description: "",
-				StartDate:   time.Now(),
-				EndDate:     time.Now()}}
-
-		return c.JSON(fiber.Map{
-			"error":  false,
-			"msg":    nil,
-			"count":  len(events),
-			"events": events,
-		})
-	})
-
-	app.Listen(":8000")
+	http.ListenAndServe(":3000", r)
 }
