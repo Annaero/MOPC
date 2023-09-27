@@ -8,9 +8,9 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
-	"github.com/google/uuid"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -24,17 +24,22 @@ const (
 )
 
 type Event struct {
-	ID          uuid.UUID `json:"id" validate:"required,uuid"`
-	Name        string    `json:"name" validate:"required"`
-	Type        EventType `json:"type" validate:"required"`
-	Description string    `json:"description"`
-	StartDate   time.Time `json:"startDate" validate:"required"`
-	EndDate     time.Time `json:"endDate"`
+	ID          primitive.ObjectID `bson:"_id"json:"id" validate:"required,uuid"`
+	Name        string             `json:"name" validate:"required"`
+	Type        EventType          `json:"type" validate:"required"`
+	Description string             `json:"description"`
+	StartDate   time.Time          `json:"startDate" validate:"required"`
+	EndDate     time.Time          `json:"endDate"`
 }
 
-type UnprocessableEntity struct {
-	Error int    `json:"error"`
-	Text  string `json:"error_text"`
+type RequestError struct {
+	Code        int    `json:"error"`
+	Description string `json:"description"`
+}
+
+func (e *RequestError) Render(w http.ResponseWriter, r *http.Request) {
+	render.Status(r, e.Code)
+	render.JSON(w, r, e)
 }
 
 type IError struct {
@@ -42,6 +47,8 @@ type IError struct {
 	Tag   string
 	Value string
 }
+
+const eventDateLayout = "2006-01-02"
 
 // var Validator = validator.New()
 
@@ -69,35 +76,48 @@ func main() {
 	defer cancel()
 	client, _ := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
 	collection := client.Database("events").Collection("mopc_event")
-	filter := bson.D{{}}
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Get("/api/events", func(w http.ResponseWriter, r *http.Request) {
 
-		startDateParam := r.URL.Query().Get("startDate")
-		if startDateParam == "" {
-			var my_error = UnprocessableEntity{
-				Error: 400,
-				Text:  "startDateParam",
+		startDateParam := r.URL.Query().Get("start_date")
+		endDateParam := r.URL.Query().Get("end_date")
+		if startDateParam == "" || endDateParam == "" {
+			var my_error = RequestError{
+				Code:        400,
+				Description: "startDate is missing",
 			}
-			render.Status(r, http.StatusUnprocessableEntity)
-			render.JSON(w, r, my_error)
+			my_error.Render(w, r)
 			return
 		}
 
-		_, err := time.Parse("2006-01-02", startDateParam)
-		if err != nil {
-			// app.logger.Info().Msgf("can not parse ID: %v", id)
-			var my_error = UnprocessableEntity{
-				Error: 422,
-				Text:  err.Error(),
+		startDate, startDateErr := time.Parse(eventDateLayout, startDateParam)
+		endDate, endDateErr := time.Parse(eventDateLayout, endDateParam)
+		if startDateErr != nil || endDateErr != nil {
+			var errorDescription = ""
+			if startDateErr != nil {
+				errorDescription += startDateErr.Error()
 			}
-			render.Status(r, http.StatusUnprocessableEntity)
-			render.JSON(w, r, my_error)
+			if endDateErr != nil {
+				errorDescription += endDateErr.Error()
+			}
+			var my_error = RequestError{
+				Code:        422,
+				Description: errorDescription,
+			}
+			my_error.Render(w, r)
 			return
 		}
 
+		filter := bson.D{
+			{"$and",
+				bson.A{
+					bson.D{{"startDate", bson.D{{"$lt", endDate}}}},
+					bson.D{{"endDate", bson.D{{"$gt", startDate}}}},
+				},
+			},
+		}
 		var results []Event
 		cursor, err := collection.Find(context.TODO(), filter)
 		if err != nil {

@@ -5,7 +5,7 @@ const EVENTS_ENDPOINT = "/api/events"
 
 function parse_event(event_json) {
     const e: MOPCEvent = {
-        id: event_json._id,
+        id: event_json.id,
         name: event_json.name,
         startDate: new Date(Date.parse(event_json.startDate)),
         endDate: new Date(Date.parse(event_json.endDate)),
