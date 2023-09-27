@@ -32,6 +32,11 @@ type Event struct {
 	EndDate     time.Time `json:"endDate"`
 }
 
+type UnprocessableEntity struct {
+	Error int    `json:"error"`
+	Text  string `json:"error_text"`
+}
+
 type IError struct {
 	Field string
 	Tag   string
@@ -69,6 +74,29 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Get("/api/events", func(w http.ResponseWriter, r *http.Request) {
+
+		startDateParam := r.URL.Query().Get("startDate")
+		if startDateParam == "" {
+			var my_error = UnprocessableEntity{
+				Error: 400,
+				Text:  "startDateParam",
+			}
+			render.Status(r, http.StatusUnprocessableEntity)
+			render.JSON(w, r, my_error)
+			return
+		}
+
+		_, err := time.Parse("2006-01-02", startDateParam)
+		if err != nil {
+			// app.logger.Info().Msgf("can not parse ID: %v", id)
+			var my_error = UnprocessableEntity{
+				Error: 422,
+				Text:  err.Error(),
+			}
+			render.Status(r, http.StatusUnprocessableEntity)
+			render.JSON(w, r, my_error)
+			return
+		}
 
 		var results []Event
 		cursor, err := collection.Find(context.TODO(), filter)
