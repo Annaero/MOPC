@@ -13,4 +13,5 @@ func Routes(e *echo.Echo) {
 	// Create group.
 	g := e.Group(groupURL)
 	g.GET("", getEvents)
+	g.GET("/:event_id", getEventByID)
 }
