@@ -1,11 +1,8 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/Annaero/MOPC/goberry/router"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/labstack/echo/v4"
 )
 
 type IError struct {
@@ -16,12 +13,11 @@ type IError struct {
 
 func main() {
 
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
+	e := echo.New()
 
 	// Get router with all routes.
-	router.GetRoutes(r)
+	router.GetRoutes(e)
 
 	// Run server instance.
-	http.ListenAndServe(":3000", r)
+	e.Logger.Fatal(e.Start(":3000"))
 }

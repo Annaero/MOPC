@@ -1,14 +1,12 @@
 package router
 
 import (
-	"net/http"
-
 	"github.com/Annaero/MOPC/goberry/router/events"
-	"github.com/go-chi/chi/v5"
+	"github.com/labstack/echo/v4"
 )
 
 // GetRoutes function for getting routes.
-func GetRoutes(m *chi.Mux) {
-	events.Routes(m)          // health check routes
-	m.NotFound(http.NotFound) // not found routes
+func GetRoutes(e *echo.Echo) {
+	events.Routes(e) // health check routes
+	e.RouteNotFound("/*", echo.NotFoundHandler)
 }

@@ -1,15 +1,16 @@
 package events
 
-import "github.com/go-chi/chi/v5"
+import (
+	"github.com/labstack/echo/v4"
+)
 
 const (
-	groupURL = "/events"
+	groupURL = "/api/events"
 )
 
 // Routes function to create router.
-func Routes(m *chi.Mux) {
+func Routes(e *echo.Echo) {
 	// Create group.
-	m.Route(groupURL, func(r chi.Router) {
-		r.Get("/", getEvents) // get status route
-	})
+	g := e.Group(groupURL)
+	g.GET("", getEvents)
 }
