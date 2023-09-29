@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/Annaero/MOPC/goberry/models/database"
 	"github.com/labstack/echo/v4"
 )
 
@@ -9,9 +10,11 @@ const (
 )
 
 // Routes function to create router.
-func Routes(e *echo.Echo) {
+func Routes(e *echo.Echo, db database.EventsDB) {
 	// Create group.
 	g := e.Group(groupURL)
-	g.GET("", getEvents)
-	g.GET("/:event_id", getEventByID)
+	handler := EventsHandler{db: db}
+
+	g.GET("", handler.getEvents)
+	g.GET("/:event_id", handler.getEventByID)
 }

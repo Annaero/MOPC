@@ -6,6 +6,7 @@ require (
 	github.com/google/uuid v1.3.1
 	github.com/labstack/echo/v4 v4.11.1
 	go.mongodb.org/mongo-driver v1.12.1
+	github.com/joho/godotenv v1.5.1
 )
 
 require (
