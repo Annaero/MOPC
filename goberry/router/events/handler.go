@@ -8,13 +8,27 @@ import (
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
+	"github.com/Annaero/MOPC/goberry/models"
 	"github.com/Annaero/MOPC/goberry/models/database"
 )
 
-const SIMPLE_DATE_LAYOUT = "2006-01-02"
-
 type EventsHandler struct {
 	db database.EventsDB
+}
+
+func (eh EventsHandler) postEvent(c echo.Context) error {
+	var event models.Event
+	if err := c.Bind(&event); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	oid, err := eh.db.CreateEvent(event)
+	if err != nil {
+		panic(err)
+	}
+
+	response := models.EventID{ID: *oid}
+	return c.JSON(http.StatusCreated, response)
 }
 
 func (eh EventsHandler) getEventByID(c echo.Context) error {
@@ -41,8 +55,8 @@ func (eh EventsHandler) getEvents(c echo.Context) error {
 	var endDate time.Time
 
 	binderErrors := echo.QueryParamsBinder(c).
-		Time("start_date", &startDate, SIMPLE_DATE_LAYOUT).
-		Time("end_date", &endDate, SIMPLE_DATE_LAYOUT).
+		MustTime("start_date", &startDate, models.DATE_LAYOUT).
+		MustTime("end_date", &endDate, models.DATE_LAYOUT).
 		BindErrors() // returns all binding error
 
 	if binderErrors != nil {

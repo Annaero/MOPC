@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/Annaero/MOPC/goberry/models"
@@ -14,7 +15,7 @@ type MongoDB struct {
 	Client *mongo.Client
 }
 
-func (mdb MongoDB) GetEvents(startDate time.Time, endDate time.Time) (*[]models.Event, error) {
+func (mdb MongoDB) GetEvents(startDate time.Time, endDate time.Time) ([]models.Event, error) {
 	collection := mdb.Client.Database("events").Collection("mopc_event")
 
 	filter := bson.D{
@@ -26,12 +27,12 @@ func (mdb MongoDB) GetEvents(startDate time.Time, endDate time.Time) (*[]models.
 		},
 	}
 
-	results := &[]models.Event{}
+	results := []models.Event{}
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err
 	}
-	if err = cursor.All(context.TODO(), results); err != nil {
+	if err = cursor.All(context.TODO(), &results); err != nil {
 		return nil, err
 	}
 
@@ -53,4 +54,19 @@ func (mdb MongoDB) GetEvent(eventId primitive.ObjectID) (*models.Event, error) {
 	}
 
 	return &result, nil
+}
+
+func (mdb MongoDB) CreateEvent(event models.Event) (*primitive.ObjectID, error) {
+	collection := mdb.Client.Database("events").Collection("mopc_event")
+
+	result, err := collection.InsertOne(context.TODO(), &event)
+	if err != nil {
+		return nil, err
+	}
+
+	if oid, ok := result.InsertedID.(primitive.ObjectID); ok {
+		return &oid, nil
+	}
+
+	return nil, errors.New("OID is not OK")
 }

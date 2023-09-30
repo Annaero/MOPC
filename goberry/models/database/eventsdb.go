@@ -8,9 +8,9 @@ import (
 )
 
 type EventsDB interface {
-	GetEvents(startDate time.Time, endDate time.Time) (*[]models.Event, error)
+	GetEvents(startDate time.Time, endDate time.Time) ([]models.Event, error)
 	GetEvent(eventId primitive.ObjectID) (*models.Event, error)
-	// saveEvent(event models.Event) error
+	CreateEvent(event models.Event) (*primitive.ObjectID, error)
 }
 
 type GoberryDB interface {
