@@ -7,17 +7,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type IError struct {
-	Field string
-	Tag   string
-	Value string
-}
-
 func main() {
 
 	e := echo.New()
-
-	// Get router with all routes.
 
 	mongo_client := configs.ConnectDB()
 	db := database.MongoDB{Client: mongo_client}

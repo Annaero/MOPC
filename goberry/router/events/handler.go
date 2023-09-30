@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
@@ -13,12 +14,17 @@ import (
 )
 
 type EventsHandler struct {
-	db database.EventsDB
+	db        database.EventsDB
+	validator *validator.Validate
 }
 
 func (eh EventsHandler) postEvent(c echo.Context) error {
 	var event models.Event
 	if err := c.Bind(&event); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if err := eh.validator.Struct(event); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 

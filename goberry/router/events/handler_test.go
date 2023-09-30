@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 
@@ -15,13 +16,13 @@ import (
 var (
 	mockDB       = database.MockDB{}
 	eventJSON    = `{}`
-	newEventJSON = `{"name":"Jon Snow","startDate":"2024-12-12"}`
+	newEventJSON = `{"name":"Test inserted event", "type":"offine", "startDate":"2022-12-12"}`
 	eventIdJSON  = `{"id":"650ffd7eb0756fac7f2de46a"}`
 )
 
 func TestCreateEvent(t *testing.T) {
 	e := echo.New()
-	h := &EventsHandler{mockDB}
+	h := &EventsHandler{db: mockDB, validator: validator.New()}
 	rec := httptest.NewRecorder()
 
 	req := httptest.NewRequest(http.MethodPost, groupURL, strings.NewReader(newEventJSON))
@@ -37,7 +38,7 @@ func TestCreateEvent(t *testing.T) {
 
 func TestGetEvents(t *testing.T) {
 	e := echo.New()
-	h := &EventsHandler{mockDB}
+	h := &EventsHandler{db: mockDB, validator: validator.New()}
 
 	testCases := map[string]struct {
 		params     map[string]string
