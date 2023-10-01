@@ -17,7 +17,7 @@ type NewEvent struct {
 	Type        EventType `json:"type" bson:"type,omitempty" validate:"required"`
 	Description string    `json:"description" bson:"description"`
 	StartDate   Date      `json:"startDate" bson:"startDate,omitempty" validate:"required,ltecsfield=EndDate"`
-	EndDate     Date      `json:"endDate" bson:"endDate"`
+	EndDate     Date      `json:"endDate" bson:"endDate,omitempty"`
 }
 
 type EventID struct {
@@ -25,6 +25,6 @@ type EventID struct {
 }
 
 type Event struct {
-	EventID
-	NewEvent
+	EventID  `bson:"inline"`
+	NewEvent `bson:"inline"`
 }

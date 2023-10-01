@@ -61,8 +61,8 @@ func (eh EventsHandler) getEvents(c echo.Context) error {
 	var endDate time.Time
 
 	binderErrors := echo.QueryParamsBinder(c).
-		MustTime("start_date", &startDate, models.DATE_LAYOUT).
-		MustTime("end_date", &endDate, models.DATE_LAYOUT).
+		MustTime("start_date", &startDate, time.DateOnly).
+		MustTime("end_date", &endDate, time.DateOnly).
 		BindErrors() // returns all binding error
 
 	if binderErrors != nil {
