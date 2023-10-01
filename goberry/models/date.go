@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -12,10 +13,25 @@ import (
 )
 
 type Date struct {
-	time.Time
+	Time    time.Time
+	NotNull bool
+}
+
+func (t Date) GetTime() (time.Time, error) {
+	if !t.NotNull {
+		return t.Time, errors.New("time is null")
+	}
+	return t.Time, nil
+}
+
+func NewDate(time time.Time) *Date {
+	return &Date{Time: time, NotNull: true}
 }
 
 func (t Date) MarshalJSON() ([]byte, error) {
+	if !t.NotNull {
+		return []byte(`""`), nil
+	}
 	date := t.Time.Format(time.DateOnly)
 	date = fmt.Sprintf(`"%s"`, date)
 	return []byte(date), nil
@@ -23,6 +39,11 @@ func (t Date) MarshalJSON() ([]byte, error) {
 
 func (t *Date) UnmarshalJSON(b []byte) (err error) {
 	s := strings.Trim(string(b), "\"")
+
+	if s == "" {
+		t.NotNull = false
+		return
+	}
 
 	date, err := time.Parse(time.DateOnly, s)
 	if err != nil {
@@ -33,7 +54,7 @@ func (t *Date) UnmarshalJSON(b []byte) (err error) {
 }
 
 func RegisterDate() *bsoncodec.Registry {
-	dateType := reflect.TypeOf(Date{Time: time.Now()})
+	dateType := reflect.TypeOf(Date{})
 
 	dateDecoderFunc := func(
 		decodeContext bsoncodec.DecodeContext,
@@ -50,18 +71,30 @@ func RegisterDate() *bsoncodec.Registry {
 			}
 		}
 
-		if valueReader.Type() != bson.TypeDateTime {
+		switch valueReader.Type() {
+		case bson.TypeNull:
+			if err := valueReader.ReadNull(); err != nil {
+				return err
+			}
+			value.FieldByName("NotNull").SetBool(false)
+		case bson.TypeDateTime:
+			readResult, err := valueReader.ReadDateTime()
+			if err != nil {
+				return err
+			}
+			readTime := time.UnixMilli(readResult)
+			value.FieldByName("Time").Set(reflect.ValueOf(readTime)) //Date has the only field
+			if readResult == 0 {
+				value.FieldByName("NotNull").SetBool(false)
+			} else {
+				value.FieldByName("NotNull").SetBool(true)
+			}
+		default:
 			return fmt.Errorf(
 				"received invalid BSON type to decode into Date: %s",
 				valueReader.Type())
 		}
-		readResult, err := valueReader.ReadDateTime()
-		if err != nil {
-			return err
-		}
 
-		readTime := time.UnixMilli(readResult)
-		value.Field(0).Set(reflect.ValueOf(readTime)) //Date has the only field
 		return nil
 	}
 
@@ -77,7 +110,11 @@ func RegisterDate() *bsoncodec.Registry {
 				Received: value}
 		}
 
-		i, _ := value.Field(0).Interface().(time.Time)
+		if !value.FieldByName("NotNull").Interface().(bool) {
+			return valueWriter.WriteNull()
+		}
+
+		i, _ := value.FieldByName("Time").Interface().(time.Time)
 		return valueWriter.WriteDateTime(i.UnixMilli()) //Date has the only field
 	}
 
