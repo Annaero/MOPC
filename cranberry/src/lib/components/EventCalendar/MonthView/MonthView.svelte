@@ -20,6 +20,17 @@
     var firstDayOfMonth: Date;
     var lastDayOfMonth: Date;
 
+    function getEventLengh(
+        eventStartDayOfWeek: number,
+        event: MOPCEvent,
+        week: Week
+    ): number {
+        if (event.endDate == null) return 1;
+        return event.endDate <= week.endDate
+            ? event.endDate.getDay() - eventStartDayOfWeek + 1
+            : -1;
+    }
+
     $: {
         console.log("Update state");
         firstDayOfMonth = new Date($year, $month, 1);
@@ -42,14 +53,16 @@
         for (; d <= lastDayToShow; d.setDate(d.getDate() + 7)) {
             const weekStartDate = new Date(d);
             const weekEndDate = new Date(d);
-            weekEndDate.setDate(weekEndDate.getDate() + 7);
+            weekEndDate.setDate(weekEndDate.getDate() + 6);
             let week: Week = {
                 startDate: weekStartDate,
                 endDate: weekEndDate,
                 events: events.filter(
                     (event) =>
                         event.startDate <= weekEndDate &&
-                        event.endDate >= weekStartDate
+                        (event.endDate != null
+                            ? event.endDate >= weekStartDate
+                            : event.startDate >= weekStartDate)
                 ),
             };
             weeks.push(week);
@@ -113,16 +126,16 @@
                     <ul class="absolute mt-10 z-10 top-0 w-full">
                         {#each week.events as event}
                             {@const eventStartDayOfWeek =
-                                event.startDate >= week.startDate &&
-                                event.startDate <= week.endDate
-                                    ? event.startDate.getDay()
+                                event.startDate >= week.startDate
+                                    ? event.startDate.getDay() == 0
+                                        ? 6
+                                        : event.startDate.getDay() - 1
                                     : 0}
-                            {@const eventLenthDays =
-                                event.endDate <= week.endDate
-                                    ? event.endDate.getDay() -
-                                      eventStartDayOfWeek +
-                                      1
-                                    : -1}
+                            {@const eventLenthDays = getEventLengh(
+                                eventStartDayOfWeek,
+                                event,
+                                week
+                            )}
                             <li
                                 class="px-4 py-0.5 mt-0.5 bg-red-100 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
                                 style="margin-left: {DAY_RELATIVE_WIDTH *
