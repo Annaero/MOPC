@@ -8,11 +8,14 @@ function parse_event(event_json) {
         id: event_json.id,
         name: event_json.name,
         startDate: new Date(Date.parse(event_json.startDate)),
-        endDate: new Date(Date.parse(event_json.endDate)),
+        endDate: event_json.endDate != "" ? new Date(Date.parse(event_json.endDate)) : null,
         active: false,
     };
     e.startDate.setHours(0, 0, 0, 0);
-    e.endDate.setHours(0, 0, 0, 0);
+    if (e.endDate !== null) {
+        e.endDate.setHours(0, 0, 0, 0);
+    }
+
     return e;
 };
 
