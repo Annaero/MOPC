@@ -94,7 +94,7 @@
         </div>
 
         <!-- Actual days -->
-        <div class="flex flex-col border-t border-l bg-white">
+        <div class="flex flex-col border-t border-l bg-base-100">
             {#each weeks as week}
                 <div class="relative">
                     <!-- Day cells -->
@@ -108,12 +108,15 @@
                             <div
                                 style="width: {DAY_RELATIVE_WIDTH}%; height: 160px"
                                 class="pt-2 border-r border-b"
-                                class:bg-gray-100={day.getDay() == 6 ||
+                                class:bg-base-300={day.getDay() == 6 ||
                                     day.getDay() == 0}
                             >
                                 <div
                                     class="w-6 h-6 mx-4 -mt-1 text-center rounded-full"
-                                    class:bg-red-400={isSameDate(day, today)}
+                                    class:bg-primary-focus={isSameDate(
+                                        day,
+                                        today
+                                    )}
                                     class:text-zinc-400={day <
                                         firstDayOfMonth || day > lastDayOfMonth}
                                 >
@@ -137,7 +140,7 @@
                                 week
                             )}
                             <li
-                                class="px-4 py-0.5 mt-0.5 bg-red-100 rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
+                                class="px-4 py-0.5 mt-0.5 bg-secondary text-secondary-content rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
                                 style="margin-left: {DAY_RELATIVE_WIDTH *
                                     eventStartDayOfWeek}%; width: {DAY_RELATIVE_WIDTH *
                                     eventLenthDays}%"

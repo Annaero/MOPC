@@ -15,24 +15,24 @@
     }
 </script>
 
-<div class="container mx-auto">
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="flex items-center justify-between py-2 px-6">
-            <div>
-                <span class="text-lg font-bold text-gray-800">
-                    {$json("date.month_names")[$month]}
-                </span>
-                <span class="ml-1 text-lg text-gray-600 font-normal">
-                    {$year}</span
-                >
-            </div>
-            <div class="border rounded-lg px-1" style="padding-top: 2px;">
+<div class="menu bg-base-100 rounded-box">
+    <div class="flex items-center justify-between">
+        <div class="flex-1">
+            <span class="text-lg font-bold text-bg-neutral">
+                {$json("date.month_names")[$month]}
+            </span>
+            <span class="ml-1 text-lg text-bg-neutral font-normal">
+                {$year}</span
+            >
+        </div>
+        <div class="flex-none">
+            <div class="join grid grid-cols-2">
                 <button
                     type="button"
                     on:click={(e) => {
                         moveMonth(-1);
                     }}
-                    class="leading-none rounded-lg transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 items-center"
+                    class="join-item btn btn-outline"
                 >
                     <svg
                         class="h-6 w-6 text-gray-500 inline-flex leading-none"
@@ -48,13 +48,13 @@
                         />
                     </svg>
                 </button>
-                <div class="border-r inline-flex h-6" />
+                <!-- <div class="border-r inline-flex h-6" /> -->
                 <button
                     type="button"
                     on:click={(e) => {
                         moveMonth(1);
                     }}
-                    class="leading-none rounded-lg transition ease-in-out duration-100 inline-flex items-center cursor-pointer hover:bg-gray-200 p-1"
+                    class="join-item btn btn-outline"
                 >
                     <svg
                         class="h-6 w-6 text-gray-500 inline-flex leading-none"

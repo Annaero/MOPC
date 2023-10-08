@@ -16,7 +16,7 @@
     }
 </script>
 
-<main class="py-24 relative overflow-scroll">
+<main class="py-24 overflow-scroll">
     {#await updateEvents(yearToShow, monthToShow)}
         Loading...
     {:then _value}

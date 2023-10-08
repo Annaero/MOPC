@@ -9,7 +9,7 @@
     export let showInline: boolean = false;
 </script>
 
-<div class="flex flex-col w-full bg-white rounded shadow-lg">
+<div class="flex flex-col w-full rounded shadow-lg">
     {#if !showInline}
         <div
             class="w-full h-64 bg-top bg-cover rounded-t"
@@ -18,7 +18,7 @@
     {/if}
     <div class="flex flex-col w-full md:flex-row">
         <div
-            class="flex flex-row justify-around p-4 font-bold leading-none text-gray-800 uppercase bg-red-100 rounded md:flex-col md:items-center md:justify-center md:w-1/4"
+            class="flex flex-row justify-around p-4 md:flex-col md:items-center md:justify-center md:w-1/4"
         >
             <div class="md:text-6xl">{morcEvent.startDate.getDate()}</div>
             <div class="md:text-xl">
@@ -33,7 +33,7 @@
                 {morcEvent.name}
             </h1>
             <p class="leading-normal">
-                {morcEvent.name}
+                {morcEvent.description}
             </p>
             <div class="flex flex-row items-center mt-4 text-gray-700">
                 <div class="w-1/2 flex justify-end">

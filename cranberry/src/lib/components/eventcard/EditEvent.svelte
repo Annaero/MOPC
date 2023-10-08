@@ -1,0 +1,110 @@
+<script lang="ts">
+    import { json, locale } from "svelte-i18n";
+    import type { MOPCEvent } from "$lib/models/mopcEvent";
+    import { Input, Result } from "postcss";
+    import { dateToISODateStr } from "$lib/dateUtils";
+    import dayjs from "dayjs";
+    import { eventSchema } from "$lib/models/eventSchema";
+
+    locale.set("en");
+    locale.subscribe(() => console.log("locale change"));
+
+    const format = "YYYY-MM-DD";
+
+    export let event: MOPCEvent;
+    export let showInline: boolean = false;
+    export let submitAction: () => void;
+
+    const descriptionError = false;
+
+    function submitClick() {
+        if (oneDay) {
+            event.endDate = null;
+        } else {
+            event.endDate = dayjs(endDateVal, format).toDate();
+        }
+        event.startDate = dayjs(startDateVal, format).toDate();
+        const result = eventSchema.safeParse(event);
+        if (result.success) {
+            submitAction();
+            return;
+        }
+        alert(result.error);
+    }
+
+    function update_event(field: string, value: any) {
+        event[field] = value;
+    }
+
+    let oneDay: boolean = event.endDate == null;
+    let startDateVal = dayjs(event.startDate).format(format);
+    let endDateVal =
+        event.endDate == null ? null : dayjs(event.endDate).format(format);
+</script>
+
+<div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
+    <div class="flex flex-col w-full form-control">
+        <div class="mb-6">
+            <label for="eventName" class="label">Name:</label>
+            <input
+                bind:value={event.name}
+                class="w-full input input-bordered"
+                placeholder="Event name"
+            />
+        </div>
+        <div class="mb-6">
+            <label for="eventDescription" class="label">Description:</label>
+            <textarea
+                id="eventDescription"
+                name="eventDescription"
+                rows="4"
+                bind:value={event.description}
+                class="w-full textarea textarea-bordered"
+                class:textarea-error={descriptionError}
+                placeholder="Add your event description"
+            />
+        </div>
+        <div class="mb-6 grid grid-cols-2 justify-stretch w-full">
+            <div class="w-full pr-1">
+                <label for="startDate" class="label">Start date:</label>
+                <input
+                    id="startDate"
+                    type="date"
+                    class="input input-bordered w-full"
+                    bind:value={startDateVal}
+                />
+                <div class="mt-1 w-full">
+                    <label for="oneDay" class="label">
+                        <span class="label-text"> One day</span>
+                        <input
+                            type="checkbox"
+                            class="checkbox checkbox-sm"
+                            id="oneDay"
+                            bind:checked={oneDay}
+                        />
+                    </label>
+                </div>
+            </div>
+            <div class="w-full pl-1">
+                <label for="endDate" class="label" class:text-slate-300={oneDay}
+                    >End date:</label
+                >
+                <input
+                    id="endDate"
+                    type="date"
+                    class="input input-bordered w-full disabled:text-slate-300"
+                    bind:value={endDateVal}
+                    min={startDateVal}
+                    disabled={oneDay}
+                />
+            </div>
+        </div>
+
+        <!-- Submit Button and Character Limit Section -->
+        <div class="flex items-center justify-between">
+            <button type="submit" on:click={submitClick} class="btn">
+                Post
+            </button>
+        </div>
+    </div>
+</div>

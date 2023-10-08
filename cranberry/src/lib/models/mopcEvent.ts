@@ -1,7 +1,8 @@
 export type MOPCEvent = {
-    id: number,
+    id?: string,
     name: string
+    description: string,
     startDate: Date,
-    endDate: Date,
-    active: boolean,
+    endDate?: Date,
+    active?: boolean,
 };

@@ -19,23 +19,47 @@
     export const ssr = false;
 </script>
 
-<div
-    class="antialiased sans-serif bg-gray-100 h-screen font-mono mx-auto h-screen flex flex-col items-center justify-center"
->
+<div class="navbar bg-base-100">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl">MOPC</a>
+    </div>
+
     <div>
-        <select bind:value={$locale}>
+        <select bind:value={$locale} class="select select-ghost">
             {#each $locales as locale}
                 <option value={locale}>{locale}</option>
             {/each}
         </select>
     </div>
-    <div class="sm:w-3/4 md:w-1/2 lg:w-3/5">
+
+    <div class="dropdown dropdown-end">
+        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+            <div class="w-10 rounded-full">
+                <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            </div>
+        </label>
+        <ul
+            tabindex="0"
+            class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+        >
+            <li><a>Profile</a></li>
+            <li><a>Settings</a></li>
+            <li><a>Logout</a></li>
+        </ul>
+    </div>
+</div>
+<div
+    class="antialiased sans-serif h-screen bg-base-200 font-mono mx-auto h-screen flex flex-col items-center justify-center"
+>
+    <div class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex items-center justify-center">
         <slot />
     </div>
 </div>
+<footer class="footer footer-center p-4 bg-base-300 text-base-content">
+    <aside>
+        <p>Copyright © 2023 - All right reserved by Aleksei Krikunov</p>
+    </aside>
+</footer>
 
 <style lang="postcss">
-    :global(html) {
-        background-color: theme(colors.gray.100);
-    }
 </style>

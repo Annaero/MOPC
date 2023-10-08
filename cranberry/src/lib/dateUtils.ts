@@ -14,8 +14,8 @@ function zeroLeadDate(num: number) {
     return ("0" + num).slice(-2)
 }
 
-export function dateToISODateStr(year: number, month: number, day: number) {
-    const zeroLeadMonth = zeroLeadDate(month + 1);
-    const zeroLeadDay = zeroLeadDate(day)
-    return `${year}-${zeroLeadMonth}-${zeroLeadDay}`;
+export function dateToISODateStr(date: Date) {
+    const zeroLeadMonth = zeroLeadDate(date.getMonth() + 1);
+    const zeroLeadDay = zeroLeadDate(date.getDate())
+    return `${date.getFullYear()}-${zeroLeadMonth}-${zeroLeadDay}`;
 }

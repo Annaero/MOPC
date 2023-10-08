@@ -41,7 +41,7 @@
 </script>
 
 <div
-    class="flex flex-col border-t border-l bg-white mr-2 overflow-scroll after:bg-gradient-to-r after:from-cyan-500 after:to-blue-500"
+    class="flex flex-col border-t border-l bg-base-100 mr-2 overflow-scroll after:bg-gradient-to-r after:from-cyan-500 after:to-blue-500"
     style="height: 100px"
     bind:this={component}
 >

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import type { MOPCEvent } from "../lib/models/mopcEvent";
 import { dateToISODateStr } from "../lib/dateUtils";
 
@@ -7,8 +9,9 @@ function parse_event(event_json) {
     const e: MOPCEvent = {
         id: event_json.id,
         name: event_json.name,
-        startDate: new Date(Date.parse(event_json.startDate)),
-        endDate: event_json.endDate != "" ? new Date(Date.parse(event_json.endDate)) : null,
+        description: event_json.description,
+        startDate: new Date(event_json.startDate),
+        endDate: event_json.endDate != "" ? new Date(event_json.endDate) : null,
         active: false,
     };
     e.startDate.setHours(0, 0, 0, 0);
@@ -30,8 +33,8 @@ export async function getEvents(startDay: Date, endDay: Date): Promise<MOPCEvent
     const response = await fetch(
         EVENTS_ENDPOINT + "?" +
         new URLSearchParams({
-            start_date: dateToISODateStr(startDay.getFullYear(), startDay.getMonth(), startDay.getDate()),
-            end_date: dateToISODateStr(endDay.getFullYear(), endDay.getMonth(), endDay.getDate()),
+            start_date: dayjs(startDay).format("YYYY-MM-DD"),
+            end_date: dayjs(endDay).format("YYYY-MM-DD"),
         })
     );
     const events_json = await response.json();
@@ -51,4 +54,39 @@ export async function getEvent(eventID): Promise<MOPCEvent> {
     const event_json = await response.json();
     return parse_event(event_json);
 
+}
+
+
+function stringifyDate(date: Date) {
+    return date.toISOString().slice(10) // take date part only
+}
+
+export async function postEvent(event: MOPCEvent): Promise<string> {
+    /**
+     * Get all events happened between two dates
+     * 
+     * @param startDay {Date} 
+     * @param endDay {Date}
+     */
+
+    const eventJson = JSON.stringify(event, (key, value) => {
+        if (value instanceof Date) {
+            return stringifyDate(value)
+        }
+        return value
+    })
+
+    const response = await fetch(EVENTS_ENDPOINT, {
+        method: "POST", headers: {
+            "Content-Type": "application/json",
+        },
+        body: eventJson
+    })
+
+    const responseJson = await response.json()
+    if (!response.ok) {
+        throw new Error(responseJson)
+    }
+
+    return responseJson["id"]
 }
