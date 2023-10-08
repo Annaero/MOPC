@@ -48,9 +48,7 @@
         </ul>
     </div>
 </div>
-<div
-    class="antialiased sans-serif h-screen bg-base-200 font-mono mx-auto h-screen flex flex-col items-center justify-center"
->
+<div class="py-7 bg-base-200 mx-auto flex flex-col items-center justify-center">
     <div class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex items-center justify-center">
         <slot />
     </div>

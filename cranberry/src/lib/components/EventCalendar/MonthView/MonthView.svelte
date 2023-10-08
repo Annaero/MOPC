@@ -74,7 +74,7 @@
 <div class="container mx-auto py-2 flex flex row">
     <div class="w-3/12">
         <div
-            class="px-2 py-2 text-gray-600 text-sm uppercase tracking-wide font-bold text-left"
+            class="text-neutral text-sm uppercase tracking-wide font-bold text-left px-2 py-2"
         >
             {$json("headers.events")}
         </div>
@@ -86,7 +86,7 @@
             {#each $json("date.weekdays_names") as weekday}
                 <div style="width: {DAY_RELATIVE_WIDTH}%" class="px-2 py-2">
                     <div
-                        class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center"
+                        class="text-neutral text-sm uppercase tracking-wide font-bold text-center"
                     >
                         {weekday}
                     </div>

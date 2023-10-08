@@ -16,7 +16,7 @@
     }
 </script>
 
-<main class="py-24 overflow-scroll">
+<div class="w-full">
     {#await updateEvents(yearToShow, monthToShow)}
         Loading...
     {:then _value}
@@ -29,4 +29,4 @@
             }}
         />
     {/await}
-</main>
+</div>

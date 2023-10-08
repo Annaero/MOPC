@@ -15,7 +15,7 @@
     }
 </script>
 
-<div class="menu bg-base-100 rounded-box">
+<div class="menu bg-base-100 rounded-box w-full">
     <div class="flex items-center justify-between">
         <div class="flex-1">
             <span class="text-lg font-bold text-bg-neutral">
