@@ -19,7 +19,7 @@
     export const ssr = false;
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar bg-base-200">
     <div class="flex-1">
         <a class="btn btn-ghost normal-case text-xl">MOPC</a>
     </div>
@@ -48,16 +48,13 @@
         </ul>
     </div>
 </div>
-<div class="py-7 bg-base-200 mx-auto flex flex-col items-center justify-center">
-    <div class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex items-center justify-center">
+<div class="py-7 mx-auto flex flex-col items-center justify-center">
+    <div
+        class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex flex-row items-center justify-center"
+    >
         <slot />
     </div>
 </div>
-<footer class="footer footer-center p-4 bg-base-300 text-base-content">
-    <aside>
-        <p>Copyright © 2023 - All right reserved by Aleksei Krikunov</p>
-    </aside>
-</footer>
 
 <style lang="postcss">
 </style>

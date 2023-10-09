@@ -71,16 +71,16 @@
 </script>
 
 <MonthViewHeader />
-<div class="container mx-auto py-2 flex flex row">
+<div class="mx-auto py-2 flex flex row">
     <div class="w-3/12">
         <div
-            class="text-neutral text-sm uppercase tracking-wide font-bold text-left px-2 py-2"
+            class="text-neutral-content text-sm uppercase tracking-wide font-bold text-left px-2 py-2"
         >
             {$json("headers.events")}
         </div>
         <ListView {events} />
     </div>
-    <div class="-mx-1 -mb-1 w-9/12">
+    <div class="-mx-1 -mb-1 w-9/12 rounded-box">
         <!-- Day names header -->
         <div class="flex flex-row">
             {#each $json("date.weekdays_names") as weekday}
@@ -93,8 +93,10 @@
                 </div>{/each}
         </div>
 
-        <!-- Actual days -->
-        <div class="flex flex-col border-t border-l bg-base-100">
+        <!-- Weeks -->
+        <div
+            class="flex flex-col bg-base-100 rounded-box border border-base-200 shadow-lg overflow-hidden"
+        >
             {#each weeks as week}
                 <div class="relative">
                     <!-- Day cells -->
@@ -105,19 +107,19 @@
                                 week.startDate.getMonth(),
                                 week.startDate.getDate() + dayOfWeek
                             )}
+                            {@const isToday = isSameDate(day, today)}
                             <div
                                 style="width: {DAY_RELATIVE_WIDTH}%; height: 160px"
-                                class="pt-2 border-r border-b"
+                                class="pt-2 shadow"
                                 class:bg-base-300={day.getDay() == 6 ||
                                     day.getDay() == 0}
                             >
+                                <!-- date label  -->
                                 <div
                                     class="w-6 h-6 mx-4 -mt-1 text-center rounded-full"
-                                    class:bg-primary-focus={isSameDate(
-                                        day,
-                                        today
-                                    )}
-                                    class:text-zinc-400={day <
+                                    class:bg-primary-focus={isToday}
+                                    class:text-secondary-content={isToday}
+                                    class:text-base-200={day <
                                         firstDayOfMonth || day > lastDayOfMonth}
                                 >
                                     {day.getDate()}
@@ -126,7 +128,7 @@
                         {/each}
                     </div>
                     <!-- Events list -->
-                    <ul class="absolute mt-10 z-10 top-0 w-full">
+                    <ul class="absolute mt-10 z-10 top-0 w-full px-2">
                         {#each week.events as event}
                             {@const eventStartDayOfWeek =
                                 event.startDate >= week.startDate
@@ -140,7 +142,7 @@
                                 week
                             )}
                             <li
-                                class="px-4 py-0.5 mt-0.5 bg-secondary text-secondary-content rounded-lg shadow-lg sm:block cursor-pointer border-black border-solid"
+                                class="py-0.5 mt-0.5 bg-secondary text-secondary-content rounded-box hover:bg-secondary-focus shadow-lg sm:block cursor-pointer border-black border-solid"
                                 style="margin-left: {DAY_RELATIVE_WIDTH *
                                     eventStartDayOfWeek}%; width: {DAY_RELATIVE_WIDTH *
                                     eventLenthDays}%"

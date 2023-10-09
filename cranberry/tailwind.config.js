@@ -6,6 +6,18 @@ export default {
     },
     plugins: [require("daisyui")],
     daisyui: {
-        themes: ["garden"],
+        themes: ["garden", {
+            MOPC: {
+                "primary": "#9d174d",
+                "secondary": "#3f6212",
+                "accent": "#115e59",
+                "neutral": "#1a2329",
+                "base-100": "#e9e7e7", //"#787576",
+                "info": "#9bdaed",
+                "success": "#3eea9f",
+                "warning": "#8e720b",
+                "error": "#fc5972",
+            }
+        },],
     },
 };
