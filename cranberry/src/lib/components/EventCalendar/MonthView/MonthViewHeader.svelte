@@ -15,9 +15,7 @@
     }
 </script>
 
-<div
-    class="menu bg-base-100 rounded-box w-full drop-shadow-md border border-base-200"
->
+<div class="menu bg-base-100 rounded-box w-full drop-shadow-md">
     <div class="flex items-center justify-between">
         <div class="flex-1">
             <span class="text-lg font-bold text-bg-neutral">
@@ -37,7 +35,7 @@
                     class="join-item btn btn-outline border-neutral-content"
                 >
                     <svg
-                        class="h-6 w-6 text-neutral-content inline-flex leading-none"
+                        class="h-6 w-6 text-neutral inline-flex leading-none"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -59,7 +57,7 @@
                     class="join-item btn btn-outline border-neutral-content"
                 >
                     <svg
-                        class="h-6 w-6 text-neutral-content inline-flex leading-none"
+                        class="h-6 w-6 text-neutral inline-flex leading-none"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"

@@ -101,8 +101,12 @@
         </div>
 
         <!-- Submit Button and Character Limit Section -->
-        <div class="flex items-center justify-between">
-            <button type="submit" on:click={submitClick} class="btn">
+        <div class="flex items-end place-content-end">
+            <button
+                type="submit"
+                on:click={submitClick}
+                class="btn bg-primary text-primary-content hover:bg-primary-focus"
+            >
                 Post
             </button>
         </div>

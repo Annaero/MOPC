@@ -11,6 +11,8 @@
     register("en", () => import("$lib/locales/en.json"));
     register("ru", () => import("$lib/locales/ru.json"));
 
+    const flag = { en: "🇬🇧", ru: "🇷🇺" };
+
     init({
         fallbackLocale: "en",
         initialLocale: getLocaleFromNavigator(),
@@ -25,9 +27,14 @@
     </div>
 
     <div>
-        <select bind:value={$locale} class="select select-ghost">
-            {#each $locales as locale}
-                <option value={locale}>{locale}</option>
+        <select
+            bind:value={$locale}
+            class="select select-ghost select-sm w-full max-w-xs"
+        >
+            {#each $locales as loc}
+                <option value={loc} selected={loc === $locale}
+                    >{flag[loc]}</option
+                >
             {/each}
         </select>
     </div>

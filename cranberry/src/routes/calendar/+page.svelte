@@ -18,7 +18,7 @@
 
 <div class="w-full">
     {#await updateEvents(yearToShow, monthToShow)}
-        Loading...
+        <span class="loading loading-spinner loading-lg" />
     {:then _value}
         <EventCalendar
             showYear={yearToShow}
