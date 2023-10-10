@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/Annaero/MOPC/goberry/models"
@@ -21,12 +22,16 @@ type EventsHandler struct {
 func (eh EventsHandler) postEvent(c echo.Context) error {
 	var event models.Event
 	if err := c.Bind(&event); err != nil {
+		log.Error("Event bind error:", err)
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	if err := eh.validator.Struct(event); err != nil {
+		log.Error("Event validation error:", err)
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
+	log.Debug(event)
 
 	oid, err := eh.db.CreateEvent(event)
 	if err != nil {

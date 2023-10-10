@@ -28,6 +28,10 @@ func NewDate(time time.Time) *Date {
 	return &Date{Time: time, NotNull: true}
 }
 
+func (t Date) IsZero() bool {
+	return !t.NotNull
+}
+
 func (t Date) MarshalJSON() ([]byte, error) {
 	if !t.NotNull {
 		return []byte(`""`), nil
@@ -50,6 +54,7 @@ func (t *Date) UnmarshalJSON(b []byte) (err error) {
 		return err
 	}
 	t.Time = date
+	t.NotNull = true
 	return
 }
 

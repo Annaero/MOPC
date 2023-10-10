@@ -4,6 +4,7 @@ import type { MOPCEvent } from "../lib/models/mopcEvent";
 import { dateToISODateStr } from "../lib/dateUtils";
 
 const EVENTS_ENDPOINT = "/api/events"
+const format = "YYYY-MM-DD";
 
 function parse_event(event_json) {
     const e: MOPCEvent = {
@@ -21,6 +22,13 @@ function parse_event(event_json) {
 
     return e;
 };
+
+function dateReplacer(key, value) {
+    if (this[key] instanceof Date) {
+        return stringifyDate(this[key]);
+    }
+    return value ?? undefined;
+}
 
 export async function getEvents(startDay: Date, endDay: Date): Promise<MOPCEvent[]> {
     /**
@@ -58,7 +66,7 @@ export async function getEvent(eventID): Promise<MOPCEvent> {
 
 
 function stringifyDate(date: Date) {
-    return date.toISOString().slice(10) // take date part only
+    return dayjs(date).format(format)
 }
 
 export async function postEvent(event: MOPCEvent): Promise<string> {
@@ -68,13 +76,7 @@ export async function postEvent(event: MOPCEvent): Promise<string> {
      * @param startDay {Date} 
      * @param endDay {Date}
      */
-
-    const eventJson = JSON.stringify(event, (key, value) => {
-        if (value instanceof Date) {
-            return stringifyDate(value)
-        }
-        return value
-    })
+    const eventJson = JSON.stringify(event, dateReplacer)
 
     const response = await fetch(EVENTS_ENDPOINT, {
         method: "POST", headers: {
