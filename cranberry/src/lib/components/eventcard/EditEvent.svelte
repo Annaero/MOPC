@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { json, locale } from "svelte-i18n";
+    import { dictionary, json, locale } from "svelte-i18n";
     import type { MOPCEvent } from "$lib/models/mopcEvent";
+    import { eventSchema } from "$lib/models/mopcEvent";
     import { Input, Result } from "postcss";
     import { dateToISODateStr } from "$lib/dateUtils";
     import dayjs from "dayjs";
-    import { eventSchema } from "$lib/models/eventSchema";
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
@@ -14,6 +14,8 @@
     export let event: MOPCEvent;
     export let showInline: boolean = false;
     export let submitAction: () => void;
+
+    let validation_error = {};
 
     const descriptionError = false;
 
@@ -29,7 +31,7 @@
             submitAction();
             return;
         }
-        alert(result.error);
+        result.forEach((error) => {});
     }
 
     function update_event(field: string, value: any) {
@@ -45,7 +47,12 @@
 <div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
     <div class="flex flex-col w-full form-control">
         <div class="mb-6">
-            <label for="eventName" class="label">Name:</label>
+            <label for="eventName" class="label">
+                <span class="label-text">Event name</span>
+                {#if validation_error["name"] != null}
+                    <span class="label-text-alt">validation_error["name"]</span>
+                {/if}
+            </label>
             <input
                 bind:value={event.name}
                 class="w-full input input-bordered"
