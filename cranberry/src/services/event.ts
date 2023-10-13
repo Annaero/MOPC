@@ -39,11 +39,10 @@ export async function getEvents(startDay: Date, endDay: Date): Promise<MOPCEvent
      */
 
     const response = await fetch(
-        EVENTS_ENDPOINT + "?" +
-        new URLSearchParams({
+        `events/?${new URLSearchParams({
             start_date: dayjs(startDay).format("YYYY-MM-DD"),
             end_date: dayjs(endDay).format("YYYY-MM-DD"),
-        })
+        })}`
     );
     const events_json = await response.json();
     const events = events_json.map(parse_event);

@@ -39,6 +39,7 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "eslint": "^8.0.1",
+    "mongodb": "^6.1.0",
     "openapi-typescript-codegen": "^0.25.0",
     "svelte-i18n": "^3.7.0",
     "zod": "^3.22.2"
