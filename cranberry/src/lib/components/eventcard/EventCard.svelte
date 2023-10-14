@@ -1,11 +1,11 @@
 <script lang="ts">
     import { json, locale } from "svelte-i18n";
-    import type { MOPCEvent } from "$lib/models/mopcEvent";
+    import type { Event } from "$lib/models/event";
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
 
-    export let morcEvent: MOPCEvent;
+    export let morcEvent: Event;
     export let showInline: boolean = false;
 </script>
 

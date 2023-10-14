@@ -1,7 +1,7 @@
 <script lang="ts">
     import { dictionary, json, locale } from "svelte-i18n";
-    import type { MOPCEvent } from "$lib/models/mopcEvent";
-    import { eventSchema } from "$lib/models/mopcEvent";
+    import type { MOPCEvent } from "$lib/models/event";
+    import { eventSchema } from "$lib/models/event";
     import { Input, Result } from "postcss";
     import { dateToISODateStr } from "$lib/dateUtils";
     import dayjs from "dayjs";
@@ -45,7 +45,7 @@
 </script>
 
 <div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
-    <div class="flex flex-col w-full form-control">
+    <form method=Post class="flex flex-col w-full form-control">
         <div class="mb-6">
             <label for="eventName" class="label">
                 <span class="label-text">Event name</span>
@@ -59,6 +59,22 @@
                 placeholder="Event name"
             />
         </div>
+
+        <!-- Type selector -->
+        <div class="mb-6">
+            <label for="eventType" class="label">Event type:</label>
+            <textarea
+                id="eventType"
+                name="type"
+                rows="4"
+                bind:value={event.description}
+                class="w-full textarea textarea-bordered"
+                class:textarea-error={descriptionError}
+                placeholder="Add your event description"
+            />
+        </div>
+
+        <!-- Description field -->
         <div class="mb-6">
             <label for="eventDescription" class="label">Description:</label>
             <textarea

@@ -1,13 +1,13 @@
 <script lang="ts">
     import EventCalendar from "$lib/components/eventcalendar/EventCalendar.svelte";
-    import type { MOPCEvent } from "../../lib/models/mopcEvent";
+    import type { Event } from "../../lib/models/event";
     import { getEvents } from "../../services/event";
 
     let today: Date = new Date();
     let yearToShow: number = today.getFullYear();
     let monthToShow: number = today.getMonth();
 
-    let events: MOPCEvent[] = [];
+    let events: Event[] = [];
 
     async function updateEvents(year: number, month: number) {
         const firstayOfMonth = new Date(year, month, 1);

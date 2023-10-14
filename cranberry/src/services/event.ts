@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 
-import type { MOPCEvent } from "../lib/models/mopcEvent";
+import type { Event } from "../lib/models/event";
 import { dateToISODateStr } from "../lib/dateUtils";
 
 const EVENTS_ENDPOINT = "/api/events"
 const format = "YYYY-MM-DD";
 
 function parse_event(event_json) {
-    const e: MOPCEvent = {
+    const e: Event = {
         id: event_json.id,
         name: event_json.name,
         description: event_json.description,
@@ -30,7 +30,7 @@ function dateReplacer(key, value) {
     return value ?? undefined;
 }
 
-export async function getEvents(startDay: Date, endDay: Date): Promise<MOPCEvent[]> {
+export async function getEvents(startDay: Date, endDay: Date): Promise<Event[]> {
     /**
      * Get all events happened between two dates
      * 
@@ -50,7 +50,7 @@ export async function getEvents(startDay: Date, endDay: Date): Promise<MOPCEvent
 
 }
 
-export async function getEvent(eventID): Promise<MOPCEvent> {
+export async function getEvent(eventID): Promise<Event> {
     /**
      * Get event by its id
      * 
@@ -68,7 +68,7 @@ function stringifyDate(date: Date) {
     return dayjs(date).format(format)
 }
 
-export async function postEvent(event: MOPCEvent): Promise<string> {
+export async function postEvent(event: Event): Promise<string> {
     /**
      * Get all events happened between two dates
      * 

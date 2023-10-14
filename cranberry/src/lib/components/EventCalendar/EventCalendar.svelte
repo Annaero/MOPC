@@ -2,7 +2,7 @@
     import MonthView from "./MonthView/MonthView.svelte";
     import { setContext, createEventDispatcher, onDestroy } from "svelte";
     import { writable } from "svelte/store";
-    import type { MOPCEvent } from "$lib/models/mopcEvent";
+    import type { Event } from "$lib/models/event";
     const dispatch = createEventDispatcher();
 
     export let showYear: number;
@@ -35,10 +35,10 @@
     setContext("selected_year", selected_year);
     setContext("selected_month", selected_month);
 
-    export let events: MOPCEvent[] = [];
+    export let events: Event[] = [];
     events.sort((e1, e2) => e1.startDate.getTime() - e2.startDate.getTime());
 
-    let eventsCache: Map<number, MOPCEvent[]> = new Map<number, MOPCEvent[]>();
+    let eventsCache: Map<number, Event[]> = new Map<number, Event[]>();
 
     function eventCacheLookup(
         year: number,

@@ -39,19 +39,23 @@
         </select>
     </div>
 
+    <!-- svelte-ignore a11y-label-has-associated-control -->
     <div class="dropdown dropdown-end">
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
             <div class="w-10 rounded-full">
-                <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <img src="" />
             </div>
         </label>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <ul
             tabindex="0"
             class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
         >
-            <li><a>Profile</a></li>
-            <li><a>Settings</a></li>
-            <li><a>Logout</a></li>
+            <li><a href="/">Profile</a></li>
+            <li><a href="/">Settings</a></li>
+            <li><a href="/">Logout</a></li>
         </ul>
     </div>
 </div>

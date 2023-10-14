@@ -3,14 +3,14 @@
     import ListView from "./ListView.svelte";
     import { locale, json } from "svelte-i18n";
     import type { Day, Week } from "../day";
-    import type { MOPCEvent } from "$lib/models/mopcEvent";
+    import type { Event } from "$lib/models/event";
     import { isSameDate } from "$lib/dateUtils";
     import { getContext } from "svelte";
 
     const DAY_RELATIVE_WIDTH = 14.28; // 100 / 7
 
     let selected_event = getContext("selected_event");
-    export let events: Array<MOPCEvent>;
+    export let events: Array<Event>;
 
     let today: Date = new Date();
     let year = getContext("selected_year");
@@ -22,7 +22,7 @@
 
     function getEventLengh(
         eventStartDayOfWeek: number,
-        event: MOPCEvent,
+        event: Event,
         week: Week
     ): number {
         if (event.endDate == null) return 1;

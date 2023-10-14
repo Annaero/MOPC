@@ -1,14 +1,14 @@
-import type { MOPCEvent } from "../../models/mopcEvent";
+import type { Event } from "../../models/event";
 
 export type Day = {
     date: Date,
     today: boolean,
-    events: MOPCEvent[]
+    events: Event[]
 };
 
 export type Week = {
     startDate: Date,
     endDate: Date,
-    events: MOPCEvent[]
+    events: Event[]
 
 };
