@@ -14,16 +14,30 @@
         />
     {/if}
     <div class="flex flex-col w-full md:flex-row">
-        <div
-            class="flex flex-row justify-around p-4 md:flex-col md:items-center md:justify-center md:w-1/4"
-        >
-            <div class="md:text-6xl">{event.startDate.getDate()}</div>
-            <div class="md:text-xl">
-                {$_("date.month_names")[event.startDate.getMonth()]}
+        <div class="flex flex-row justify-evenly w-1/4">
+            <div class="grid grid-rows-3 gap-0 place-items-center">
+                <div class="md:text-xl">
+                    {$_("date.month_names")[event.startDate.getMonth()]}
+                </div>
+                <div class="md:text-6xl">{event.startDate.getDate()}</div>
+                <div class="md:text-2xl">{event.startDate.getFullYear()}</div>
             </div>
-            <div class="md:text-2xl">{event.startDate.getFullYear()}</div>
+            {#if event.endDate}
+                <div class="flex flex-row h-full items-center">
+                    <p class="text-4xl text-center self-center">—</p>
+                </div>
+                <div class="grid grid-rows-3 gap-0 place-items-center">
+                    <div class="text-xl">
+                        {$_("date.month_names")[event.endDate.getMonth()]}
+                    </div>
+                    <div class="text-6xl">{event.endDate.getDate()}</div>
+                    <div class="text-2xl">
+                        {event.endDate.getFullYear()}
+                    </div>
+                </div>
+            {/if}
         </div>
-        <div class="p-4 font-normal text-gray-800 md:w-3/4">
+        <div class="p-4 font-normal text-gray-800 w-3/4">
             <h1
                 class="mb-4 text-4xl font-bold leading-none tracking-tight text-gray-800"
             >
