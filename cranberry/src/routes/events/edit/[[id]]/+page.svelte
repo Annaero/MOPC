@@ -20,12 +20,12 @@
             },
         }
     );
-    console.log($message);
+    console.log($form);
 
     const proxyStartDate = dateProxy(form, "startDate", { format: "date" });
     const proxyEndDate = dateProxy(form, "endDate", { format: "date" });
 
-    let oneDay = data.form["endDate"] == null;
+    let oneDay = $form["endDate"] == null;
 </script>
 
 <div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
