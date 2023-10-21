@@ -1,21 +1,26 @@
 <script lang="ts">
+    export const ssr = false;
     import { dictionary, json, locale } from "svelte-i18n";
     import type { PageData } from "./$types";
     import { dateProxy, superForm } from "sveltekit-superforms/client";
-    import type { Event } from "$lib/models/event.ts";
-    import type { EventType } from "@prisma/client";
+    import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
 
     export let data: PageData;
-    const { form, errors, constraints } = superForm(data.form, {
-        onSubmit({ formData }) {
-            if (oneDay) {
-                formData.set("endDate", null);
-            }
-        },
-    });
+    const { form, errors, constraints, enhance, delayed, message } = superForm(
+        data.form,
+        {
+            onSubmit({ formData }) {
+                console.log("oneDay", oneDay);
+                if (oneDay) {
+                    formData.delete("endDate");
+                }
+            },
+        }
+    );
+    console.log($message);
 
     const proxyStartDate = dateProxy(form, "startDate", { format: "date" });
     const proxyEndDate = dateProxy(form, "endDate", { format: "date" });
@@ -24,10 +29,15 @@
 </script>
 
 <div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
-    <form method="POST" class="flex flex-col w-full form-control">
+    <form method="POST" class="flex flex-col w-full form-control" use:enhance>
+        {#if $message}
+            <div class="message">{$message}</div>
+        {/if}
+        <input hidden name="id" bind:value={$form.id} />
         <div class="mb-6">
             <label for="eventName" class="label"> Event name: </label>
             <input
+                id="eventName"
                 name="name"
                 bind:value={$form.name}
                 class="w-full input input-bordered"

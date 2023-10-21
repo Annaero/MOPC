@@ -4,7 +4,7 @@ import prisma from '$lib/db/prisma'
 
 export async function load({ params }) {
 	const eventDocument: Event = await prisma.event.findUnique({
-		where: { id: params.eventId }
+		where: { id: params.id }
 	});
 
 	console.log(eventDocument)
