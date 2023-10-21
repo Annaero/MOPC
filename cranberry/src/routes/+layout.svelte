@@ -14,7 +14,7 @@
         await waitLocale();
     };
 
-    const flag = { en: "🇬🇧", ru: "🇷🇺" };
+    const flag = { "en-GB": "🇬🇧", "ru-RU": "🇷🇺" };
     export const ssr = false;
 </script>
 
