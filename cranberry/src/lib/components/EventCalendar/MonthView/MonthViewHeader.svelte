@@ -2,9 +2,6 @@
     import { locale, json } from "svelte-i18n";
     import { getContext } from "svelte";
 
-    locale.set("en");
-    locale.subscribe(() => console.log("locale change"));
-
     let year = getContext("selected_year");
     let month = getContext("selected_month");
 

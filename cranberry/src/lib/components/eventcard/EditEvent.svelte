@@ -1,7 +1,6 @@
 <script lang="ts">
     import { dictionary, json, locale } from "svelte-i18n";
-    import type { MOPCEvent } from "$lib/models/event";
-    import { eventSchema } from "$lib/models/event";
+    import type { MOPCEvent } from "$lib/models/event.ts_";
     import { Input, Result } from "postcss";
     import { dateToISODateStr } from "$lib/dateUtils";
     import dayjs from "dayjs";

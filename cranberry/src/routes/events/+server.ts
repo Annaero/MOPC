@@ -1,14 +1,25 @@
-import db from "$lib/db/events"
+import type { Event } from '$lib/models/event';
+import prisma from '$lib/db/prisma';
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
     let startDay = new Date(url.searchParams.get("start_date"));
     let endDay = new Date(url.searchParams.get("end_date"));
 
-    const events = await db.collection("events").find({
-        startDate: { $lte: endDay },
-        endDate: { $gte: startDay }
-    }).project({ "id": "$_id", "_id": 0, name: 1, startDate: 1, endDate: 1 }).toArray();
+    const events: Array<Event> = await prisma.event.findMany({
+        where: {
+            OR: [
+                {
+                    startDate: { lte: endDay },
+                    endDate: { gte: startDay }
+                },
+                {
+                    startDate: { gte: startDay, lte: endDay },
+                }
+
+            ]
+        }
+    })
     console.log(events)
 
     return new Response(JSON.stringify(events));

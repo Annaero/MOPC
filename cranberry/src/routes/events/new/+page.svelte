@@ -2,14 +2,11 @@
     import { dictionary, json, locale } from "svelte-i18n";
     import type { PageData } from "./$types";
     import { dateProxy, superForm } from "sveltekit-superforms/client";
-    import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
-    import { EVENT_TYPES } from "$lib/models/event";
-    // import dayjs from "dayjs";
+    import type { Event } from "$lib/models/event.ts";
+    import type { EventType } from "@prisma/client";
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
-
-    // const format = "YYYY-MM-DD";
 
     export let data: PageData;
     const { form, errors, constraints } = superForm(data.form, {
@@ -23,7 +20,7 @@
     const proxyStartDate = dateProxy(form, "startDate", { format: "date" });
     const proxyEndDate = dateProxy(form, "endDate", { format: "date" });
 
-    let oneDay = data.form.endDate == null;
+    let oneDay = data.form["endDate"] == null;
 </script>
 
 <div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
@@ -49,7 +46,7 @@
                 class="select select-bordered w-full max-w-xs"
                 class:select-error={$errors.description}
             >
-                {#each EVENT_TYPES as event_type}
+                {#each data.eventTypes as event_type}
                     <option value={event_type}>{event_type}</option>
                 {/each}
             </select>

@@ -1,9 +1,6 @@
 <script lang="ts">
-    import { json, locale } from "svelte-i18n";
     import type { Event } from "$lib/models/event";
-
-    locale.set("en");
-    locale.subscribe(() => console.log("locale change"));
+    import { _ } from "svelte-i18n";
 
     export let morcEvent: Event;
     export let showInline: boolean = false;
@@ -22,7 +19,7 @@
         >
             <div class="md:text-6xl">{morcEvent.startDate.getDate()}</div>
             <div class="md:text-xl">
-                {$json("date.month_names")[morcEvent.startDate.getMonth()]}
+                {$_("date.month_names")[morcEvent.startDate.getMonth()]}
             </div>
             <div class="md:text-2xl">{morcEvent.startDate.getFullYear()}</div>
         </div>

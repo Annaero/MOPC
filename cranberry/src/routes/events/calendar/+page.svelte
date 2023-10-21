@@ -1,7 +1,7 @@
 <script lang="ts">
     import EventCalendar from "$lib/components/eventcalendar/EventCalendar.svelte";
-    import type { Event } from "../../lib/models/event";
-    import { getEvents } from "../../services/event";
+    import { getEvents } from "$lib/services/event";
+    import type { Event } from "$lib/models/event";
 
     let today: Date = new Date();
     let yearToShow: number = today.getFullYear();

@@ -1,23 +1,20 @@
-<script>
+<script lang="ts">
+    import "$lib/i18n";
     import "../app.css";
-    import {
-        register,
-        init,
-        getLocaleFromNavigator,
-        locale,
-        locales,
-    } from "svelte-i18n";
+    import { isLoading, locale, locales } from "svelte-i18n";
+    import { browser } from "$app/environment";
+    // Import to initialize. Important :)
+    import { waitLocale } from "svelte-i18n";
+    import type { LayoutLoad } from "./$types";
 
-    register("en", () => import("$lib/locales/en.json"));
-    register("ru", () => import("$lib/locales/ru.json"));
+    export const load: LayoutLoad = async () => {
+        if (browser) {
+            locale.set(window.navigator.language);
+        }
+        await waitLocale();
+    };
 
     const flag = { en: "🇬🇧", ru: "🇷🇺" };
-
-    init({
-        fallbackLocale: "en",
-        initialLocale: getLocaleFromNavigator(),
-    });
-
     export const ssr = false;
 </script>
 
@@ -29,7 +26,7 @@
     <div>
         <select
             bind:value={$locale}
-            class="select select-ghost select-sm w-full max-w-xs"
+            class="select select-ghost select-sm w-full max-w-xs text-xl"
         >
             {#each $locales as loc}
                 <option value={loc} selected={loc === $locale}
@@ -59,13 +56,30 @@
         </ul>
     </div>
 </div>
-<div class="py-7 mx-auto flex flex-col items-center justify-center">
+
+<main class="min-h-full">
     <div
-        class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex flex-row items-center justify-center"
+        class="py-7 mx-auto flex flex-col place-items-center items-center justify-center mb-60"
     >
-        <slot />
+        <div
+            class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex flex-row items-center justify-center"
+        >
+            {#if $isLoading}
+                <span class="loading loading-spinner loading-lg" />
+            {:else}
+                <slot />
+            {/if}
+        </div>
     </div>
-</div>
+    <footer
+        class="footer footer-center p-4 bg-base-300 text-base-content"
+        style="position:fixed; height:60px;"
+    >
+        <aside>
+            <p>Copyright © 2023 - All right reserved by Aleksei Krikunov</p>
+        </aside>
+    </footer>
+</main>
 
 <style lang="postcss">
 </style>
