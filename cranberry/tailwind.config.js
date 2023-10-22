@@ -8,9 +8,9 @@ export default {
     daisyui: {
         themes: ["garden", {
             MOPC: {
-                "primary": "#9d174d",
-                "secondary": "#3f6212",
-                "accent": "#115e59",
+                "primary": "#e25b7a",//"#9d174d",
+                "secondary": "#639469", //"#3f6212",
+                "accent": "#a6e3a2",//"#115e59",
                 "neutral": "#291e00", //"#1a2329",
                 "base-100": "#e9e7e7",//"#f9f9f8",//#f3f4f6",//"#e9e7e7", //"#787576",
                 "info": "#9bdaed",
