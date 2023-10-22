@@ -1,7 +1,7 @@
 <script lang="ts">
     export const ssr = false;
     import { dictionary, json, locale } from "svelte-i18n";
-    import type { PageData } from "./$types";
+    import type { PageData } from "../[[id]]/$types";
     import { dateProxy, superForm } from "sveltekit-superforms/client";
     import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
 
@@ -20,7 +20,6 @@
             },
         }
     );
-    console.log($form);
 
     const proxyStartDate = dateProxy(form, "startDate", { format: "date" });
     const proxyEndDate = dateProxy(form, "endDate", { format: "date" });

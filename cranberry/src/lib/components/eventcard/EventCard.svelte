@@ -48,7 +48,7 @@
             </p>
             <div class="flex flex-row items-center mt-4 text-gray-700">
                 <div class="w-1/2 flex justify-end">
-                    <a href="/events/edit/{event.id}">
+                    <a href="/events/edit/id_{event.id}">
                         <svg
                             class="feather feather-edit"
                             fill="none"

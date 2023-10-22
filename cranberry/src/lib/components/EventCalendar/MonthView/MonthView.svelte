@@ -158,7 +158,7 @@
                                 <p
                                     class="pl-2 line-clamp-1 sticky cursor-pointer"
                                 >
-                                    <a href="/events/{event.id}">
+                                    <a href="/events/id_{event.id}">
                                         {event.name}
                                     </a>
                                 </p>
