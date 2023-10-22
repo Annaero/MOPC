@@ -15,6 +15,7 @@
     "@event-calendar/day-grid": "^1.5.1",
     "@event-calendar/list": "^1.5.1",
     "@event-calendar/time-grid": "^1.5.1",
+    "@iconify/svelte": "^3.1.4",
     "@sveltejs/kit": "^1.25.0",
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "@tsconfig/svelte": "^5.0.0",
