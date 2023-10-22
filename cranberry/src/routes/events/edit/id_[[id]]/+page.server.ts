@@ -39,6 +39,6 @@ export const actions: Actions = {
             });
         }
 
-        throw redirect(300, "/events/" + event.id);
+        throw redirect(300, "/events/id_" + event.id);
     }
 };

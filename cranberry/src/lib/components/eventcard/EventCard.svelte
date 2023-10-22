@@ -1,74 +1,50 @@
 <script lang="ts">
     import type { Event } from "$lib/models/event";
     import { _ } from "svelte-i18n";
+    import DateSheet from "../datesheet/DateSheet.svelte";
+    import Icon from "@iconify/svelte";
 
     export let event: Event;
-    export let showInline: boolean = false;
 </script>
 
-<div class="flex flex-col w-full rounded shadow-lg">
-    {#if !showInline}
-        <div
-            class="w-full h-64 bg-top bg-cover rounded-t"
-            style="background-position: center; background-image: url(https://sun9-19.userapi.com/impf/tmr-b5CVibMPy3RiAm_biqiYSJiZEK2TthGeCg/rV0SjdKtsis.jpg?size=1920x768&quality=95&crop=0,639,2396,957&sign=3d064ce9265c2649cd8934b7e40edf99&type=cover_group)"
+<div
+    class="card w-96 bg-base-100 shadow-xl border border-solid border-base-200"
+>
+    <div class="navbar pt-1">
+        <a class="navbar-start" href="/events/edit/id_{event.id}">
+            <Icon icon="carbon:edit" height="2em" width="2em" />
+        </a>
+        <div class="badge badge-success navbar-center">active</div>
+        <a class="navbar-end">
+            <Icon icon="carbon:star" height="2em" width="2em" />
+        </a>
+    </div>
+    <figure class="px-1 pt-1">
+        <img
+            src="https://sun9-19.userapi.com/impf/tmr-b5CVibMPy3RiAm_biqiYSJiZEK2TthGeCg/rV0SjdKtsis.jpg?size=1920x768&quality=95&crop=0,639,2396,957&sign=3d064ce9265c2649cd8934b7e40edf99&type=cover_group"
+            alt="Shoes"
+            class="rounded-xl"
         />
-    {/if}
-    <div class="flex flex-col w-full md:flex-row">
-        <div class="flex flex-row justify-evenly w-1/4">
-            <div class="grid grid-rows-3 gap-0 place-items-center">
-                <div class="md:text-xl">
-                    {$_("date.month_names")[event.startDate.getMonth()]}
-                </div>
-                <div class="md:text-6xl">{event.startDate.getDate()}</div>
-                <div class="md:text-2xl">{event.startDate.getFullYear()}</div>
-            </div>
-            {#if event.endDate}
-                <div class="flex flex-row h-full items-center">
-                    <p class="text-4xl text-center self-center">—</p>
-                </div>
-                <div class="grid grid-rows-3 gap-0 place-items-center">
-                    <div class="text-xl">
-                        {$_("date.month_names")[event.endDate.getMonth()]}
-                    </div>
-                    <div class="text-6xl">{event.endDate.getDate()}</div>
-                    <div class="text-2xl">
-                        {event.endDate.getFullYear()}
-                    </div>
-                </div>
+    </figure>
+    <div class="card-body items-center text-center">
+        <h1 class="card-title">
+            {event.name}
+        </h1>
+        <div class="flex flex-row items-center text-center">
+            {#if event.type == "ONLINE"}
+                <Icon icon="carbon:screen" />
+            {:else if event.type == "OFFLINE"}
+                <Icon icon="carbon:location" />
             {/if}
+            <p>{event.type}</p>
         </div>
-        <div class="p-4 font-normal text-gray-800 w-3/4">
-            <h1
-                class="mb-4 text-4xl font-bold leading-none tracking-tight text-gray-800"
-            >
-                {event.name}
-            </h1>
-            <p class="leading-normal">
-                {event.description}
-            </p>
-            <div class="flex flex-row items-center mt-4 text-gray-700">
-                <div class="w-1/2 flex justify-end">
-                    <a href="/events/edit/id_{event.id}">
-                        <svg
-                            class="feather feather-edit"
-                            fill="none"
-                            height="24"
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            ><path
-                                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
-                            /><path
-                                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
-                            />
-                        </svg>
-                    </a>
-                </div>
-            </div>
+        <p class="pt-2">{event.description}</p>
+        <div class="divider pt-5"><p class="text-neutral">When</p></div>
+        <div>
+            <DateSheet startDate={event.startDate} endDate={event.endDate} />
+        </div>
+        <div class="card-actions pt-10">
+            <button class="btn btn-primary">Apply!</button>
         </div>
     </div>
 </div>

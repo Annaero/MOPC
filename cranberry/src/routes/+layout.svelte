@@ -47,7 +47,7 @@
                 <label tabindex="0" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
                         <Icon
-                            icon="ph:user-circle"
+                            icon="carbon:user-avatar"
                             height="2.5rem"
                             width="2.5rem"
                         />

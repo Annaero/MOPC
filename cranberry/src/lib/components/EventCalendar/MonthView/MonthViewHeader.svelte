@@ -32,7 +32,7 @@
                     }}
                     class="join-item btn btn-outline border-neutral-content"
                 >
-                    <Icon icon="ph:caret-left-bold" />
+                    <Icon icon="carbon:chevron-left" height="2em" width="2em" />
                 </button>
                 <!-- <div class="border-r inline-flex h-6" /> -->
                 <button
@@ -42,7 +42,11 @@
                     }}
                     class="join-item btn btn-outline border-neutral-content"
                 >
-                    <Icon icon="ph:caret-right-bold" />
+                    <Icon
+                        icon="carbon:chevron-right"
+                        height="2em"
+                        width="2em"
+                    />
                 </button>
             </div>
         </div>
