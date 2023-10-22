@@ -1,6 +1,7 @@
 <script lang="ts">
     import { locale, json } from "svelte-i18n";
     import { getContext } from "svelte";
+    import Icon from "@iconify/svelte";
 
     let year = getContext("selected_year");
     let month = getContext("selected_month");
@@ -31,19 +32,7 @@
                     }}
                     class="join-item btn btn-outline border-neutral-content"
                 >
-                    <svg
-                        class="h-6 w-6 text-neutral inline-flex leading-none"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15 19l-7-7 7-7"
-                        />
-                    </svg>
+                    <Icon icon="ph:caret-left-bold" />
                 </button>
                 <!-- <div class="border-r inline-flex h-6" /> -->
                 <button
@@ -53,19 +42,7 @@
                     }}
                     class="join-item btn btn-outline border-neutral-content"
                 >
-                    <svg
-                        class="h-6 w-6 text-neutral inline-flex leading-none"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5l7 7-7 7"
-                        />
-                    </svg>
+                    <Icon icon="ph:caret-right-bold" />
                 </button>
             </div>
         </div>

@@ -31,7 +31,7 @@
             <div>
                 <select
                     bind:value={$locale}
-                    class="select select-ghost select-sm w-full max-w-xs text-xl"
+                    class="select select-ghost select-sm w-full max-w-xs text-3xl"
                 >
                     {#each $locales as loc}
                         <option value={loc} selected={loc === $locale}
@@ -47,7 +47,7 @@
                 <label tabindex="0" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
                         <Icon
-                            icon="uil:user-circle"
+                            icon="ph:user-circle"
                             height="2.5rem"
                             width="2.5rem"
                         />
