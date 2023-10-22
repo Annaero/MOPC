@@ -2,6 +2,7 @@
     import "$lib/i18n";
     import "../app.css";
     import Icon from "@iconify/svelte";
+    import logo from "$lib/assets/mors_4507322.png";
     import { isLoading, locale, locales } from "svelte-i18n";
     import { browser } from "$app/environment";
     // Import to initialize. Important :)
@@ -23,7 +24,7 @@
     <div class="navbar bg-base-200 sm:w-3/4 md:w-1/2 lg:w-3/5">
         <div class="navbar-start">
             <a class="btn btn-ghost normal-case text-xl" href="/events/calendar"
-                >MOPC</a
+                ><img src={logo} alt="MOPC" class="w-8" />MOPC</a
             >
         </div>
 
