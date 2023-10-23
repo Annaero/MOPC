@@ -8,12 +8,35 @@
     // Import to initialize. Important :)
     import { waitLocale } from "svelte-i18n";
     import type { LayoutLoad } from "./$types";
+    import { invalidate } from "$app/navigation";
+    import { onMount } from "svelte";
+
+    export let data;
+
+    let { supabase, session } = data;
+    $: ({ supabase, session } = data);
+
+    onMount(() => {
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((event, _session) => {
+            if (_session?.expires_at !== session?.expires_at) {
+                invalidate("supabase:auth");
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    });
 
     export const load: LayoutLoad = async () => {
         if (browser) {
             locale.set(window.navigator.language);
         }
         await waitLocale();
+    };
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
     };
 
     const flag = { "en-GB": "🇬🇧", "ru-RU": "🇷🇺" };
@@ -59,9 +82,14 @@
                     tabindex="0"
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                 >
-                    <li><a href="/">Profile</a></li>
-                    <li><a href="/">Settings</a></li>
-                    <li><a href="/">Logout</a></li>
+                    <li class="text-bold"><a href="/auth">Sign In</a></li>
+                    {#if session}
+                        <li>
+                            <button class="btn" on:click={handleSignOut}
+                                >Logout</button
+                            >
+                        </li>
+                    {/if}
                 </ul>
             </div>
         </div>
