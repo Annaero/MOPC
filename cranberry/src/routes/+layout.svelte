@@ -70,11 +70,19 @@
                 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                 <label tabindex="0" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
-                        <Icon
-                            icon="carbon:user-avatar"
-                            height="2.5rem"
-                            width="2.5rem"
-                        />
+                        {#if session}
+                            <Icon
+                                icon="carbon:user-avatar"
+                                height="2.5rem"
+                                width="2.5rem"
+                            />
+                        {:else}
+                            <Icon
+                                icon="carbon:user-avatar-filled"
+                                height="2.5rem"
+                                width="2.5rem"
+                            />
+                        {/if}
                     </div>
                 </label>
                 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -82,13 +90,13 @@
                     tabindex="0"
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                 >
-                    <li class="text-bold"><a href="/auth">Sign In</a></li>
                     {#if session}
-                        <li>
-                            <button class="btn" on:click={handleSignOut}
-                                >Logout</button
+                        <li class="text-bold">
+                            <a href="/auth" on:click={handleSignOut}>Sign Out</a
                             >
                         </li>
+                    {:else}
+                        <li class="text-bold"><a href="/auth">Sign In</a></li>
                     {/if}
                 </ul>
             </div>

@@ -27,7 +27,7 @@
     let oneDay = $form["endDate"] == null;
 </script>
 
-<div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
+<div class="max-w-md w-full bg-base-200 p-8 rounded-lg shadow-md">
     <form method="POST" class="flex flex-col w-full form-control" use:enhance>
         {#if $message}
             <div class="alert alert-error w-full">
