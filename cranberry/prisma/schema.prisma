@@ -7,7 +7,7 @@ generator client {
 
 generator zod {
   provider                         = "zod-prisma-types"
-  output                           = "../src/lib/models/event.ts"
+  output                           = "../src/lib/models/event"
   createOptionalDefaultValuesTypes = true
 }
 
@@ -28,6 +28,7 @@ model Event {
   startDate   DateTime
   endDate     DateTime?
   type        EventType
+  owner       String ///z.string().uuid()
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }

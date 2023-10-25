@@ -47,6 +47,7 @@
             </div>
         {/if}
         <input hidden name="id" bind:value={$form.id} />
+        <input hidden name="owner" bind:value={$form.owner} />
         <div class="mb-6">
             <label for="eventName" class="label"> Event name: </label>
             <input
