@@ -43,8 +43,8 @@
     export const ssr = false;
 </script>
 
-<div class="mx-auto bg-base-200 flex flex-col place-items-center items-center">
-    <div class="navbar bg-base-200 sm:w-3/4 md:w-1/2 lg:w-3/5">
+<div class="mx-auto bg-base-300 flex flex-col place-items-center items-center">
+    <div class="navbar bg-base-300 sm:w-3/4 md:w-1/2 lg:w-3/5">
         <div class="navbar-start">
             <a class="btn btn-ghost normal-case text-xl" href="/events/calendar"
                 ><img src={logo} alt="MOPC" class="w-8" />MOPC</a
