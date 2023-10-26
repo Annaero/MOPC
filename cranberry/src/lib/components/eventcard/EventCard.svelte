@@ -5,13 +5,13 @@
     import Icon from "@iconify/svelte";
     import { goto } from "$app/navigation";
 
-    export let minified: boolean = true;
+    export let minified: boolean = false;
     export let event: Event;
     export let redirect: string = `/events/id_${event.id}`;
 </script>
 
 <div
-    class="card max-w-md bg-base-100 shadow-xl border border-solid border-base-200 hover:border-base-300 hoer:shadow-inner hover:cursor-default"
+    class="card max-w-2xl bg-base-100 shadow-xl border border-solid border-base-200 hover:border-base-300 hoer:shadow-inner hover:cursor-default"
     class:w-64={minified}
     tabindex="0"
     role="button"

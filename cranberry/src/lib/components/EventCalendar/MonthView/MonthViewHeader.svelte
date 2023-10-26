@@ -1,10 +1,14 @@
 <script lang="ts">
-    import { locale, json } from "svelte-i18n";
+    import { _ } from "svelte-i18n";
     import { getContext } from "svelte";
     import Icon from "@iconify/svelte";
 
     let year = getContext("selected_year");
     let month = getContext("selected_month");
+
+    export let viewOptions: Array<String>;
+    console.log(viewOptions);
+    export let selectedView = "calendar"; //viewOptions[0];
 
     function moveMonth(n: number) {
         let nextMonthDate: Date = new Date($year, $month + n, 1);
@@ -13,42 +17,48 @@
     }
 </script>
 
-<div class="menu bg-base-100 rounded-box w-full drop-shadow-md">
-    <div class="flex items-center justify-between">
-        <div class="flex-1">
-            <span class="text-lg font-bold text-bg-neutral">
-                {$json("date.month_names")[$month]}
-            </span>
-            <span class="ml-1 text-lg text-bg-neutral font-normal">
-                {$year}</span
-            >
+<div class="navbar bg-base-100 rounded-box w-full drop-shadow-md">
+    <div class="navbar-start">
+        <span class="text-lg font-bold text-bg-neutral">
+            {$_("date.month_names")[$month]}
+        </span>
+        <span class="ml-1 text-lg text-bg-neutral font-normal">{$year}</span>
+    </div>
+    <div class="navbar-center">
+        <div class="join" role="radiogroup">
+            {#each viewOptions as view}
+                <input
+                    type="radio"
+                    name="options"
+                    aria-label={view}
+                    value={view}
+                    bind:group={selectedView}
+                    class="join-item btn btn-outline btn-sm border-neutral-content text-neutral min-w-15"
+                />
+            {/each}
         </div>
-        <div class="flex-none">
-            <div class="join grid grid-cols-2">
-                <button
-                    type="button"
-                    on:click={(e) => {
-                        moveMonth(-1);
-                    }}
-                    class="join-item btn btn-outline border-neutral-content"
-                >
-                    <Icon icon="carbon:chevron-left" height="2em" width="2em" />
-                </button>
-                <!-- <div class="border-r inline-flex h-6" /> -->
-                <button
-                    type="button"
-                    on:click={(e) => {
-                        moveMonth(1);
-                    }}
-                    class="join-item btn btn-outline border-neutral-content"
-                >
-                    <Icon
-                        icon="carbon:chevron-right"
-                        height="2em"
-                        width="2em"
-                    />
-                </button>
-            </div>
+    </div>
+    <div class="navbar-end">
+        <div class="join">
+            <button
+                type="button"
+                on:click={(e) => {
+                    moveMonth(-1);
+                }}
+                class="join-item btn btn-outline border-neutral-content"
+            >
+                <Icon icon="carbon:chevron-left" height="2em" width="2em" />
+            </button>
+            <!-- <div class="border-r inline-flex h-6" /> -->
+            <button
+                type="button"
+                on:click={(e) => {
+                    moveMonth(1);
+                }}
+                class="join-item btn btn-outline border-neutral-content"
+            >
+                <Icon icon="carbon:chevron-right" height="2em" width="2em" />
+            </button>
         </div>
     </div>
 </div>

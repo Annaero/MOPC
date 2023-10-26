@@ -1,5 +1,4 @@
 <script lang="ts">
-    import MonthViewHeader from "./MonthViewHeader.svelte";
     import ListView from "./ListView.svelte";
     import { locale, json } from "svelte-i18n";
     import type { Day, Week } from "../day";
@@ -32,7 +31,6 @@
     }
 
     $: {
-        console.log("Update state");
         firstDayOfMonth = new Date($year, $month, 1);
         let firstDayToShow: Date = new Date($year, $month, 1);
         firstDayToShow.setDate(2 - firstDayToShow.getDay()); //find Monday date
@@ -49,7 +47,6 @@
         // why `let` outside the forEach: https://github.com/sveltejs/svelte/issues/6706
         let d = new Date(firstDayToShow);
         events.forEach((e) => (e.active = e.id == selected_event));
-        console.log(events);
         for (; d <= lastDayToShow; d.setDate(d.getDate() + 7)) {
             const weekStartDate = new Date(d);
             const weekEndDate = new Date(d);
@@ -70,7 +67,6 @@
     }
 </script>
 
-<MonthViewHeader />
 <div class="mx-auto py-2 flex flex row">
     <div class="w-3/12">
         <div
@@ -109,8 +105,8 @@
                             )}
                             {@const isToday = isSameDate(day, today)}
                             <div
-                                style="width: {DAY_RELATIVE_WIDTH}%; height: 160px"
-                                class="pt-2 shadow"
+                                style="width: {DAY_RELATIVE_WIDTH}%"
+                                class="pt-2 shadow h-32"
                                 class:bg-base-300={day.getDay() == 6 ||
                                     day.getDay() == 0}
                             >
@@ -170,10 +166,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .longname {
-        width: 200%;
-        z-index: 100;
-    }
-</style>

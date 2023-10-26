@@ -5,6 +5,9 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
     /**
      * Typecheck JS in `.svelte` and `.js` files by default.
      * Disable checkJs if you'd like to use dynamic types in JS.
@@ -22,7 +25,7 @@
     "src/**/*.svelte",
     "src/lib/models/event",
     "src/routes/+layout.jts"
-  ],
+, "src/lib/models/event"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

@@ -1,8 +1,10 @@
 <script lang="ts">
-    import MonthView from "./MonthView/MonthView.svelte";
     import { setContext, createEventDispatcher, onDestroy } from "svelte";
     import { writable } from "svelte/store";
     import type { Event } from "$lib/models/event";
+    import MonthViewHeader from "./MonthView/MonthViewHeader.svelte";
+    import MonthViewCalendar from "./MonthView/MonthViewCalendar.svelte";
+    import MonthViewCards from "./MonthView/MonthViewCards.svelte";
     const dispatch = createEventDispatcher();
 
     export let showYear: number;
@@ -38,19 +40,13 @@
     export let events: Event[] = [];
     events.sort((e1, e2) => e1.startDate.getTime() - e2.startDate.getTime());
 
-    let eventsCache: Map<number, Event[]> = new Map<number, Event[]>();
-
-    function eventCacheLookup(
-        year: number,
-        month: number,
-        missCallback: CallableFunction
-    ) {
-        const key = year * 100 + month;
-        if (eventsCache.has(key)) {
-            return eventsCache[key];
-        }
-        missCallback(year, month);
-    }
+    const viewOptions = ["calendar", "overview"];
+    let selectedView: string = "calendar";
 </script>
 
-<MonthView {events} />
+<MonthViewHeader {viewOptions} bind:selectedView />
+{#if selectedView === viewOptions[0]}
+    <MonthViewCalendar {events} />
+{:else}
+    <MonthViewCards {events} />
+{/if}
