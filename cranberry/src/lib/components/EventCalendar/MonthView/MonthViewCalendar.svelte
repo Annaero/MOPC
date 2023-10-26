@@ -1,7 +1,6 @@
 <script lang="ts">
-    import ListView from "./ListView.svelte";
-    import { locale, json } from "svelte-i18n";
-    import type { Day, Week } from "../day";
+    import { json } from "svelte-i18n";
+    import type { Week } from "../day";
     import type { Event } from "$lib/models/event";
     import { isSameDate } from "$lib/dateUtils";
     import { getContext } from "svelte";
@@ -67,16 +66,8 @@
     }
 </script>
 
-<div class="mx-auto py-2 flex flex row">
-    <div class="w-3/12">
-        <div
-            class="text-neutral-content text-sm uppercase tracking-wide font-bold text-left px-2 py-2"
-        >
-            {$json("headers.events")}
-        </div>
-        <ListView {events} />
-    </div>
-    <div class="-mx-1 -mb-1 w-9/12 rounded-box">
+<div class="py-2 flex flex row justify-center w-full">
+    <div class="-mx-1 -mb-1 2xl:w-10/12 xl:w-11/12 lg:w-full rounded-box">
         <!-- Day names header -->
         <div class="flex flex-row">
             {#each $json("date.weekdays_names") as weekday}
