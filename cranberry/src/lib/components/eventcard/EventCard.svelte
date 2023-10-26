@@ -11,7 +11,7 @@
 </script>
 
 <div
-    class="card max-w-2xl bg-base-100 shadow-xl border border-solid border-base-200 hover:border-base-300 hoer:shadow-inner hover:cursor-default"
+    class="card max-w-xl bg-base-100 shadow-xl border border-solid border-base-200 hover:border-base-300 hoer:shadow-inner hover:cursor-default"
     class:w-64={minified}
     tabindex="0"
     role="button"
@@ -54,9 +54,15 @@
             {/if}
             <p class="text-xs">{event.type}</p>
         </div>
-        <div class="pt-2 italic pb-2" class:line-clamp-4={minified}>
+        <div
+            class="pt-2 italic pb-2 hyphens-auto"
+            class:line-clamp-6={minified}
+        >
             {#each event.description.split(/\r?\n/) as paragraph}
-                <p class="prose text-left pt-1 indent-5">
+                <p
+                    class="prose text-left pt-1 indent-5 hyphens-auto"
+                    class:text-sm={minified}
+                >
                     {paragraph}
                 </p>
             {/each}
@@ -65,7 +71,11 @@
             <div class="divider"><p class="text-neutral">When</p></div>
         {/if}
         <div class="w-5/6">
-            <DateSheet startDate={event.startDate} endDate={event.endDate} />
+            <DateSheet
+                startDate={event.startDate}
+                endDate={event.endDate}
+                {minified}
+            />
         </div>
         {#if !minified}
             <div class="card-actions pt-10">
