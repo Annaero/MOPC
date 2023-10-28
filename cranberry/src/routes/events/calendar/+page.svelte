@@ -1,5 +1,5 @@
 <script lang="ts">
-    import EventCalendar from "$lib/components/eventcalendar/EventCalendar.svelte";
+    import EventCalendar from "$lib/components/EventCalendar/EventCalendar.svelte";
     import { getEvents } from "$lib/services/event";
     import type { Event } from "$lib/models/event";
 
