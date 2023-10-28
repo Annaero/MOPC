@@ -2,9 +2,9 @@
     import { setContext, createEventDispatcher, onDestroy } from "svelte";
     import { writable } from "svelte/store";
     import type { Event } from "$lib/models/event";
-    import MonthViewHeader from "./MonthView/MonthViewHeader.svelte";
-    import MonthViewCalendar from "./MonthView/MonthViewCalendar.svelte";
-    import MonthViewCards from "./MonthView/MonthViewCards.svelte";
+    import MonthViewHeader from "./monthview/MonthViewHeader.svelte";
+    import MonthViewCalendar from "./monthview/MonthViewCalendar.svelte";
+    import MonthViewCards from "./monthview/MonthViewCards.svelte";
     const dispatch = createEventDispatcher();
 
     export let showYear: number;
