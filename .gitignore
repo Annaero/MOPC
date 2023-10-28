@@ -20,5 +20,6 @@ hosts.ini
 *.out
 
 .vscode
+.devcontainer
 
 **/.env
