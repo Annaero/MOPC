@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
+  "engines": {
+    "node": ">=18.0.0 <20.0.0, >=21.0.0"
+  },
   "devDependencies": {
     "@beyonk/gdpr-cookie-consent-banner": "^10.0.0",
     "@event-calendar/core": "^1.5.1",
@@ -16,6 +19,7 @@
     "@event-calendar/list": "^1.5.1",
     "@event-calendar/time-grid": "^1.5.1",
     "@iconify/svelte": "^3.1.4",
+    "@sveltejs/adapter-vercel": "^3.0.3",
     "@sveltejs/kit": "^1.25.0",
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "@tailwindcss/typography": "^0.5.10",

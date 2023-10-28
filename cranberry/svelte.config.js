@@ -1,4 +1,5 @@
 import { vitePreprocess } from '@sveltejs/kit/vite';
+import adapter from "@sveltejs/adapter-vercel"
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -10,6 +11,11 @@ const config = {
       console.log('svelte:warnings:%s', JSON.stringify(warning));
       defaultHandler(warning);
     }
+  },
+  kit: {
+    adapter: adapter({
+      // adapter options go here
+    })
   }
 };
 
