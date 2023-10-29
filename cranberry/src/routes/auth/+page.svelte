@@ -22,6 +22,7 @@
     let authAction: AuthAction = AuthAction.auth;
 
     const handleAuthAction = async () => {
+        clearErrors();
         switch (authAction) {
             case AuthAction.auth: {
                 handleSignIn();
@@ -60,13 +61,19 @@
             return;
         }
         isLoading = true;
+        const { data, error: signUpError } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        });
         isLoading = false;
 
-        // if (signInError) {
-        //     errorMessage = signInError.message;
-        // } else {
-        //     goto("/");
-        // }
+        if (signUpError) {
+            errorMessage = signUpError.message;
+        } else {
+            infoMessage =
+                "We have sent confirmation on your email address. Please check you email box.";
+            authAction = AuthAction.auth;
+        }
     };
 
     const handleRestorePassword = async () => {

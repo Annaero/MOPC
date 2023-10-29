@@ -11,7 +11,7 @@
 </script>
 
 <div
-    class="card max-w-xl bg-base-100 shadow-xl border border-solid border-neutral hover:border-base-300 hoer:shadow-inner hover:cursor-default"
+    class="card max-w-xl bg-base-100 shadow-xl border border-solid border-base-200 hover:border-base-300 hoer:shadow-inner hover:cursor-default"
     class:w-64={minified}
     tabindex="0"
     role="button"

@@ -6,7 +6,7 @@
     let year = getContext("selected_year");
     let month = getContext("selected_month");
 
-    export let viewOptions: Array<String>;
+    export let viewOptions: Array<string>;
     console.log(viewOptions);
     export let selectedView = "calendar"; //viewOptions[0];
 
