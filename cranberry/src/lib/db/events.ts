@@ -12,7 +12,6 @@ export const getEvent = async (id: string) => {
     }
     catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            // The .code property can be accessed in a type-safe manner
             if (e.code === 'P2023') {
                 console.error((e as Prisma.PrismaClientKnownRequestError).meta?.message)
                 throw error(404)

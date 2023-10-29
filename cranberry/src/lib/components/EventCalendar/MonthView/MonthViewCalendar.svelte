@@ -73,7 +73,7 @@
             {#each $json("date.weekdays_names") as weekday}
                 <div style="width: {DAY_RELATIVE_WIDTH}%" class="px-2 py-2">
                     <div
-                        class="text-neutral text-sm uppercase tracking-wide font-bold text-center"
+                        class=" text-sm uppercase tracking-wide font-bold text-center"
                     >
                         {weekday}
                     </div>
@@ -98,7 +98,7 @@
                             <div
                                 style="width: {DAY_RELATIVE_WIDTH}%"
                                 class="pt-2 shadow h-32"
-                                class:bg-base-300={day.getDay() == 6 ||
+                                class:bg-base-200={day.getDay() == 6 ||
                                     day.getDay() == 0}
                             >
                                 <!-- date label  -->
@@ -106,7 +106,7 @@
                                     class="w-6 h-6 mx-4 -mt-1 text-center rounded-full"
                                     class:bg-primary-focus={isToday}
                                     class:text-secondary-content={isToday}
-                                    class:text-base-200={day <
+                                    class:text-base-300={day <
                                         firstDayOfMonth || day > lastDayOfMonth}
                                 >
                                     {day.getDate()}

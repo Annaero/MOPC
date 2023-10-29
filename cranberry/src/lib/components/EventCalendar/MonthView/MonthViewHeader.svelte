@@ -17,12 +17,14 @@
     }
 </script>
 
-<div class="navbar bg-base-100 rounded-box w-full drop-shadow-md">
+<div
+    class="navbar bg-base-100 rounded-box w-full drop-shadow-md border border-solid border-base-200"
+>
     <div class="navbar-start">
-        <span class="text-lg font-bold text-bg-neutral">
+        <span class="text-lg font-bold">
             {$_("date.month_names")[$month]}
         </span>
-        <span class="ml-1 text-lg text-bg-neutral font-normal">{$year}</span>
+        <span class="ml-1 text-lg font-normal">{$year}</span>
     </div>
     <div class="navbar-center">
         <div class="join" role="radiogroup">
@@ -33,7 +35,7 @@
                     aria-label={view}
                     value={view}
                     bind:group={selectedView}
-                    class="join-item btn btn-outline btn-sm border-neutral-content text-neutral min-w-15"
+                    class="join-item btn btn-outline btn-sm border-base-200 min-w-15"
                 />
             {/each}
         </div>
@@ -45,7 +47,7 @@
                 on:click={(e) => {
                     moveMonth(-1);
                 }}
-                class="join-item btn btn-outline border-neutral-content"
+                class="join-item btn btn-outline border-base-200"
             >
                 <Icon icon="carbon:chevron-left" height="2em" width="2em" />
             </button>
@@ -55,7 +57,7 @@
                 on:click={(e) => {
                     moveMonth(1);
                 }}
-                class="join-item btn btn-outline border-neutral-content"
+                class="join-item btn btn-outline border-base-200"
             >
                 <Icon icon="carbon:chevron-right" height="2em" width="2em" />
             </button>
