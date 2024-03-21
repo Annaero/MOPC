@@ -1,7 +1,12 @@
 Frontend for the MOPC project.
 
 
+# Use nix-shell
+```shell
+nix-shell
+```
+
 # Generaty prisma clients and zod schema
-```bash
+```shell
 npx prisma generate
 ```
