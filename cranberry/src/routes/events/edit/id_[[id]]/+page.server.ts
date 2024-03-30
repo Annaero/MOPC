@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { type Event, EventOptionalDefaultsSchema } from '$lib/models/event';
+import { type Event, EventOptionalDefaultsSchema } from '$lib/models';
 import prisma from "$lib/db/prisma";
 import { EventType } from "@prisma/client"
 import type { Actions, PageServerLoad } from '../$types';
