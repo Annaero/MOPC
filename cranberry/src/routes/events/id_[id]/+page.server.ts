@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { Event } from '$lib/models/event'
+import type { Event } from '$lib/models'
 import type { PageServerLoad } from './$types';
 import { getEvent } from '$lib/db/events';
 
