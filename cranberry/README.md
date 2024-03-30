@@ -1,10 +1,10 @@
 Frontend for the MOPC project.
 
+# Enviroment variables
 
-# Use nix-shell
-```shell
-nix-shell
-```
+Create file `.env.local`
+
+Specify PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY variable here
 
 # Generaty prisma clients and zod schema
 ```shell

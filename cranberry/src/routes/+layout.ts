@@ -1,20 +1,13 @@
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY } from '$env/static/public'
-import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit'
+import { supabase } from '$lib/supabase/client.js'
 import type { Database } from '$lib/supabase'
 import { dev } from '$app/environment';
 import { inject } from '@vercel/analytics';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 inject({ mode: dev ? 'development' : 'production' });
 
 export const load = async ({ fetch, data, depends }) => {
-    depends('supabase:auth')
-
-    const supabase = createSupabaseLoadClient<Database>({
-        supabaseUrl: PUBLIC_SUPABASE_URL,
-        supabaseKey: PUBLIC_SUPABASE_KEY,
-        event: { fetch },
-        serverSession: data.session,
-    })
+    // depends('supabase:auth')
 
     const {
         data: { session },
