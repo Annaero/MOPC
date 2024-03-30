@@ -6,7 +6,7 @@ export const load = async ({ locals: { getSession } }) => {
     const userCard: string = null;
     if (session) {
         const userId = session.user.id
-        const userCard = await prisma.userCard.findFirst({ where: { userId: userId } })
+        const userCard = await prisma.profile.findFirst({ where: { user_id: userId } })
 
         // if (userCard == null) {
         //     console.error(`User ${userId} does not have a userCard assosiated`)

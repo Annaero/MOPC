@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { type Event, EventSchema } from "$lib/models/event";
+import { type Event, EventSchema } from "$lib/models";
 
 
 function parse_event(event_json) {
