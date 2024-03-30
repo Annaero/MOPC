@@ -1,4 +1,4 @@
-import type { Event } from '$lib/models/event';
+import type { Event } from '$lib/models';
 import prisma from '$lib/db/prisma';
 
 export async function GET(request: Request) {
@@ -10,11 +10,11 @@ export async function GET(request: Request) {
         where: {
             OR: [
                 {
-                    startDate: { lte: endDay },
-                    endDate: { gte: startDay }
+                    start_date: { lte: endDay },
+                    end_date: { gte: startDay }
                 },
                 {
-                    startDate: { gte: startDay, lte: endDay },
+                    start_date: { gte: startDay, lte: endDay },
                 }
 
             ]
