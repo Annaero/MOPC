@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ params, locals: { getSession } }) =
     let event: Event = null;
     if (id) {
         event = await getEvent(params.id)
-        if (event.owner != session.user.id) {
+        if (event.ownerId != session.user.id) {
             throw error(403);
         }
     }
@@ -34,8 +34,8 @@ export const actions: Actions = {
 
         const data = await request.formData()
         const form = await superValidate(data, EventOptionalDefaultsSchema);
-        if (!form.data.owner) {
-            form.data.owner = session.user.id
+        if (!form.data.ownerId) {
+            form.data.ownerId = session.user.id
         }
 
         if (!form.valid) {
