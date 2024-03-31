@@ -13,12 +13,11 @@
         data.form,
         {
             onSubmit({ formData }) {
-                console.log("oneDay", oneDay);
                 if (oneDay) {
                     formData.delete("endDate");
                 }
             },
-        }
+        },
     );
 
     const proxyStartDate = dateProxy(form, "startDate", { format: "date" });

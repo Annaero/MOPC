@@ -10,11 +10,11 @@ export async function GET(request: Request) {
         where: {
             OR: [
                 {
-                    start_date: { lte: endDay },
-                    end_date: { gte: startDay }
+                    startDate: { lte: endDay },
+                    endDate: { gte: startDay }
                 },
                 {
-                    start_date: { gte: startDay, lte: endDay },
+                    startDate: { gte: startDay, lte: endDay },
                 }
 
             ]

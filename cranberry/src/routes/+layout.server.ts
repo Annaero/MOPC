@@ -1,21 +1,7 @@
-import prisma from "$lib/db/prisma";
-import { error } from "@sveltejs/kit";
+import type { LayoutServerLoad } from './$types'
 
-export const load = async ({ locals: { getSession } }) => {
-    const session = await getSession()
-    const userCard: string = null;
-    if (session) {
-        const userId = session.user.id
-        const userCard = await prisma.profile.findFirst({ where: { user_id: userId } })
-
-        // if (userCard == null) {
-        //     console.error(`User ${userId} does not have a userCard assosiated`)
-        //     throw error(500)
-        // }
-    }
-
+export const load: LayoutServerLoad = async ({ locals: { getSession } }) => {
     return {
-        session: session,
-        user: userCard
+        session: await getSession(),
     }
 }

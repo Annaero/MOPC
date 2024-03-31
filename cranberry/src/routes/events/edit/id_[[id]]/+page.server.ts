@@ -6,9 +6,10 @@ import { EventType } from "@prisma/client"
 import type { Actions, PageServerLoad } from '../$types';
 import { getEvent } from '$lib/db/events';
 
-export const load: PageServerLoad = async ({ params, locals: { getSession } }) => {
-    const session = await getSession();
-    if (!session) {
+export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
+    // const session = await getSession();
+    const user = supabase.auth.getUser();
+    if (!user) {
         throw error(403);
     }
 
@@ -16,7 +17,7 @@ export const load: PageServerLoad = async ({ params, locals: { getSession } }) =
     let event: Event = null;
     if (id) {
         event = await getEvent(params.id)
-        if (event.ownerId != session.user.id) {
+        if (event.ownerId != user.id) {
             throw error(403);
         }
     }
@@ -26,16 +27,16 @@ export const load: PageServerLoad = async ({ params, locals: { getSession } }) =
 };
 
 export const actions: Actions = {
-    default: async ({ request, locals: { getSession } }) => {
-        const session = await getSession();
-        if (!session) {
+    default: async ({ request, locals: { supabase } }) => {
+        const user = supabase.auth.getUser();
+        if (!user) {
             throw error(403);
         }
 
         const data = await request.formData()
         const form = await superValidate(data, EventOptionalDefaultsSchema);
         if (!form.data.ownerId) {
-            form.data.ownerId = session.user.id
+            form.data.ownerId = user.id
         }
 
         if (!form.valid) {
@@ -54,6 +55,7 @@ export const actions: Actions = {
                 event = await prisma.event.update({ where: { id: id }, data: updateEvent })
             }
         } catch (e) {
+            console.error(e);
             return message(form, "Something went wrong :(", {
                 status: 500
             });

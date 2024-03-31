@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "postinstall": "prisma generate",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "migrate-dev": "npx prisma migrate dev && npx tsx src/lib/migrations/seedTriggers.ts "
+    "migrate-dev": "npx prisma migrate dev --create-only"
   },
   "engines": {
     "node": "20.10"
