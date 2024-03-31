@@ -8,13 +8,15 @@
     // Import to initialize. Important :)
     import { waitLocale } from "svelte-i18n";
     import type { LayoutLoad } from "./$types";
-    import { invalidate } from "$app/navigation";
+    import { invalidate, afterNavigate, goto } from "$app/navigation";
     import { onMount } from "svelte";
+    import { page } from "$app/stores";
+    import { redirect } from "@sveltejs/kit";
 
     export let data;
 
-    let { supabase, session } = data;
-    $: ({ supabase, session } = data);
+    let { supabase, session, profile } = data;
+    $: ({ supabase, session, profile } = data);
 
     onMount(() => {
         const {
@@ -26,6 +28,13 @@
         });
 
         return () => subscription.unsubscribe();
+    });
+
+    // Profiles does not creates automatically after user creation
+    afterNavigate(({ from, to }) => {
+        if (session && !profile && to.url.pathname != "/profile/edit") {
+            goto("/profile/edit");
+        }
     });
 
     export const load: LayoutLoad = async () => {
@@ -40,7 +49,7 @@
     };
 
     const flag = { "en-GB": "🇬🇧", "ru-RU": "🇷🇺" };
-    export const ssr = false;
+    // export const ssr = false;
 </script>
 
 <div class="mx-auto bg-base-300 flex flex-col place-items-center items-center">

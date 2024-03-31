@@ -1,7 +1,19 @@
 import type { LayoutServerLoad } from './$types'
+import prisma from '$lib/db/prisma';
+import { redirect } from '@sveltejs/kit';
 
-export const load: LayoutServerLoad = async ({ locals: { getSession } }) => {
+/** @type {import('./$types').LayoutServerLoad} */
+export async function load({ locals: { getSession } }) {
+    let session = await getSession();
+
+    const profile = session ? await prisma.profile.findUnique({
+        where: {
+            id: session.user.id,
+        }
+    }) : undefined;
+
     return {
-        session: await getSession(),
-    }
-}
+        session: session,
+        profile: profile
+    };
+};
