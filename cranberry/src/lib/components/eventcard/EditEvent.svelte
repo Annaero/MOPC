@@ -44,7 +44,7 @@
 </script>
 
 <div class="max-w-md w-full bg-base-100 p-8 rounded-lg shadow-md">
-    <form method=Post class="flex flex-col w-full form-control">
+    <form method="Post" class="flex flex-col w-full form-control">
         <div class="mb-6">
             <label for="eventName" class="label">
                 <span class="label-text">Event name</span>
@@ -132,5 +132,5 @@
                 Post
             </button>
         </div>
-    </div>
+    </form>
 </div>
