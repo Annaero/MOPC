@@ -4,11 +4,7 @@ MOPC project.
 
 Create file `.env`
 
-Specify `DATABASE_URL`, `DIRECT_URL`, `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`
-
-Create file `.env.local`
-
-Specify `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY` variables here
+Specify `DATABASE_URL`, `DIRECT_URL`, `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`
 
 For detaails see https://supabase.com/partners/integrations/prisma
 
