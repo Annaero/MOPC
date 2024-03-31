@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -21,8 +21,8 @@ enum EventType {
 model Profile {
   id       String  @id @db.Uuid
   role     Role    @default(USER)
-  user_id   String  @unique
-  username String   @unique
+  user_id  String  @unique
+  username String  @unique
   Event    Event[]
 
   @@map("profiles")
@@ -32,13 +32,13 @@ model Event {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   description String
-  start_date   DateTime
-  end_date     DateTime?
+  start_date  DateTime
+  end_date    DateTime?
   type        EventType
   owner       Profile   @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  owner_id     String    @db.Uuid
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
+  owner_id    String    @db.Uuid
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
 
   @@map("events")
 }
