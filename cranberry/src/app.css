@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+    min-height: 100vh;
+}
+
+footer {
+    position: sticky;
+    top: 100vh;
+}

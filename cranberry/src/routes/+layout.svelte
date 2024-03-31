@@ -120,10 +120,7 @@
     </div>
 </main>
 
-<footer
-    class="footer footer-center p-4 bg-base-300 text-base-content h-60px"
-    style="position:fixed;"
->
+<footer class="footer footer-center p-4 bg-base-300 text-base-content h-60px">
     <aside>
         <p>Copyright © 2023 - All right reserved by Aleksei Krikunov</p>
     </aside>
