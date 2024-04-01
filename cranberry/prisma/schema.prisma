@@ -14,21 +14,17 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum Role {
-  ADMIN
-  USER
-}
-
 enum EventType {
   OFFLINE
   ONLINE
 }
 
 model Profile {
-  id       String  @id @db.Uuid
-  role     Role    @default(USER)
-  userId   String  @unique @map("user_id")
-  username String  @unique
+  id       Int     @id @default(autoincrement())
+  userId   String  @unique @map("user_id") @db.Uuid
+  username String  @unique @db.VarChar(255)
+  about    String  @default("") @db.Text
+  link     String? @db.VarChar(510) /// @zod.custom.use(z.string().url({ message: "Please enter correct URL" }).optional().or(z.literal('')))
   Event    Event[]
 
   @@map("profiles")
@@ -42,7 +38,7 @@ model Event {
   endDate     DateTime? @map("end_date")
   type        EventType
   owner       Profile   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  ownerId     String    @map("owner_id") @db.Uuid
+  ownerId     Int       @map("owner_id")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 

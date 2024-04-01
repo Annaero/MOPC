@@ -8,7 +8,7 @@ export async function load({ locals: { getSession } }) {
 
     const profile = session ? await prisma.profile.findUnique({
         where: {
-            id: session.user.id,
+            userId: session.user.id,
         }
     }) : undefined;
 

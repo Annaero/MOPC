@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "profiles" ALTER COLUMN "about" SET DEFAULT '',
+ALTER COLUMN "link" DROP NOT NULL;

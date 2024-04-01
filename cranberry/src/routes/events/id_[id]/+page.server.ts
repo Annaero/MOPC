@@ -6,7 +6,6 @@ import { getEvent } from '$lib/db/events';
 export const load: PageServerLoad = async ({ params }) => {
 	const eventDocument: Event = await getEvent(params.id)
 
-	console.log(eventDocument)
 	if (!eventDocument) throw error(404);
 
 	return {

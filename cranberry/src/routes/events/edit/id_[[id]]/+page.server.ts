@@ -1,10 +1,15 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms/server';
-import { type Event, EventOptionalDefaultsSchema } from '$lib/models';
-import prisma from "$lib/db/prisma";
 import { EventType } from "@prisma/client"
-import type { Actions, PageServerLoad } from '../$types';
+
+import { message, superValidate } from 'sveltekit-superforms/server';
+
 import { getEvent } from '$lib/db/events';
+import prisma from "$lib/db/prisma";
+import { type Event, EventOptionalDefaultsSchema } from '$lib/models';
+
+import type { Actions, PageServerLoad } from '../$types';
+
+
 
 export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
     // const session = await getSession();

@@ -32,7 +32,11 @@
 
     // Profiles does not creates automatically after user creation
     afterNavigate(({ from, to }) => {
-        if (session && !profile && to.url.pathname != "/profile/edit") {
+        if (
+            session &&
+            !profile &&
+            !to.url.pathname.startsWith("/profile/edit")
+        ) {
             goto("/profile/edit");
         }
     });
@@ -48,7 +52,7 @@
         await supabase.auth.signOut();
     };
 
-    const flag = { "en-GB": "🇬🇧", "ru-RU": "🇷🇺" };
+    const flag = { "en-GB": "EN", "ru-RU": "RU" };
     // export const ssr = false;
 </script>
 
@@ -64,7 +68,7 @@
             <div>
                 <select
                     bind:value={$locale}
-                    class="select select-ghost select-sm w-full max-w-xs text-3xl"
+                    class="select select-ghost select-sm w-full max-w-xs text-l"
                 >
                     {#each $locales as loc}
                         <option value={loc} selected={loc === $locale}
@@ -95,19 +99,39 @@
                     </div>
                 </label>
                 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                <ul
+                <div
                     tabindex="0"
-                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52 content-end"
                 >
-                    {#if session}
-                        <li class="text-bold">
-                            <a href="/auth" on:click={handleSignOut}>Sign Out</a
-                            >
-                        </li>
-                    {:else}
-                        <li class="text-bold"><a href="/auth">Sign In</a></li>
-                    {/if}
-                </ul>
+                    <ul>
+                        {#if session}
+                            {#if profile}
+                                <label
+                                    >Hello, <a
+                                        class="link link-accent"
+                                        href="/profile/{profile.id}"
+                                        >{profile.username}</a
+                                    >!</label
+                                >
+                            {:else}
+                                <label>Hello, The Nameless One</label>
+                            {/if}
+                        {:else}
+                            <label> Please Sign In </label>
+                        {/if}
+                        {#if session}
+                            <li class="text-bold">
+                                <a href="/auth" on:click={handleSignOut}
+                                    >Sign Out</a
+                                >
+                            </li>
+                        {:else}
+                            <li class="text-bold">
+                                <a href="/auth">Sign In</a>
+                            </li>
+                        {/if}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
