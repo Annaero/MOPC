@@ -1,20 +1,19 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { type Event, EventOptionalDefaultsSchema, ProfileOptionalDefaultsSchema } from '$lib/models';
+import { ProfileOptionalDefaultsSchema } from '$lib/models';
 import prisma from "$lib/db/prisma";
-import { type Profile } from "@prisma/client"
 import type { Actions, PageServerLoad } from '../$types';
-import { getEvent } from '$lib/db/events';
 
 export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
-    const user = supabase.auth.getUser();
+    const user = await supabase.auth.getUser();
     if (!user) {
         throw error(403);
     }
 
-    let profile: Profile = null;
+    let profile = prisma.profile.findUnique({ where: { userId: user.data.user.id } });
+
     const form = await superValidate(profile, ProfileOptionalDefaultsSchema);
-    return { form };
+    return { form, profile };
 };
 
 export const actions: Actions = {
