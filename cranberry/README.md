@@ -20,3 +20,7 @@ npx prisma migrate dev
 
 ~~# How prisma works with supabase auth~~
 ~~https://medium.com/@ngoctranfire/using-prisma-with-supabase-row-level-security-and-multi-schema-7c53418adba3~~
+
+# Icons
+IBM Carbon via @iconify/svelte
+https://icon-sets.iconify.design/carbon/
