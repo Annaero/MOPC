@@ -20,12 +20,13 @@ enum EventType {
 }
 
 model Profile {
-  id       Int     @id @default(autoincrement())
-  userId   String  @unique @map("user_id") @db.Uuid
-  username String  @unique @db.VarChar(255)
-  about    String  @default("") @db.Text
-  link     String? @db.VarChar(510) /// @zod.custom.use(z.string().url({ message: "Please enter correct URL" }).optional().or(z.literal('')))
-  Event    Event[]
+  id         Int     @id @default(autoincrement())
+  userId     String  @unique @map("user_id") @db.Uuid
+  username   String  @unique @db.VarChar(255)
+  about      String  @default("") @db.Text
+  link       String? @db.VarChar(510) /// @zod.custom.use(z.string().url({ message: "Please enter correct URL" }).optional().or(z.literal('')))
+  avatarUUID String? @db.Uuid
+  Event      Event[]
 
   @@map("profiles")
 }
@@ -37,10 +38,11 @@ model Event {
   startDate   DateTime  @map("start_date")
   endDate     DateTime? @map("end_date")
   type        EventType
-  owner       Profile   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  ownerId     Int       @map("owner_id")
+  ownerId     String    @unique @map("owner_id") @db.Uuid
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
+  Profile     Profile?  @relation(fields: [profileId], references: [id])
+  profileId   Int?
 
   @@map("events")
 }
