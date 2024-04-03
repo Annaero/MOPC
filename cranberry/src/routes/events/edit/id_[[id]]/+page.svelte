@@ -47,7 +47,7 @@
         {/if}
         <input hidden name="id" bind:value={$form.id} />
         <input hidden name="owner" bind:value={$form.owner} />
-        <div class="mb-6">
+        <div class="form-control">
             <label for="eventName" class="label"> Event name: </label>
             <input
                 id="eventName"
@@ -60,8 +60,10 @@
             />
         </div>
         <!-- Type selector -->
-        <div class="mb-6">
-            <label for="eventType" class="label">Event type:</label>
+        <div class="form-control">
+            <label for="eventType" class="label"
+                ><span class="label-text">Event type:</span></label
+            >
             <select
                 id="eventType"
                 name="type"
@@ -74,8 +76,10 @@
                 {/each}
             </select>
         </div>
-        <div class="mb-6">
-            <label for="eventDescription" class="label">Description:</label>
+        <div class="form-control">
+            <label for="eventDescription" class="label"
+                ><span class="label-text">Description:</span></label
+            >
             <textarea
                 id="eventDescription"
                 name="description"
@@ -86,9 +90,11 @@
                 {...$constraints.description}
             />
         </div>
-        <div class="mb-6 grid grid-cols-2 justify-stretch w-full">
+        <div class="form-control grid grid-cols-2 justify-stretch w-full">
             <div class="w-full pr-1">
-                <label for="startDate" class="label">Start date:</label>
+                <label for="startDate" class="label"
+                    ><span class="label-text">Start date:</span></label
+                >
                 <input
                     id="startDate"
                     name="startDate"
@@ -112,7 +118,7 @@
             </div>
             <div class="w-full pl-1">
                 <label for="endDate" class="label" class:text-slate-300={oneDay}
-                    >End date:</label
+                    ><span class="label-text">End date:</span></label
                 >
                 <input
                     id="endDate"
@@ -129,13 +135,8 @@
         </div>
 
         <!-- Submit Button and Character Limit Section -->
-        <div class="flex items-end place-content-end">
-            <button
-                class="btn bg-primary text-primary-content
-                hover:bg-primary-focus"
-            >
-                Submit
-            </button>
+        <div class="mt-2 card-actions justify-end">
+            <button class="btn bg-primary"> Save </button>
         </div>
     </form>
 </div>

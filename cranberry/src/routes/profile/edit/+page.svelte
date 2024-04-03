@@ -27,7 +27,7 @@
         {/if}
     </div>
     <div class="card-body">
-        <form method="POST" class="w-full form-control" use:enhance>
+        <form method="POST" class="w-full" use:enhance>
             {#if $message}
                 <div class="alert alert-error w-full">
                     <svg
