@@ -7,13 +7,10 @@ import { getEvent } from '$lib/db/events';
 import prisma from "$lib/db/prisma";
 import { type Event, EventOptionalDefaultsSchema } from '$lib/models';
 
-import type { Actions, PageServerLoad } from '../$types';
 
-
-
-export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
-    // const session = await getSession();
-    const user = supabase.auth.getUser();
+/** @type {import('./$types').PageLoad} */
+export async function load({ params, locals: { supabase } }) {
+    const user = await supabase.auth.getUser();
     if (!user) {
         throw error(403);
     }
@@ -22,7 +19,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
     let event: Event = null;
     if (id) {
         event = await getEvent(params.id)
-        if (event.ownerId != user.id) {
+        if (event.ownerId != user.data.user.id) {
             throw error(403);
         }
     }
@@ -31,9 +28,10 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
     return { form, eventTypes };
 };
 
-export const actions: Actions = {
+/** @type {import('./$types').Actions} */
+export const actions = {
     default: async ({ request, locals: { supabase } }) => {
-        const user = supabase.auth.getUser();
+        const user = await supabase.auth.getUser();
         if (!user) {
             throw error(403);
         }
@@ -41,7 +39,7 @@ export const actions: Actions = {
         const data = await request.formData()
         const form = await superValidate(data, EventOptionalDefaultsSchema);
         if (!form.data.ownerId) {
-            form.data.ownerId = user.id
+            form.data.ownerId = user.data.user.id
         }
 
         if (!form.valid) {

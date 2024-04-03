@@ -3,11 +3,11 @@ import type { Event } from '$lib/models/event'
 import prisma from '$lib/db/prisma'
 import { Prisma } from '@prisma/client';
 
-export const getEvent = async (id: string) => {
+export const getEvent = async (id: number) => {
     let eventDocument: Event;
     try {
         eventDocument = await prisma.event.findUnique({
-            where: { id: id }
+            where: { id: parseInt(id) }
         });
     }
     catch (e) {
