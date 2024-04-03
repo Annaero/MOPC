@@ -6,7 +6,7 @@ export default {
     },
     plugins: [require("@tailwindcss/typography"), require("daisyui")],
     daisyui: {
-        themes: ["garden",
+        themes: ["garden", "dark"
             //{
             //     MOPC: {
             //         "primary": "#ec4899",
