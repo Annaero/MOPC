@@ -8,6 +8,7 @@ inject({ mode: dev ? 'development' : 'production' });
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     depends('supabase:auth')
+    const session = data.session;
 
     const supabase = createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
         global: {
@@ -16,7 +17,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
         cookies: {
             get(key) {
                 if (!isBrowser()) {
-                    return JSON.stringify(data.session)
+                    return JSON.stringify(session)
                 }
 
                 const cookie = parse(document.cookie)
@@ -24,10 +25,6 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
             },
         },
     })
-
-    const {
-        data: { session },
-    } = await supabase.auth.getSession()
 
     const profile = data.profile;
 

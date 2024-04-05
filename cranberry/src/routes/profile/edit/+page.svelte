@@ -10,10 +10,10 @@
 
     export let data: PageData;
 
-    let { formData, profile } = data;
+    let { profile } = data;
 
     const { form, errors, constraints, enhance, delayed, message } = superForm(
-        formData,
+        data.form,
         { customValidity: true },
     );
 </script>
@@ -45,9 +45,14 @@
                     <p class="max-w-full break-all">{$message}</p>
                 </div>
             {/if}
-            <input hidden name="id" bind:value={$form.id} />
-            <input hidden name="userId" bind:value={$form.userId} />
-            <input hidden name="userUUID" bind:value={$form.avatarUUID} />
+            <input hidden id="id" name="id" bind:value={$form.id} />
+            <input hidden id="userId" name="userId" bind:value={$form.userId} />
+            <input
+                hidden
+                id="avatarUUID"
+                name="avatarUUID"
+                bind:value={$form.avatarUUID}
+            />
             <div class="form-control">
                 {#if profile}
                     <h3 class="card-title">{profile.username}</h3>

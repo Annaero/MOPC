@@ -20,7 +20,6 @@ export async function GET(request: Request) {
             ]
         }
     })
-    console.log(events)
 
     return new Response(JSON.stringify(events));
 }

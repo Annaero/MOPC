@@ -1,6 +1,5 @@
 <script lang="ts">
-    export const ssr = false;
-    import { dictionary, json, locale } from "svelte-i18n";
+    import { locale } from "svelte-i18n";
     import type { PageData } from "../[[id]]/$types";
     import { dateProxy, superForm } from "sveltekit-superforms/client";
     import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
@@ -46,7 +45,7 @@
             </div>
         {/if}
         <input hidden name="id" bind:value={$form.id} />
-        <input hidden name="owner" bind:value={$form.owner} />
+        <input hidden name="owner" bind:value={$form.ownerId} />
         <div class="form-control">
             <label for="eventName" class="label"> Event name: </label>
             <input

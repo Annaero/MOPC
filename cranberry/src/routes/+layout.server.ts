@@ -3,8 +3,8 @@ import prisma from '$lib/db/prisma';
 import { redirect } from '@sveltejs/kit';
 
 /** @type {import('./$types').LayoutServerLoad} */
-export async function load({ locals: { getSession } }) {
-    let session = await getSession();
+export async function load({ locals: { safeGetSession } }) {
+    let session = await safeGetSession();
 
     const profile = session ? await prisma.profile.findUnique({
         where: {

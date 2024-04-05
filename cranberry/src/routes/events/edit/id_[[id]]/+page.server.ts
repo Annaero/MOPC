@@ -9,9 +9,9 @@ import { type Event, EventOptionalDefaultsSchema } from '$lib/models';
 
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ params, locals: { supabase } }) {
-    const user = await supabase.auth.getUser();
-    if (!user) {
+export async function load({ params, locals: { safeGetSession } }) {
+    const session = await safeGetSession();
+    if (!session) {
         throw error(403);
     }
 
@@ -19,7 +19,7 @@ export async function load({ params, locals: { supabase } }) {
     let event: Event = null;
     if (id) {
         event = await getEvent(params.id)
-        if (event.ownerId != user.data.user.id) {
+        if (event.ownerId != session.user.id) {
             throw error(403);
         }
     }
@@ -30,16 +30,16 @@ export async function load({ params, locals: { supabase } }) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-    default: async ({ request, locals: { supabase } }) => {
-        const user = await supabase.auth.getUser();
-        if (!user) {
+    default: async ({ request, locals: { safeGetSession } }) => {
+        const session = await safeGetSession();
+        if (!session) {
             throw error(403);
         }
 
         const data = await request.formData()
         const form = await superValidate(data, EventOptionalDefaultsSchema);
         if (!form.data.ownerId) {
-            form.data.ownerId = user.data.user.id
+            form.data.ownerId = session.user.id
         }
 
         if (!form.valid) {

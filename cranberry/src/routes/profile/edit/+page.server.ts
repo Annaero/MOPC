@@ -4,25 +4,24 @@ import { ProfileOptionalDefaultsSchema } from '$lib/models';
 import prisma from "$lib/db/prisma";
 import type { Actions, PageServerLoad } from '../$types';
 
-export const load: PageServerLoad = async ({ params, locals: { supabase } }) => {
-    const user = await supabase.auth.getUser();
-    if (!user) {
+export const load: PageServerLoad = async ({ params, locals: { safeGetSession } }) => {
+    const session = await safeGetSession();
+    if (!session) {
         throw error(403);
     }
 
-    let profile = prisma.profile.findUnique({ where: { userId: user.data.user.id } });
+    let profile = await prisma.profile.findUnique({ where: { userId: session.user.id } });
 
     const form = await superValidate(profile, ProfileOptionalDefaultsSchema);
     return { form, profile };
 };
 
 export const actions: Actions = {
-    default: async ({ request, locals: { supabase } }) => {
-        const user_data = await supabase.auth.getUser();
-        if (!user_data) {
-            redirect(303, "/auth")
+    default: async ({ request, locals: { safeGetSession } }) => {
+        const session = await safeGetSession();
+        if (!session) {
+            throw error(403);
         }
-        const user = user_data.data.user;
 
         const data = await request.formData()
         const form = await superValidate(data, ProfileOptionalDefaultsSchema);
@@ -32,9 +31,9 @@ export const actions: Actions = {
         }
 
         if (!form.data.userId) {
-            form.data.userId = user.id
+            form.data.userId = session.user.id
         }
-        else if (form.data.userId != user.id) {
+        else if (form.data.userId != session.user.id) {
             throw error(403);
         }
 
