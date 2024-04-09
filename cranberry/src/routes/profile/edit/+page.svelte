@@ -19,12 +19,21 @@
 </script>
 
 <div class="card card-side w-3/4 bg-base-200">
-    <div class="items-center">
-        {#if profile}
-            <Icon icon="carbon:image" height="10rem" width="10rem" />
-        {:else}
-            <Icon icon="carbon:upload" height="10rem" width="10rem" />
-        {/if}
+    <div class="mx-auto pl-8 pt-8">
+        <div class="avatar mx-auto placeholder">
+            <div class="w-32 rounded-xl static bg-neutral text-neutral-content">
+                <span class="badge badge-m absolute bottom-2 cursor-pointer"
+                    >Edit avatar</span
+                >
+                <span class="text-xl uppercase">
+                    {profile.username ? profile.username.slice(0, 2) : "🙃"}
+                </span>
+
+                <!-- <img
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                /> -->
+            </div>
+        </div>
     </div>
     <div class="card-body">
         <form method="POST" class="w-full" use:enhance>
