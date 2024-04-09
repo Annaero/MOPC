@@ -25,7 +25,7 @@ model Profile {
   username   String  @unique @db.VarChar(255)
   about      String  @default("") @db.Text
   link       String? @db.VarChar(510) /// @zod.custom.use(z.string().url({ message: "Please enter correct URL" }).optional().or(z.literal('')))
-  avatarUUID String? @db.Uuid
+  avatarUUID String? @db.VarChar(255)
   Event      Event[]
 
   @@map("profiles")

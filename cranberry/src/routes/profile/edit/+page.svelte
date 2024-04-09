@@ -4,34 +4,84 @@
     import { superForm } from "sveltekit-superforms/client";
     import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
     import Icon from "@iconify/svelte";
+    import { v4 as uuidv4 } from "uuid";
 
     locale.set("en");
     locale.subscribe(() => console.log("locale change"));
 
     export let data: PageData;
-
-    let { profile } = data;
+    let { profile, supabase } = data;
 
     const { form, errors, constraints, enhance, delayed, message } = superForm(
         data.form,
         { customValidity: true },
     );
+
+    let avatar,
+        files: FileList = null,
+        avatarUploading = false,
+        oldAvatar = $form.avatarUUID;
+
+    const uploadAvatar = async () => {
+        try {
+            avatarUploading = true;
+            console.log(files);
+            if (!files || files.length === 0) {
+                throw new Error("You must select an image to upload.");
+            }
+
+            const image = files[0];
+            const image_name = image.name;
+            const uuid = uuidv4();
+
+            const storage_imagename = uuid + "_" + image_name;
+
+            const { data, error } = await supabase.storage
+                .from("avatars")
+                .upload(storage_imagename, image);
+
+            if (error) {
+                throw error;
+            }
+
+            oldAvatar = $form.avatarUUID;
+            $form.avatarUUID = storage_imagename;
+        } catch (error) {
+            console.log(error);
+            $form.avatarUUID = oldAvatar;
+        } finally {
+            avatarUploading = false;
+        }
+    };
 </script>
 
 <div class="card card-side w-3/4 bg-base-200">
     <div class="mx-auto pl-8 pt-8">
-        <div class="avatar mx-auto placeholder">
-            <div class="w-32 rounded-xl static bg-neutral text-neutral-content">
-                <span class="badge badge-m absolute bottom-2 cursor-pointer"
-                    >Edit avatar</span
+        <div
+            class="avatar mx-auto placeholder"
+            class:skeleton={avatarUploading}
+        >
+            <div
+                class="w-32 rounded-xl static text-neutral-content"
+                class:bg-neutral={!$form.avatarUUID}
+            >
+                <label
+                    class="badge badge-m absolute bottom-2 cursor-pointer"
+                    for="avatar">Edit avatar</label
                 >
+                <input
+                    hidden
+                    id="avatar"
+                    name="avatar"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    on:change={uploadAvatar}
+                    bind:files
+                    disabled={avatarUploading}
+                />
                 <span class="text-xl uppercase">
                     {profile.username ? profile.username.slice(0, 2) : "🙃"}
                 </span>
-
-                <!-- <img
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                /> -->
             </div>
         </div>
     </div>
