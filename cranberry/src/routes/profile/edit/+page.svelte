@@ -10,14 +10,14 @@
     locale.subscribe(() => console.log("locale change"));
 
     export let data: PageData;
-    let { profile, supabase } = data;
+    let { profile, supabase, avatarUrl } = data;
 
     const { form, errors, constraints, enhance, delayed, message } = superForm(
         data.form,
         { customValidity: true },
     );
 
-    let avatarUrl;
+    let previewAvatarUrl = avatarUrl;
     let files: FileList;
     let avatarUploading = false;
     let oldAvatar = null;
@@ -32,17 +32,13 @@
                 throw error;
             }
 
-            avatarUrl = URL.createObjectURL(data);
+            previewAvatarUrl = URL.createObjectURL(data);
         } catch (error) {
             if (error instanceof Error) {
                 console.error("Error downloading image: ", error.message);
             }
         }
     };
-
-    if ($form.avatarUUID) {
-        downloadImage($form.avatarUUID);
-    }
 
     const uploadAvatar = async () => {
         try {
@@ -124,8 +120,8 @@
                             class="badge badge-m absolute bottom-2 cursor-pointer"
                             for="avatar">Edit avatar</label
                         >
-                        {#if avatarUrl}
-                            <img src={avatarUrl} alt="Avatar" />
+                        {#if previewAvatarUrl}
+                            <img src={previewAvatarUrl} alt="Avatar" />
                         {:else}
                             <span class="text-xl uppercase">
                                 {profile.username

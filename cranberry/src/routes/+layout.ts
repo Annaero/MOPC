@@ -28,5 +28,25 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 
     const profile = data.profile;
 
-    return { supabase, session, profile }
+    let avatarUrl = null;
+    if (profile) {
+        try {
+            const { data, error } = await supabase.storage
+                .from("avatars")
+                .download(profile.avatarUUID);
+
+            if (error) {
+                throw error;
+            }
+
+            avatarUrl = URL.createObjectURL(data);
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error("Error downloading image: ", error.message);
+            }
+        }
+    }
+
+
+    return { supabase, session, profile, avatarUrl }
 }

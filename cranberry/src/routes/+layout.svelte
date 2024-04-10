@@ -15,7 +15,7 @@
 
     export let data;
 
-    let { supabase, session, profile } = data;
+    let { supabase, session, profile, avatarUrl } = data;
     $: ({ supabase, session, profile } = data);
 
     onMount(() => {
@@ -117,19 +117,30 @@
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <div class="dropdown dropdown-end">
                 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                    <div class="w-10 rounded-full">
-                        {#if session}
-                            <Icon
-                                icon="carbon:user-avatar"
-                                height="2.5rem"
-                                width="2.5rem"
-                            />
+                <label
+                    tabindex="0"
+                    class="btn btn-square rounded-xl hover:border hover:border-accent"
+                >
+                    <div class="w-15 rounded-xl bg-neutral avatar">
+                        {#if profile}
+                            <div
+                                class="w-15 rounded-xl text-neutral-content bg-neutral"
+                            >
+                                {#if avatarUrl}
+                                    <img alt="avatar" src={avatarUrl} />
+                                {:else}
+                                    <span class="text-xl uppercase">
+                                        {profile.username
+                                            ? profile.username.slice(0, 2)
+                                            : "🙃"}
+                                    </span>
+                                {/if}
+                            </div>
                         {:else}
                             <Icon
                                 icon="carbon:user-avatar-filled"
-                                height="2.5rem"
-                                width="2.5rem"
+                                height="3rem"
+                                width="3rem"
                             />
                         {/if}
                     </div>
