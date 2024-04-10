@@ -57,7 +57,7 @@
 </script>
 
 <div class="mx-auto bg-base-300 flex flex-col place-items-center items-center">
-    <div class="navbar bg-base-300 sm:w-3/4 md:w-1/2 lg:w-3/5">
+    <div class="navbar bg-base-300 w-full md:w-3/4 xl:w-3/5 2xl:w-1/2">
         <div class="navbar-start">
             <a class="btn btn-ghost normal-case text-xl" href="/events/calendar"
                 ><img src={logo} alt="MOPC" class="w-8" />MOPC</a
@@ -178,7 +178,7 @@
         class="py-7 mx-auto flex flex-col place-items-center items-center justify-center mb-60"
     >
         <div
-            class="sm:w-3/4 md:w-1/2 lg:w-3/5 flex flex-row items-center justify-center"
+            class="w-full w-full md:w-3/4 xl:w-3/5 2xl:w-1/2 flex flex-row items-center justify-center"
         >
             {#if $isLoading}
                 <span class="loading loading-spinner loading-lg" />
